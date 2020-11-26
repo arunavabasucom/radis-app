@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import Plot from 'react-plotly.js';
-import { Button } from '@material-ui/core';
+import { Button, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
 import queryString from 'query-string'
 import './App.css';
 
@@ -20,10 +20,8 @@ const callCalcSpectrum = (setData: Dispatch<SetStateAction<CalcSpectrumResponse>
 }
 
 function App() {
-  const params: CalcSpectrumParams = {
-    molecule: "H2O"
-  }
   const [data, setData] = useState<CalcSpectrumResponse>({ x: [], y: [] })
+  const [params, setParams] = useState<CalcSpectrumParams>({ molecule: 'CO' })
   if (data) console.log(data)
   return (
     <div className="App">
@@ -39,7 +37,19 @@ function App() {
           ]}
           layout={{ width: 800, height: 600, title: `Spectrum for ${params.molecule}` }}
         />}
-        <Button color="primary" onClick={() => callCalcSpectrum(setData, params)}>Generate graph</Button>
+        <FormControl>
+          <InputLabel id="molecule-label">Molecule</InputLabel>
+          <Select
+            labelId="molecule-label"
+            id="molecule"
+            value={params.molecule}
+            onChange={event => setParams({ ...params, molecule: event.target.value as string })}
+          >
+            <MenuItem value="CO">CO</MenuItem>
+            <MenuItem value="H2O">H2O</MenuItem>
+          </Select>
+          <Button color="primary" onClick={() => callCalcSpectrum(setData, params)}>Generate graph</Button>
+        </FormControl>
       </header>
     </div>
   );
