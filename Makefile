@@ -1,7 +1,21 @@
 .PHONY: backend
-## Start the backend.
+## Start the backend
 backend:
 	python backend.py
+
+
+.PHONY: lint
+## Lint the frontend and backend
+lint:
+	# cd frontend && yarn lint --fix  # TODO
+	pre-commit run --all-files
+
+
+.PHONY: install
+## Install backend dependencies
+install:
+	pip install -r requirements/prod.txt -r requirements/ci.txt
+	pre-commit install
 
 
 .PHONY: help
