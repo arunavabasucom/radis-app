@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 from radis import calc_spectrum
 from flask_limiter import Limiter
@@ -19,7 +19,7 @@ def call_calc_spectrum():
     spectrum = calc_spectrum(
         1900,
         2300,
-        molecule="CO",
+        molecule=request.args.get("molecule", "CO"),
         isotope="1,2,3",
         pressure=1.01325,
         Tgas=700,
