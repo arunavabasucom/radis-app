@@ -15,6 +15,7 @@ interface CalcSpectrumParams {
 }
 
 const callCalcSpectrum = (setResponseData: Dispatch<SetStateAction<CalcSpectrumResponseData>>, params: CalcSpectrumParams) => {
+  // TODO: Figure out typing
   fetch(`http://localhost:5000/calc-spectrum?${queryString.stringify(params as any)}`, {
     method: "GET",
   }).then(response => response.json()).then(responseData => setResponseData(responseData));
@@ -44,6 +45,7 @@ function App() {
             labelId="molecule-label"
             id="molecule"
             value={params.molecule}
+            // TODO: Figure out typing
             onChange={event => setParams({ ...params, molecule: event.target.value as string })}
           >
             <MenuItem value="CO">CO</MenuItem>
