@@ -49,8 +49,8 @@ function App() {
             <MenuItem value="CO">CO</MenuItem>
             <MenuItem value="H2O">H2O</MenuItem>
           </Select>
-          <Button color="primary" onClick={() => callCalcSpectrum(setResponseData, params)}>Generate graph</Button>
         </FormControl>
+        <Button color="primary" onClick={() => callCalcSpectrum(setResponseData, params)}>Generate graph</Button>
       </header>
     </div>
   );

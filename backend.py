@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from radis import calc_spectrum
+import radis
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_cors import CORS
@@ -17,7 +17,7 @@ limiter = Limiter(
 def call_calc_spectrum():
     """If too many requests happen at once, Radis will segfault!"""
     molecule = request.args["molecule"]
-    spectrum = calc_spectrum(
+    spectrum = radis.calc_spectrum(
         1900,
         2300,
         molecule=molecule,
@@ -27,9 +27,8 @@ def call_calc_spectrum():
         mole_fraction=0.1,
         path_length=1,
     )
-    spectrum.apply_slit(0.5, "nm")
     wunit = spectrum.get_waveunit()
-    var = "radiance"
+    var = "radiance_noslit"
     Iunit = "default"
     x, y = spectrum.get(var, wunit=wunit, Iunit=Iunit)
     return {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
