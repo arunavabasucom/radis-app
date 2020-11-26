@@ -16,10 +16,11 @@ limiter = Limiter(
 @limiter.limit("1/second")
 def call_calc_spectrum():
     """If too many requests happen at once, Radis will segfault!"""
+    molecule = request.args["molecule"]
     spectrum = calc_spectrum(
         1900,
         2300,
-        molecule=request.args.get("molecule", "CO"),
+        molecule=molecule,
         isotope="1,2,3",
         pressure=1.01325,
         Tgas=700,
@@ -31,7 +32,7 @@ def call_calc_spectrum():
     var = "radiance"
     Iunit = "default"
     x, y = spectrum.get(var, wunit=wunit, Iunit=Iunit)
-    return {"x": list(x), "y": list(y)}
+    return {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
 
 
 if __name__ == "__main__":

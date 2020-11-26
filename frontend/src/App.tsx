@@ -4,38 +4,39 @@ import { Button, FormControl, Select, MenuItem, InputLabel } from '@material-ui/
 import queryString from 'query-string'
 import './App.css';
 
-interface CalcSpectrumResponse {
+interface CalcSpectrumResponseData {
   x: number[],
   y: number[],
+  title: string,
 }
 
 interface CalcSpectrumParams {
   molecule: string,
 }
 
-const callCalcSpectrum = (setData: Dispatch<SetStateAction<CalcSpectrumResponse>>, params: CalcSpectrumParams) => {
+const callCalcSpectrum = (setResponseData: Dispatch<SetStateAction<CalcSpectrumResponseData>>, params: CalcSpectrumParams) => {
   fetch(`http://localhost:5000/calc-spectrum?${queryString.stringify(params as any)}`, {
     method: "GET",
-  }).then(response => response.json()).then(data => setData(data));
+  }).then(response => response.json()).then(responseData => setResponseData(responseData));
 }
 
 function App() {
-  const [data, setData] = useState<CalcSpectrumResponse>({ x: [], y: [] })
+  const [responseData, setResponseData] = useState<CalcSpectrumResponseData>({ x: [], y: [], title: "" })
   const [params, setParams] = useState<CalcSpectrumParams>({ molecule: 'CO' })
-  if (data) console.log(data)
+  if (responseData) console.log(responseData)
   return (
     <div className="App">
       <header className="App-header">
-        {data.x.length > 0 && <Plot
+        {responseData.x.length > 0 && <Plot
           className="Plot"
           data={[
             {
-              x: data && data.x,
-              y: data && data.y,
+              x: responseData && responseData.x,
+              y: responseData && responseData.y,
               type: 'scatter',
             },
           ]}
-          layout={{ width: 800, height: 600, title: `Spectrum for ${params.molecule}` }}
+          layout={{ width: 800, height: 600, title: responseData.title }}
         />}
         <FormControl>
           <InputLabel id="molecule-label">Molecule</InputLabel>
@@ -48,7 +49,7 @@ function App() {
             <MenuItem value="CO">CO</MenuItem>
             <MenuItem value="H2O">H2O</MenuItem>
           </Select>
-          <Button color="primary" onClick={() => callCalcSpectrum(setData, params)}>Generate graph</Button>
+          <Button color="primary" onClick={() => callCalcSpectrum(setResponseData, params)}>Generate graph</Button>
         </FormControl>
       </header>
     </div>
