@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import Plot from 'react-plotly.js';
+import { Button } from '@material-ui/core';
 import './App.css';
 
 interface CalcSpectrumResponse {
@@ -29,9 +30,9 @@ function App() {
               type: 'scatter',
             },
           ]}
-          layout={{ width: 800, height: 600, title: 'A Fancy Plot' }}
+          layout={{ width: 800, height: 600, title: 'Spectrum for CO' }}
         />}
-        <button type="button" onClick={() => callCalcSpectrum(setData)}>Generate graph</button>
+        <Button color="primary" onClick={() => callCalcSpectrum(setData)}>Generate graph</Button>
       </header>
     </div>
   );
