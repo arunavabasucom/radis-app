@@ -247,6 +247,3 @@ dist
 
 # direnv
 .envrc
-
-# Secrets
-lambda/config.yaml
