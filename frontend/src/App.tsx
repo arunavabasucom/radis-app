@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import Plot from 'react-plotly.js';
-import { Button, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
+import { Grid, Button, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
 import queryString from 'query-string'
 import './App.css';
 
@@ -27,18 +27,8 @@ function App() {
   if (responseData) console.log(responseData)
   return (
     <div className="App">
-      <header className="App-header">
-        {responseData.x.length > 0 && <Plot
-          className="Plot"
-          data={[
-            {
-              x: responseData && responseData.x,
-              y: responseData && responseData.y,
-              type: 'scatter',
-            },
-          ]}
-          layout={{ width: 800, height: 600, title: responseData.title }}
-        />}
+      <Grid container spacing={3}>
+      <Grid item xs={3}>
         <FormControl>
           <InputLabel id="molecule-label">Molecule</InputLabel>
           <Select
@@ -53,7 +43,21 @@ function App() {
           </Select>
         </FormControl>
         <Button color="primary" onClick={() => callCalcSpectrum(setResponseData, params)}>Generate graph</Button>
-      </header>
+        </Grid>
+        <Grid item xs={9}>
+        {responseData.x.length > 0 && <Plot
+          className="Plot"
+          data={[
+            {
+              x: responseData && responseData.x,
+              y: responseData && responseData.y,
+              type: 'scatter',
+            },
+          ]}
+          layout={{ width: 800, height: 600, title: responseData.title }}
+        />}
+        </Grid>
+      </Grid>
     </div>
   );
 }
