@@ -1,4 +1,4 @@
-radis
-flask
-flask_limiter
 flask_cors==3.0.9
+flask_limiter==1.4
+flask==1.1.2
+radis==0.9.25
