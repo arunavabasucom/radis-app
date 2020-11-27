@@ -1,14 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
-import {
-  Grid,
-  Button,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Grid, Button, FormControl, TextField } from "@material-ui/core";
+import { Alert, Autocomplete } from "@material-ui/lab";
 import * as queryString from "query-string";
 import "./App.css";
 import WavelengthRangeSlider from "./components/WavelengthRangeSlider";
@@ -87,25 +80,27 @@ function App() {
             </Grid>
             <Grid item xs={12}>
               <FormControl>
-                <InputLabel id="molecule-label">Molecule</InputLabel>
-                <Select
-                  labelId="molecule-label"
+                <Autocomplete
                   id="molecule"
+                  options={allMolecules}
+                  style={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Molecule"
+                      variant="outlined"
+                    />
+                  )}
                   value={params.molecule}
-                  // TODO: Figure out typing
-                  onChange={(event) =>
+                  onChange={(
+                    event: React.ChangeEvent<Record<string, string>>
+                  ) => {
                     setParams({
                       ...params,
-                      molecule: event.target.value as string,
-                    })
-                  }
-                >
-                  {allMolecules.map((molecule) => (
-                    <MenuItem value={molecule} key={molecule}>
-                      {molecule}
-                    </MenuItem>
-                  ))}
-                </Select>
+                      molecule: event.target.textContent || "",
+                    });
+                  }}
+                />
               </FormControl>
             </Grid>
             <Grid item xs={12}>
