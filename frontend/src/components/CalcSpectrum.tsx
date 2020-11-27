@@ -47,11 +47,8 @@ const callCalcSpectrum = (
   >,
   params: CalcSpectrumParams
 ) => {
-  // TODO: Figure out typing
   fetch(
-    `http://localhost:5000/calc-spectrum?${queryString.stringify(
-      params as any
-    )}`,
+    `http://localhost:5000/calc-spectrum?${queryString.stringify(params)}`,
     {
       method: "GET",
     }
