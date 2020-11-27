@@ -66,33 +66,44 @@ function App() {
     <div className="App">
       <Grid container spacing={3}>
         <Grid item xs={3}>
-          <FormControl>
-            <InputLabel id="molecule-label">Molecule</InputLabel>
-            <Select
-              labelId="molecule-label"
-              id="molecule"
-              value={params.molecule}
-              // TODO: Figure out typing
-              onChange={(event) =>
-                setParams({ ...params, molecule: event.target.value as string })
-              }
-            >
-              {allMolecules.map((molecule) => (
-                <MenuItem value={molecule} key={molecule}>
-                  {molecule}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <WavelengthRangeSlider minRange={1000} maxRange={3000} />
-          </FormControl>
-          <Button
-            color="primary"
-            onClick={() => callCalcSpectrum(setResponseData, params)}
-          >
-            Generate graph
-          </Button>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <FormControl>
+                <WavelengthRangeSlider minRange={1000} maxRange={3000} />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl>
+                <InputLabel id="molecule-label">Molecule</InputLabel>
+                <Select
+                  labelId="molecule-label"
+                  id="molecule"
+                  value={params.molecule}
+                  // TODO: Figure out typing
+                  onChange={(event) =>
+                    setParams({
+                      ...params,
+                      molecule: event.target.value as string,
+                    })
+                  }
+                >
+                  {allMolecules.map((molecule) => (
+                    <MenuItem value={molecule} key={molecule}>
+                      {molecule}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                color="primary"
+                onClick={() => callCalcSpectrum(setResponseData, params)}
+              >
+                Generate graph
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={9}>
           {responseData.x.length > 0 && (
