@@ -60,16 +60,15 @@ const callCalcSpectrum = (
     .then((responseData) => setCalcSpectrumResponse(responseData));
 };
 
-const CalcSpectrum: React.FunctionComponent<Record<string, unknown>> = () => {
-  const [
-    calcSpectrumResponse,
-    setCalcSpectrumResponse,
-  ] = useState<Response<CalcSpectrumResponseData> | null>(null);
-  const [params, setParams] = useState<CalcSpectrumParams>({
-    molecule: "CO",
-    minWavelengthRange: 1900,
-    maxWavelengthRange: 2300,
-  });
+interface MoleculeSelectorProps {
+  params: CalcSpectrumParams;
+  setParams: (params: CalcSpectrumParams) => void;
+}
+
+const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
+  params,
+  setParams,
+}) => {
   const [allMolecules, setAllMolecules] = useState<string[]>([]);
 
   useEffect(() => {
@@ -81,6 +80,39 @@ const CalcSpectrum: React.FunctionComponent<Record<string, unknown>> = () => {
         setAllMolecules(responseData.molecules)
       );
   }, []);
+
+  return (
+    <Autocomplete
+      id="molecule"
+      options={allMolecules}
+      style={{ width: 300 }}
+      renderInput={(params) => (
+        <TextField {...params} label="Molecule" variant="outlined" />
+      )}
+      value={addSubscriptsToMolecule(params.molecule)}
+      renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
+      onChange={(event: React.ChangeEvent<Record<string, string>>) => {
+        setParams({
+          ...params,
+          molecule: event.target.textContent
+            ? removeSubscriptsFromMolecule(event.target.textContent)
+            : "",
+        });
+      }}
+    />
+  );
+};
+
+const CalcSpectrum: React.FC = () => {
+  const [
+    calcSpectrumResponse,
+    setCalcSpectrumResponse,
+  ] = useState<Response<CalcSpectrumResponseData> | null>(null);
+  const [params, setParams] = useState<CalcSpectrumParams>({
+    molecule: "CO",
+    minWavelengthRange: 1900,
+    maxWavelengthRange: 2300,
+  });
 
   return (
     <Grid container spacing={3}>
@@ -98,27 +130,7 @@ const CalcSpectrum: React.FunctionComponent<Record<string, unknown>> = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl>
-              <Autocomplete
-                id="molecule"
-                options={allMolecules}
-                style={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Molecule" variant="outlined" />
-                )}
-                value={addSubscriptsToMolecule(params.molecule)}
-                renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-                onChange={(
-                  event: React.ChangeEvent<Record<string, string>>
-                ) => {
-                  console.log(event.target);
-                  setParams({
-                    ...params,
-                    molecule: event.target.textContent
-                      ? removeSubscriptsFromMolecule(event.target.textContent)
-                      : "",
-                  });
-                }}
-              />
+              <MoleculeSelector params={params} setParams={setParams} />
             </FormControl>
           </Grid>
           <Grid item xs={12}>
