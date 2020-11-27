@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-// TODO: Figure out the meaning of "'minRange' is missing in props validation"
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -24,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-const WavelengthRangeSlider: React.FunctionComponent<WavelengthRangeSliderProps> = ({
+const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   minRange,
   maxRange,
   params,
