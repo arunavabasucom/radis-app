@@ -15,7 +15,7 @@ limiter = Limiter(
 @app.route("/calc-spectrum")
 @limiter.limit("1/second")
 def call_calc_spectrum():
-    # If too many requests happen at once, Radis will segfault!
+    # If too many requests happen at once, RADIS will segfault!
     molecule = request.args["molecule"]
     spectrum = radis.calc_spectrum(
         1900,
