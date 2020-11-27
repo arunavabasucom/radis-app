@@ -22,7 +22,7 @@ def call_calc_spectrum():
         1900,
         2300,
         molecule=molecule,
-        isotope="1,2,3",
+        isotope="1",
         pressure=1.01325,
         Tgas=700,
         mole_fraction=0.1,
@@ -37,8 +37,16 @@ def call_calc_spectrum():
 
 @app.route("/molecules")
 def molecules():
-    """Get all possible molecules (equilibrium and non-equilibrium)."""
-    return {"molecules": sorted(set(MOLECULES_LIST_EQUILIBRIUM) | set(MOLECULES_LIST_NONEQUILIBRIUM))}
+    """Get all possible molecules.
+
+    Returns:
+        All possible molecules (equilibrium and non-equilibrium).
+    """
+    return {
+        "molecules": sorted(
+            set(MOLECULES_LIST_EQUILIBRIUM) | set(MOLECULES_LIST_NONEQUILIBRIUM)
+        )
+    }
 
 
 if __name__ == "__main__":
