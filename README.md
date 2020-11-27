@@ -1,5 +1,8 @@
 # radis-ui
 
+[![Actions Status](https://github.com/suzil/radis-ui/workflows/GH/badge.svg)](https://github.com/suzil/radis-ui/actions)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+
 **radis-ui** is a locally-run web app for high-resolution infrared molecular spectra using [RADIS](https://github.com/radis/radis). The goal of this project is to provide an easy-to-use UI instead of writing code.
 
 
