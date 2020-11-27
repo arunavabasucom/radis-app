@@ -3,6 +3,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from radis.io import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +33,12 @@ def call_calc_spectrum():
     iunit = "default"
     x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
     return {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
+
+
+@app.route("/molecules")
+def molecules():
+    """Get all possible molecules (equilibrium and non-equilibrium)."""
+    return {"molecules": sorted(set(MOLECULES_LIST_EQUILIBRIUM) | set(MOLECULES_LIST_NONEQUILIBRIUM))}
 
 
 if __name__ == "__main__":
