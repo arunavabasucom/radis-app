@@ -14,5 +14,15 @@
     "plugin:prettier/recommended",
     "plugin:react/recommended",
     "prettier/@typescript-eslint"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.tsx"
+      ],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
   ]
 }
