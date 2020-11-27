@@ -8,7 +8,7 @@ import {
   MenuItem,
   InputLabel,
 } from "@material-ui/core";
-import queryString from "query-string";
+import * as queryString from "query-string";
 import "./App.css";
 
 interface CalcSpectrumResponseData {
