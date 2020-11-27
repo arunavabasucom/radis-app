@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import Plot from "react-plotly.js";
-import { Grid, Button, FormControl } from "@material-ui/core";
+import { Grid, Button, FormControl, CircularProgress } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavelengthRangeSlider from "./WavelengthRangeSlider";
@@ -18,22 +18,6 @@ interface CalcSpectrumResponseData {
   title: string;
 }
 
-const callCalcSpectrum = (
-  setCalcSpectrumResponse: Dispatch<
-    SetStateAction<Response<CalcSpectrumResponseData> | null>
-  >,
-  params: CalcSpectrumParams
-) => {
-  fetch(
-    `http://localhost:5000/calc-spectrum?${queryString.stringify(params)}`,
-    {
-      method: "GET",
-    }
-  )
-    .then((response) => response.json())
-    .then((responseData) => setCalcSpectrumResponse(responseData));
-};
-
 const CalcSpectrum: React.FC = () => {
   const [
     calcSpectrumResponse,
@@ -44,6 +28,24 @@ const CalcSpectrum: React.FC = () => {
     minWavelengthRange: 1900,
     maxWavelengthRange: 2300,
   });
+  const [loading, setLoading] = useState(false);
+
+  const callCalcSpectrum = (params: CalcSpectrumParams) => {
+    setLoading(true);
+    fetch(
+      `http://localhost:5000/calc-spectrum?${queryString.stringify(params)}`,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((responseData) => {
+        setCalcSpectrumResponse(responseData);
+        setLoading(false);
+      })
+      // TODO: Add an error alert that the query failed
+      .catch(() => setLoading(false));
+  };
 
   return (
     <Grid container spacing={3}>
@@ -65,10 +67,7 @@ const CalcSpectrum: React.FC = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              color="primary"
-              onClick={() => callCalcSpectrum(setCalcSpectrumResponse, params)}
-            >
+            <Button color="primary" onClick={() => callCalcSpectrum(params)}>
               Calculate spectrum
             </Button>
           </Grid>
@@ -78,22 +77,26 @@ const CalcSpectrum: React.FC = () => {
         {calcSpectrumResponse?.error && (
           <Alert severity="error">{calcSpectrumResponse.error}</Alert>
         )}
-        {calcSpectrumResponse?.data && (
-          <Plot
-            className="Plot"
-            data={[
-              {
-                x: calcSpectrumResponse.data.x,
-                y: calcSpectrumResponse.data.y,
-                type: "scatter",
-              },
-            ]}
-            layout={{
-              width: 800,
-              height: 600,
-              title: calcSpectrumResponse.data.title || "",
-            }}
-          />
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          calcSpectrumResponse?.data && (
+            <Plot
+              className="Plot"
+              data={[
+                {
+                  x: calcSpectrumResponse.data.x,
+                  y: calcSpectrumResponse.data.y,
+                  type: "scatter",
+                },
+              ]}
+              layout={{
+                width: 800,
+                height: 600,
+                title: calcSpectrumResponse.data.title || "",
+              }}
+            />
+          )
         )}
       </Grid>
     </Grid>
