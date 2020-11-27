@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import {
   Grid,
@@ -15,6 +15,10 @@ interface CalcSpectrumResponseData {
   x: number[];
   y: number[];
   title: string;
+}
+
+interface MoleculesResponseData {
+  molecules: string[];
 }
 
 interface CalcSpectrumParams {
@@ -45,7 +49,18 @@ function App() {
     title: "",
   });
   const [params, setParams] = useState<CalcSpectrumParams>({ molecule: "CO" });
-  if (responseData) console.log(responseData);
+  const [allMolecules, setAllMolecules] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/molecules`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((responseData: MoleculesResponseData) =>
+        setAllMolecules(responseData.molecules)
+      );
+  }, []);
+
   return (
     <div className="App">
       <Grid container spacing={3}>
@@ -61,8 +76,11 @@ function App() {
                 setParams({ ...params, molecule: event.target.value as string })
               }
             >
-              <MenuItem value="CO">CO</MenuItem>
-              <MenuItem value="H2O">H2O</MenuItem>
+              {allMolecules.map((molecule) => (
+                <MenuItem value={molecule} key={molecule}>
+                  {molecule}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <Button
