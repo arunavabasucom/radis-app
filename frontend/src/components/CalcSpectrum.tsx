@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Plot from "react-plotly.js";
-import { Grid, Button, FormControl, TextField } from "@material-ui/core";
-import { Alert, Autocomplete } from "@material-ui/lab";
+import { Grid, Button, FormControl } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavelengthRangeSlider from "./WavelengthRangeSlider";
 import { CalcSpectrumParams } from "../constants";
+import MoleculeSelector from "./MoleculeSelector";
 
 interface Response<T> {
   data?: T;
@@ -16,30 +17,6 @@ interface CalcSpectrumResponseData {
   y: number[];
   title: string;
 }
-
-interface MoleculesResponseData {
-  molecules: string[];
-}
-
-const SUBSCRIPTS = "₁₂₃₄₅₆₇₈₉".split("");
-
-const addSubscriptsToMolecule = (molecule: string): string => {
-  return molecule
-    .split("")
-    .map((char) => (/^\d+$/.test(char) ? SUBSCRIPTS[parseInt(char) - 1] : char))
-    .join("");
-};
-
-const removeSubscriptsFromMolecule = (molecule: string): string => {
-  return molecule
-    .split("")
-    .map((char) =>
-      SUBSCRIPTS.includes(char)
-        ? (SUBSCRIPTS.indexOf(char) + 1).toString()
-        : char
-    )
-    .join("");
-};
 
 const callCalcSpectrum = (
   setCalcSpectrumResponse: Dispatch<
@@ -55,49 +32,6 @@ const callCalcSpectrum = (
   )
     .then((response) => response.json())
     .then((responseData) => setCalcSpectrumResponse(responseData));
-};
-
-interface MoleculeSelectorProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-}
-
-const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
-  params,
-  setParams,
-}) => {
-  const [allMolecules, setAllMolecules] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/molecules`, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((responseData: MoleculesResponseData) =>
-        setAllMolecules(responseData.molecules)
-      );
-  }, []);
-
-  return (
-    <Autocomplete
-      id="molecule"
-      options={allMolecules}
-      style={{ width: 300 }}
-      renderInput={(params) => (
-        <TextField {...params} label="Molecule" variant="outlined" />
-      )}
-      value={addSubscriptsToMolecule(params.molecule)}
-      renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-      onChange={(event: React.ChangeEvent<Record<string, string>>) => {
-        setParams({
-          ...params,
-          molecule: event.target.textContent
-            ? removeSubscriptsFromMolecule(event.target.textContent)
-            : "",
-        });
-      }}
-    />
-  );
 };
 
 const CalcSpectrum: React.FC = () => {
