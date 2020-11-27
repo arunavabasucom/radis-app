@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import * as queryString from "query-string";
 import "./App.css";
+import WavelengthRangeSlider from "./components/WavelengthRangeSlider";
 
 interface CalcSpectrumResponseData {
   x: number[];
@@ -82,6 +83,9 @@ function App() {
                 </MenuItem>
               ))}
             </Select>
+          </FormControl>
+          <FormControl>
+            <WavelengthRangeSlider minRange={1000} maxRange={3000} />
           </FormControl>
           <Button
             color="primary"
