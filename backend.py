@@ -20,21 +20,27 @@ def call_calc_spectrum():
     molecule = request.args["molecule"]
     min_wavelength_range = int(request.args["minWavelengthRange"])
     max_wavelength_range = int(request.args["maxWavelengthRange"])
-    spectrum = radis.calc_spectrum(
-        min_wavelength_range,
-        max_wavelength_range,
-        molecule=molecule,
-        isotope="1",
-        pressure=1.01325,
-        Tgas=700,
-        mole_fraction=0.1,
-        path_length=1,
-    )
-    wunit = spectrum.get_waveunit()
-    var = "radiance_noslit"
-    iunit = "default"
-    x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
-    return {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
+    try:
+        spectrum = radis.calc_spectrum(
+            min_wavelength_range,
+            max_wavelength_range,
+            molecule=molecule,
+            isotope="1",
+            pressure=1.01325,
+            Tgas=700,
+            mole_fraction=0.1,
+            path_length=1,
+        )
+    except radis.misc.warning.EmptyDatabaseError:
+        return {"error": "No spectrum at specified wavelength range"}
+    else:
+        wunit = spectrum.get_waveunit()
+        var = "radiance_noslit"
+        iunit = "default"
+        x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
+        return {
+            "data": {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
+        }
 
 
 @app.route("/molecules")

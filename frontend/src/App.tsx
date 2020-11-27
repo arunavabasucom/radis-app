@@ -8,10 +8,16 @@ import {
   MenuItem,
   InputLabel,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import "./App.css";
 import WavelengthRangeSlider from "./components/WavelengthRangeSlider";
 import { CalcSpectrumParams } from "./constants";
+
+interface Response<T> {
+  data?: T;
+  error?: string;
+}
 
 interface CalcSpectrumResponseData {
   x: number[];
@@ -24,7 +30,9 @@ interface MoleculesResponseData {
 }
 
 const callCalcSpectrum = (
-  setResponseData: Dispatch<SetStateAction<CalcSpectrumResponseData>>,
+  setCalcSpectrumResponse: Dispatch<
+    SetStateAction<Response<CalcSpectrumResponseData> | null>
+  >,
   params: CalcSpectrumParams
 ) => {
   // TODO: Figure out typing
@@ -37,15 +45,14 @@ const callCalcSpectrum = (
     }
   )
     .then((response) => response.json())
-    .then((responseData) => setResponseData(responseData));
+    .then((responseData) => setCalcSpectrumResponse(responseData));
 };
 
 function App() {
-  const [responseData, setResponseData] = useState<CalcSpectrumResponseData>({
-    x: [],
-    y: [],
-    title: "",
-  });
+  const [
+    calcSpectrumResponse,
+    setCalcSpectrumResponse,
+  ] = useState<Response<CalcSpectrumResponseData> | null>(null);
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
     minWavelengthRange: 1900,
@@ -104,7 +111,9 @@ function App() {
             <Grid item xs={12}>
               <Button
                 color="primary"
-                onClick={() => callCalcSpectrum(setResponseData, params)}
+                onClick={() =>
+                  callCalcSpectrum(setCalcSpectrumResponse, params)
+                }
               >
                 Calculate spectrum
               </Button>
@@ -112,17 +121,24 @@ function App() {
           </Grid>
         </Grid>
         <Grid item xs={9}>
-          {responseData.x.length > 0 && (
+          {calcSpectrumResponse?.error && (
+            <Alert severity="error">{calcSpectrumResponse.error}</Alert>
+          )}
+          {calcSpectrumResponse?.data && (
             <Plot
               className="Plot"
               data={[
                 {
-                  x: responseData && responseData.x,
-                  y: responseData && responseData.y,
+                  x: calcSpectrumResponse.data.x,
+                  y: calcSpectrumResponse.data.y,
                   type: "scatter",
                 },
               ]}
-              layout={{ width: 800, height: 600, title: responseData.title }}
+              layout={{
+                width: 800,
+                height: 600,
+                title: calcSpectrumResponse.data.title || "",
+              }}
             />
           )}
         </Grid>
