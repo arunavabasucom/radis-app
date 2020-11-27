@@ -18,9 +18,11 @@ limiter = Limiter(
 def call_calc_spectrum():
     # If too many requests happen at once, RADIS will segfault!
     molecule = request.args["molecule"]
+    min_wavelength_range = int(request.args["minWavelengthRange"])
+    max_wavelength_range = int(request.args["maxWavelengthRange"])
     spectrum = radis.calc_spectrum(
-        1900,
-        2300,
+        min_wavelength_range,
+        max_wavelength_range,
         molecule=molecule,
         isotope="1",
         pressure=1.01325,
