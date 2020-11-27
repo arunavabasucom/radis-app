@@ -11,6 +11,7 @@ import {
 import * as queryString from "query-string";
 import "./App.css";
 import WavelengthRangeSlider from "./components/WavelengthRangeSlider";
+import { CalcSpectrumParams } from "./constants";
 
 interface CalcSpectrumResponseData {
   x: number[];
@@ -20,10 +21,6 @@ interface CalcSpectrumResponseData {
 
 interface MoleculesResponseData {
   molecules: string[];
-}
-
-interface CalcSpectrumParams {
-  molecule: string;
 }
 
 const callCalcSpectrum = (
@@ -49,7 +46,11 @@ function App() {
     y: [],
     title: "",
   });
-  const [params, setParams] = useState<CalcSpectrumParams>({ molecule: "CO" });
+  const [params, setParams] = useState<CalcSpectrumParams>({
+    molecule: "CO",
+    minWavelengthRange: 1900,
+    maxWavelengthRange: 2300,
+  });
   const [allMolecules, setAllMolecules] = useState<string[]>([]);
 
   useEffect(() => {
@@ -69,7 +70,12 @@ function App() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <FormControl>
-                <WavelengthRangeSlider minRange={1000} maxRange={3000} />
+                <WavelengthRangeSlider
+                  minRange={1000}
+                  maxRange={3000}
+                  params={params}
+                  setParams={setParams}
+                />
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -100,7 +106,7 @@ function App() {
                 color="primary"
                 onClick={() => callCalcSpectrum(setResponseData, params)}
               >
-                Generate graph
+                Calculate spectrum
               </Button>
             </Grid>
           </Grid>
