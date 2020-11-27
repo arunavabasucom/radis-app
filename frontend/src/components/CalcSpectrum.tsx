@@ -30,7 +30,7 @@ const CalcSpectrum: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const callCalcSpectrum = (params: CalcSpectrumParams) => {
+  const calcSpectrumHandler = () => {
     setLoading(true);
     fetch(
       `http://localhost:5000/calc-spectrum?${queryString.stringify(params)}`,
@@ -67,7 +67,7 @@ const CalcSpectrum: React.FC = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Button color="primary" onClick={() => callCalcSpectrum(params)}>
+            <Button color="primary" onClick={calcSpectrumHandler}>
               Calculate spectrum
             </Button>
           </Grid>
