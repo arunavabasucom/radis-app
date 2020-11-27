@@ -7,7 +7,6 @@ backend:
 .PHONY: lint
 ## Lint the frontend and backend
 lint:
-	# cd frontend && yarn lint --fix  # TODO
 	pre-commit run --all-files
 
 
