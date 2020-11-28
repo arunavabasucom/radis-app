@@ -21,6 +21,7 @@ interface Response<T> {
 }
 
 interface ValidationErrors {
+  molecule?: string;
   tgas?: string;
   pressure?: string;
 }
@@ -79,6 +80,12 @@ const CalcSpectrum: React.FC = () => {
   const validate = (): void => {
     const updatedValidationErrors: ValidationErrors = {};
 
+    if (!params.molecule) {
+      updatedValidationErrors.molecule = "Molecule must be defined";
+    } else {
+      updatedValidationErrors.molecule = undefined;
+    }
+
     if (Number.isNaN(params.tgas)) {
       updatedValidationErrors.tgas = "Gas temperature must be defined";
     } else if (params.tgas < 70 || params.tgas > 3000) {
@@ -119,7 +126,11 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={12}>
             <FormControl>
-              <MoleculeSelector params={params} setParams={setParams} />
+              <MoleculeSelector
+                params={params}
+                setParams={setParams}
+                moleculeValidationError={validationErrors.molecule}
+              />
             </FormControl>
           </Grid>
 

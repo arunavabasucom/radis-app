@@ -14,11 +14,13 @@ interface MoleculesResponseData {
 interface MoleculeSelectorProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
+  moleculeValidationError: string | undefined;
 }
 
 const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   params,
   setParams,
+  moleculeValidationError,
 }) => {
   const [allMolecules, setAllMolecules] = useState<string[]>([]);
 
@@ -34,11 +36,16 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
 
   return (
     <Autocomplete
-      id="molecule"
       options={allMolecules}
       style={{ width: 300 }}
       renderInput={(params) => (
-        <TextField {...params} label="Molecule" variant="outlined" />
+        <TextField
+          {...params}
+          label="Molecule"
+          variant="outlined"
+          error={moleculeValidationError !== undefined}
+          helperText={moleculeValidationError}
+        />
       )}
       value={addSubscriptsToMolecule(params.molecule)}
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
