@@ -21,8 +21,8 @@ interface Response<T> {
 }
 
 interface ValidationErrors {
-  tgas: boolean;
-  pressure: boolean;
+  tgas?: string;
+  pressure?: string;
 }
 
 const CalcSpectrum: React.FC = () => {
@@ -38,10 +38,9 @@ const CalcSpectrum: React.FC = () => {
     pressure: 1.01325,
     simulate_slit: false,
   });
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
-    tgas: false,
-    pressure: false,
-  });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [
     calcSpectrumButtonDisabled,
@@ -78,15 +77,30 @@ const CalcSpectrum: React.FC = () => {
   };
 
   const validate = (): void => {
-    let isPressureValid = true;
-    if (params.pressure < 0) {
-      isPressureValid = false;
+    const updatedValidationErrors: ValidationErrors = {};
+
+    if (Number.isNaN(params.tgas)) {
+      updatedValidationErrors.tgas = "Gas temperature must be defined";
+    } else if (params.tgas < 70 || params.tgas > 3000) {
+      updatedValidationErrors.tgas =
+        "Gas temperature must be between 70K and 3000K";
+    } else {
+      updatedValidationErrors.tgas = undefined;
     }
-    setValidationErrors({ ...validationErrors, pressure: !isPressureValid });
+
+    if (Number.isNaN(params.pressure)) {
+      updatedValidationErrors.pressure = "Pressure must be defined";
+    } else if (params.pressure < 0) {
+      updatedValidationErrors.pressure = "Pressure cannot be negative";
+    } else {
+      updatedValidationErrors.pressure = undefined;
+    }
+
+    setValidationErrors({ ...validationErrors, ...updatedValidationErrors });
   };
 
   const hasValidationErrors = (): boolean =>
-    Object.values(validationErrors).some((error: boolean) => error);
+    Object.values(validationErrors).some((error: string | undefined) => error);
 
   return (
     <Grid container spacing={1}>
@@ -112,9 +126,10 @@ const CalcSpectrum: React.FC = () => {
           <Grid item xs={12}>
             <FormControl>
               <TextField
-                error={validationErrors.tgas}
+                error={validationErrors.tgas !== undefined}
                 value={params.tgas}
                 type="number"
+                helperText={validationErrors.tgas}
                 onChange={(event) =>
                   setParams({
                     ...params,
@@ -135,9 +150,10 @@ const CalcSpectrum: React.FC = () => {
           <Grid item xs={12}>
             <FormControl>
               <TextField
-                error={validationErrors.pressure}
+                error={validationErrors.pressure !== undefined}
                 value={params.pressure}
                 type="number"
+                helperText={validationErrors.pressure}
                 onChange={(event) =>
                   setParams({
                     ...params,
