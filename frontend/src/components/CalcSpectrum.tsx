@@ -26,6 +26,10 @@ interface CalcSpectrumResponseData {
   y: number[];
 }
 
+interface ValidationErrors {
+  pressure: boolean;
+}
+
 const CalcSpectrum: React.FC = () => {
   const [
     calcSpectrumResponse,
@@ -37,6 +41,9 @@ const CalcSpectrum: React.FC = () => {
     maxWavenumberRange: 2300,
     pressure: 1.01325,
     simulateSlit: false,
+  });
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
+    pressure: false,
   });
   const [loading, setLoading] = useState(false);
 
@@ -57,8 +64,17 @@ const CalcSpectrum: React.FC = () => {
       .catch(() => setLoading(false));
   };
 
+  const validate = (): boolean => {
+    let hasErrors = false;
+    if (params.pressure < 0) {
+      setValidationErrors({ ...validationErrors, pressure: true });
+      hasErrors = true;
+    }
+    return hasErrors;
+  };
+
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1}>
       <Grid item xs={4}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -80,6 +96,7 @@ const CalcSpectrum: React.FC = () => {
           <Grid item xs={12}>
             <FormControl>
               <TextField
+                error={validationErrors.pressure}
                 value={params.pressure}
                 type="number"
                 onChange={(event) =>
@@ -104,7 +121,12 @@ const CalcSpectrum: React.FC = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={calcSpectrumHandler}
+              onClick={() => {
+                const hasErrors = validate();
+                if (!hasErrors) {
+                  calcSpectrumHandler();
+                }
+              }}
             >
               Calculate spectrum
             </Button>

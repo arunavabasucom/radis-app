@@ -24,8 +24,8 @@ def call_calc_spectrum():
     simulate_slit = request.args["simulateSlit"] == "true"
     try:
         spectrum = radis.calc_spectrum(
-            min_wavelength_range,
-            max_wavelength_range,
+            wavenum_min=min_wavelength_range,
+            wavenum_max=max_wavelength_range,
             molecule=molecule,
             isotope="1",
             pressure=pressure,
