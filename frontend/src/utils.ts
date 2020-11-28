@@ -18,4 +18,4 @@ const removeSubscriptsFromMolecule = (molecule: string): string => {
     .join("");
 };
 
-export { addSubscriptsToMolecule, removeSubscriptsFromMolecule }
+export { addSubscriptsToMolecule, removeSubscriptsFromMolecule };

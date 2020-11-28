@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import Plot from "react-plotly.js";
-import { Grid, Button, FormControl, CircularProgress } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  FormControl,
+  CircularProgress,
+  Input,
+  InputAdornment,
+  FormHelperText,
+} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavelengthRangeSlider from "./WavelengthRangeSlider";
@@ -27,6 +35,7 @@ const CalcSpectrum: React.FC = () => {
     molecule: "CO",
     minWavelengthRange: 1900,
     maxWavelengthRange: 2300,
+    pressure: 1.01325,
   });
   const [loading, setLoading] = useState(false);
 
@@ -65,6 +74,23 @@ const CalcSpectrum: React.FC = () => {
           <Grid item xs={12}>
             <FormControl>
               <MoleculeSelector params={params} setParams={setParams} />
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl>
+              <Input
+                value={params.pressure}
+                onChange={(event) =>
+                  setParams({ ...params, pressure: event.target.value })
+                }
+                endAdornment={
+                  <InputAdornment position="end">bar</InputAdornment>
+                }
+                aria-describedby="pressure-helper-text"
+              />
+              <FormHelperText id="pressure-helper-text">
+                Pressure
+              </FormHelperText>
             </FormControl>
           </Grid>
 
