@@ -21,6 +21,7 @@ def call_calc_spectrum():
     min_wavelength_range = int(request.args["minWavelengthRange"])
     max_wavelength_range = int(request.args["maxWavelengthRange"])
     pressure = float(request.args["pressure"])
+    simulate_slit = request.args["simulateSlit"] == "true"
     try:
         spectrum = radis.calc_spectrum(
             min_wavelength_range,
@@ -35,6 +36,9 @@ def call_calc_spectrum():
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No spectrum at specified wavelength range"}
     else:
+        if simulate_slit:
+            spectrum.apply_slit(0.5, "nm")
+
         return plot_spectrum(spectrum)
 
 
