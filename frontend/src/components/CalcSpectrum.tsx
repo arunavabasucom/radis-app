@@ -6,6 +6,7 @@ import * as queryString from "query-string";
 import WavelengthRangeSlider from "./WavelengthRangeSlider";
 import { CalcSpectrumParams, PALETTE } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
+import { addSubscriptsToMolecule } from "../utils";
 
 interface Response<T> {
   data?: T;
@@ -15,7 +16,6 @@ interface Response<T> {
 interface CalcSpectrumResponseData {
   x: number[];
   y: number[];
-  title: string;
 }
 
 const CalcSpectrum: React.FC = () => {
@@ -101,8 +101,16 @@ const CalcSpectrum: React.FC = () => {
               layout={{
                 width: 800,
                 height: 600,
-                title: calcSpectrumResponse.data.title || "",
+                title: `Spectrum for ${addSubscriptsToMolecule(
+                  params.molecule
+                )}`,
                 font: { family: "Roboto", color: "#000" },
+                xaxis: {
+                  title: { text: "Wavenumber (cm⁻¹)" },
+                },
+                yaxis: {
+                  title: { text: "Radiance (mW/cm²/sr/nm)" },
+                },
               }}
             />
           )

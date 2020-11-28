@@ -34,13 +34,20 @@ def call_calc_spectrum():
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No spectrum at specified wavelength range"}
     else:
-        wunit = spectrum.get_waveunit()
-        var = "radiance_noslit"
-        iunit = "default"
-        x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
-        return {
-            "data": {"x": list(x), "y": list(y), "title": f"Spectrum for {molecule}"}
+        return plot_spectrum(spectrum)
+
+
+def plot_spectrum(spectrum):
+    wunit = spectrum.get_waveunit()
+    var = "radiance_noslit"
+    iunit = "default"
+    x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
+    return {
+        "data": {
+            "x": list(x),
+            "y": list(y),
         }
+    }
 
 
 @app.route("/molecules")
