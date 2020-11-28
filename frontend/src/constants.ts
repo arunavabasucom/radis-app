@@ -3,6 +3,8 @@ export interface CalcSpectrumParams
   molecule: string;
   min_wavenumber_range: number;
   max_wavenumber_range: number;
+  tgas: number;
+  pressure: number;
   simulate_slit: boolean;
 }
 
