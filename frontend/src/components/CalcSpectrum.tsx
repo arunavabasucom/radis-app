@@ -125,8 +125,8 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">K</InputAdornment>
                   ),
+                  inputProps: { step: 1 },
                 }}
-                inputProps={{ step: 1 }}
                 label="Gas temperature"
               />
             </FormControl>
@@ -148,8 +148,8 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">bar</InputAdornment>
                   ),
+                  inputProps: { step: 0.001 },
                 }}
-                inputProps={{ step: 0.001 }}
                 label="Pressure"
               />
             </FormControl>

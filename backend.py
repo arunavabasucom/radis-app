@@ -33,7 +33,7 @@ class CalcSpectrumResult(BaseModel):
 
 class ResponseModel(BaseModel):
     error: Optional[str]
-    data: CalcSpectrumResult
+    data: Optional[CalcSpectrumResult]
 
 
 @app.route("/calc-spectrum")
