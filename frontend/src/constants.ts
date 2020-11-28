@@ -1,7 +1,8 @@
-export interface CalcSpectrumParams extends Record<string, string | number> {
+export interface CalcSpectrumParams extends Record<string, string | number | boolean> {
   molecule: string;
   minWavenumberRange: number;
   maxWavenumberRange: number;
+  simulateSlit: boolean;
 }
 
 export const PALETTE = {

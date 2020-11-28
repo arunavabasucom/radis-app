@@ -14,6 +14,7 @@ import WavenumberRangeSlider from "./WavenumberRangeSlider";
 import { CalcSpectrumParams, PALETTE } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
 import { addSubscriptsToMolecule } from "../utils";
+import SimulateSlit from "./SimulateSlit";
 
 interface Response<T> {
   data?: T;
@@ -35,6 +36,7 @@ const CalcSpectrum: React.FC = () => {
     minWavenumberRange: 1900,
     maxWavenumberRange: 2300,
     pressure: 1.01325,
+    simulateSlit: false,
   });
   const [loading, setLoading] = useState(false);
 
@@ -92,6 +94,10 @@ const CalcSpectrum: React.FC = () => {
                 label="Pressure"
               />
             </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <SimulateSlit params={params} setParams={setParams} />
           </Grid>
 
           <Grid item xs={12}>
