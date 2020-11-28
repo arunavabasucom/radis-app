@@ -11,7 +11,7 @@ export interface CalcSpectrumResponseData {
   y: number[];
 }
 
-export const PALETTE = {
+export const palette = {
   primary: {
     light: "#6573c3",
     main: "#3f51b5",
