@@ -4,7 +4,7 @@ import { Grid, Button, FormControl, CircularProgress } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavelengthRangeSlider from "./WavelengthRangeSlider";
-import { CalcSpectrumParams } from "../constants";
+import { CalcSpectrumParams, PALETTE } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
 
 interface Response<T> {
@@ -49,7 +49,7 @@ const CalcSpectrum: React.FC = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl>
@@ -61,19 +61,26 @@ const CalcSpectrum: React.FC = () => {
               />
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
             <FormControl>
               <MoleculeSelector params={params} setParams={setParams} />
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
-            <Button color="primary" onClick={calcSpectrumHandler}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={calcSpectrumHandler}
+            >
               Calculate spectrum
             </Button>
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={9}>
+
+      <Grid item xs={8}>
         {calcSpectrumResponse?.error && (
           <Alert severity="error">{calcSpectrumResponse.error}</Alert>
         )}
@@ -88,12 +95,14 @@ const CalcSpectrum: React.FC = () => {
                   x: calcSpectrumResponse.data.x,
                   y: calcSpectrumResponse.data.y,
                   type: "scatter",
+                  marker: { color: PALETTE.secondary.main },
                 },
               ]}
               layout={{
                 width: 800,
                 height: 600,
                 title: calcSpectrumResponse.data.title || "",
+                font: { family: "Roboto", color: "#000" },
               }}
             />
           )
