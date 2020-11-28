@@ -11,7 +11,7 @@ import { palette } from "./constants";
 import logo from "./radis.png";
 
 const theme = createMuiTheme({
-  palette: palette,
+  palette,
 });
 
 const useStyles = makeStyles(() => ({
