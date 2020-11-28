@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
 import {
   Grid,
   Button,
@@ -11,19 +10,14 @@ import {
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
 import WavenumberRangeSlider from "./WavenumberRangeSlider";
-import { CalcSpectrumParams, PALETTE } from "../constants";
+import { CalcSpectrumParams, CalcSpectrumResponseData } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
-import { addSubscriptsToMolecule } from "../utils";
 import SimulateSlit from "./SimulateSlit";
+import CalcSpectrumPlot from "./CalcSpectrumPlot";
 
 interface Response<T> {
   data?: T;
   error?: string;
-}
-
-interface CalcSpectrumResponseData {
-  x: number[];
-  y: number[];
 }
 
 interface ValidationErrors {
@@ -156,30 +150,9 @@ const CalcSpectrum: React.FC = () => {
           <CircularProgress />
         ) : (
           calcSpectrumResponse?.data && (
-            <Plot
-              className="Plot"
-              data={[
-                {
-                  x: calcSpectrumResponse.data.x,
-                  y: calcSpectrumResponse.data.y,
-                  type: "scatter",
-                  marker: { color: PALETTE.secondary.main },
-                },
-              ]}
-              layout={{
-                width: 800,
-                height: 600,
-                title: `Spectrum for ${addSubscriptsToMolecule(
-                  params.molecule
-                )}`,
-                font: { family: "Roboto", color: "#000" },
-                xaxis: {
-                  title: { text: "Wavenumber (cm⁻¹)" },
-                },
-                yaxis: {
-                  title: { text: "Radiance (mW/cm²/sr/nm)" },
-                },
-              }}
+            <CalcSpectrumPlot
+              data={calcSpectrumResponse.data}
+              molecule={params.molecule}
             />
           )
         )}
