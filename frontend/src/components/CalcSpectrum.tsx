@@ -5,9 +5,8 @@ import {
   Button,
   FormControl,
   CircularProgress,
-  Input,
   InputAdornment,
-  FormHelperText,
+  TextField,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
@@ -78,19 +77,20 @@ const CalcSpectrum: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl>
-              <Input
+              <TextField
                 value={params.pressure}
+                type="number"
                 onChange={(event) =>
                   setParams({ ...params, pressure: event.target.value })
                 }
-                endAdornment={
-                  <InputAdornment position="end">bar</InputAdornment>
-                }
-                aria-describedby="pressure-helper-text"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">bar</InputAdornment>
+                  ),
+                }}
+                inputProps={{ step: 0.001 }}
+                label="Pressure"
               />
-              <FormHelperText id="pressure-helper-text">
-                Pressure
-              </FormHelperText>
             </FormControl>
           </Grid>
 
