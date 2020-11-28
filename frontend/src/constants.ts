@@ -17,4 +17,4 @@ export const PALETTE = {
     dark: "#ab003c",
     contrastText: "#000",
   },
-}
+};
