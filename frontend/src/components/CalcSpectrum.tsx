@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import {
   Grid,
@@ -45,7 +45,23 @@ const CalcSpectrum: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     pressure: false,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [
+    calcSpectrumButtonDisabled,
+    setCalcSpectrumButtonDisabled,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
+    validate();
+  }, [params]);
+
+  useEffect(() => {
+    if (hasValidationErrors()) {
+      setCalcSpectrumButtonDisabled(true);
+    } else {
+      setCalcSpectrumButtonDisabled(false);
+    }
+  }, [validationErrors]);
 
   const calcSpectrumHandler = () => {
     setLoading(true);
@@ -64,14 +80,16 @@ const CalcSpectrum: React.FC = () => {
       .catch(() => setLoading(false));
   };
 
-  const validate = (): boolean => {
-    let hasErrors = false;
+  const validate = (): void => {
+    let isPressureValid = true;
     if (params.pressure < 0) {
-      setValidationErrors({ ...validationErrors, pressure: true });
-      hasErrors = true;
+      isPressureValid = false;
     }
-    return hasErrors;
+    setValidationErrors({ ...validationErrors, pressure: !isPressureValid });
   };
+
+  const hasValidationErrors = (): boolean =>
+    Object.values(validationErrors).some((error: boolean) => error);
 
   return (
     <Grid container spacing={1}>
@@ -119,14 +137,10 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={12}>
             <Button
+              disabled={calcSpectrumButtonDisabled}
               variant="contained"
               color="primary"
-              onClick={() => {
-                const hasErrors = validate();
-                if (!hasErrors) {
-                  calcSpectrumHandler();
-                }
-              }}
+              onClick={calcSpectrumHandler}
             >
               Calculate spectrum
             </Button>
