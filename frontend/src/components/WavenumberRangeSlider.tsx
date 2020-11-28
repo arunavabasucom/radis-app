@@ -37,8 +37,8 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   useEffect(() => {
     setParams({
       ...params,
-      minWavelengthRange: lowerRange === "" ? minRange : lowerRange,
-      maxWavelengthRange: upperRange === "" ? maxRange : upperRange,
+      min_wavenumber_range: lowerRange === "" ? minRange : lowerRange,
+      max_wavenumber_range: upperRange === "" ? maxRange : upperRange,
     });
   }, [lowerRange, upperRange]);
 

@@ -12,9 +12,9 @@ const SimulateSlit: React.FC<SimulateSlitProps> = ({ params, setParams }) => {
     <FormControlLabel
       control={
         <Switch
-          checked={params.simulateSlit}
+          checked={params.simulate_slit}
           onChange={() =>
-            setParams({ ...params, simulateSlit: !params.simulateSlit })
+            setParams({ ...params, simulate_slit: !params.simulate_slit })
           }
         />
       }
