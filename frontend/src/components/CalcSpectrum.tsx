@@ -21,6 +21,7 @@ interface Response<T> {
 }
 
 interface ValidationErrors {
+  tgas: boolean;
   pressure: boolean;
 }
 
@@ -33,10 +34,12 @@ const CalcSpectrum: React.FC = () => {
     molecule: "CO",
     min_wavenumber_range: 1900,
     max_wavenumber_range: 2300,
+    tgas: 700,
     pressure: 1.01325,
     simulate_slit: false,
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
+    tgas: false,
     pressure: false,
   });
   const [loading, setLoading] = useState<boolean>(false);
@@ -105,6 +108,30 @@ const CalcSpectrum: React.FC = () => {
               <MoleculeSelector params={params} setParams={setParams} />
             </FormControl>
           </Grid>
+
+          <Grid item xs={12}>
+            <FormControl>
+              <TextField
+                error={validationErrors.tgas}
+                value={params.tgas}
+                type="number"
+                onChange={(event) =>
+                  setParams({
+                    ...params,
+                    tgas: parseFloat(event.target.value),
+                  })
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">K</InputAdornment>
+                  ),
+                  inputProps: { step: 1 },
+                }}
+                label="Gas temperature"
+              />
+            </FormControl>
+          </Grid>
+
           <Grid item xs={12}>
             <FormControl>
               <TextField
@@ -112,14 +139,17 @@ const CalcSpectrum: React.FC = () => {
                 value={params.pressure}
                 type="number"
                 onChange={(event) =>
-                  setParams({ ...params, pressure: event.target.value })
+                  setParams({
+                    ...params,
+                    pressure: parseFloat(event.target.value),
+                  })
                 }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">bar</InputAdornment>
                   ),
+                  inputProps: { step: 0.001 },
                 }}
-                inputProps={{ step: 0.001 }}
                 label="Pressure"
               />
             </FormControl>

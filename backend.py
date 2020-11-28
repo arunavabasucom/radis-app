@@ -21,6 +21,7 @@ class QueryModel(BaseModel):
     molecule: str
     min_wavenumber_range: int
     max_wavenumber_range: int
+    tgas: float
     pressure: float
     simulate_slit: bool
 
@@ -32,7 +33,7 @@ class CalcSpectrumResult(BaseModel):
 
 class ResponseModel(BaseModel):
     error: Optional[str]
-    data: CalcSpectrumResult
+    data: Optional[CalcSpectrumResult]
 
 
 @app.route("/calc-spectrum")
@@ -47,7 +48,7 @@ def call_calc_spectrum():
             molecule=request.query_params.molecule,
             isotope="1",
             pressure=request.query_params.pressure,
-            Tgas=700,
+            Tgas=request.query_params.tgas,
             mole_fraction=0.1,
             path_length=1,
         )
