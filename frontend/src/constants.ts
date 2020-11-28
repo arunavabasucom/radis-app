@@ -5,6 +5,11 @@ export interface CalcSpectrumParams extends Record<string, string | number | boo
   simulateSlit: boolean;
 }
 
+export interface CalcSpectrumResponseData {
+  x: number[];
+  y: number[];
+}
+
 export const PALETTE = {
   primary: {
     light: "#6573c3",
