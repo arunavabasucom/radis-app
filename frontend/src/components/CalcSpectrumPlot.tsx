@@ -1,6 +1,6 @@
 import React from "react";
 import Plot from "react-plotly.js";
-import { CalcSpectrumResponseData, PALETTE } from "../constants";
+import { CalcSpectrumResponseData, palette } from "../constants";
 import { addSubscriptsToMolecule } from "../utils";
 
 interface CalcSpectrumPlotProps {
@@ -19,7 +19,7 @@ const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
         x: data.x,
         y: data.y,
         type: "scatter",
-        marker: { color: PALETTE.secondary.main },
+        marker: { color: palette.secondary.main },
       },
     ]}
     layout={{
