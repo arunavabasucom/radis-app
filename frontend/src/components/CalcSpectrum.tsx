@@ -100,7 +100,7 @@ const CalcSpectrum: React.FC = () => {
   };
 
   const hasValidationErrors = (): boolean =>
-    Object.values(validationErrors).some((error: string) => error);
+    Object.values(validationErrors).some((error: string | undefined) => error);
 
   return (
     <Grid container spacing={1}>
