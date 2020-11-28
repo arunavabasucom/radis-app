@@ -2,19 +2,19 @@ import { FormControlLabel, Switch } from "@material-ui/core";
 import React from "react";
 import { CalcSpectrumParams } from "../constants";
 
-interface SimulateSlitProps {
+interface simulate_slitProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
 }
 
-const SimulateSlit: React.FC<SimulateSlitProps> = ({ params, setParams }) => {
+const simulate_slit: React.FC<simulate_slitProps> = ({ params, setParams }) => {
   return (
     <FormControlLabel
       control={
         <Switch
-          checked={params.simulateSlit}
+          checked={params.simulate_slit}
           onChange={() =>
-            setParams({ ...params, simulateSlit: !params.simulateSlit })
+            setParams({ ...params, simulate_slit: !params.simulate_slit })
           }
         />
       }
@@ -23,4 +23,4 @@ const SimulateSlit: React.FC<SimulateSlitProps> = ({ params, setParams }) => {
   );
 };
 
-export default SimulateSlit;
+export default simulate_slit;

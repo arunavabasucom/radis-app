@@ -31,10 +31,10 @@ const CalcSpectrum: React.FC = () => {
   ] = useState<Response<CalcSpectrumResponseData> | null>(null);
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
-    minWavenumberRange: 1900,
-    maxWavenumberRange: 2300,
+    min_wavenumber_range: 1900,
+    max_wavenumber_range: 2300,
     pressure: 1.01325,
-    simulateSlit: false,
+    simulate_slit: false,
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     pressure: false,
