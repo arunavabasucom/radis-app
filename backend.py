@@ -20,13 +20,14 @@ def call_calc_spectrum():
     molecule = request.args["molecule"]
     min_wavelength_range = int(request.args["minWavelengthRange"])
     max_wavelength_range = int(request.args["maxWavelengthRange"])
+    pressure = float(request.args["pressure"])
     try:
         spectrum = radis.calc_spectrum(
             min_wavelength_range,
             max_wavelength_range,
             molecule=molecule,
             isotope="1",
-            pressure=1.01325,
+            pressure=pressure,
             Tgas=700,
             mole_fraction=0.1,
             path_length=1,
