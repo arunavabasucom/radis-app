@@ -94,7 +94,7 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   return (
     <div className={classes.root}>
       <Typography id="input-slider" gutterBottom>
-        Wavelength range (cm⁻¹)
+        Wavenumber range (cm⁻¹)
       </Typography>
       <Grid container spacing={2} alignItems="center">
         <Grid item>{rangeInput(lowerRange, setLowerRange)}</Grid>

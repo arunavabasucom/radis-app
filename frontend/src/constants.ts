@@ -1,7 +1,7 @@
 export interface CalcSpectrumParams extends Record<string, string | number> {
   molecule: string;
-  minWavelengthRange: number;
-  maxWavelengthRange: number;
+  minWavenumberRange: number;
+  maxWavenumberRange: number;
 }
 
 export const PALETTE = {

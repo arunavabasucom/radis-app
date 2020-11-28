@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import * as queryString from "query-string";
-import WavelengthRangeSlider from "./WavelengthRangeSlider";
+import WavenumberRangeSlider from "./WavenumberRangeSlider";
 import { CalcSpectrumParams, PALETTE } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
 import { addSubscriptsToMolecule } from "../utils";
@@ -32,8 +32,8 @@ const CalcSpectrum: React.FC = () => {
   ] = useState<Response<CalcSpectrumResponseData> | null>(null);
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
-    minWavelengthRange: 1900,
-    maxWavelengthRange: 2300,
+    minWavenumberRange: 1900,
+    maxWavenumberRange: 2300,
     pressure: 1.01325,
   });
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const CalcSpectrum: React.FC = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl>
-              <WavelengthRangeSlider
+              <WavenumberRangeSlider
                 minRange={1000}
                 maxRange={3000}
                 params={params}
