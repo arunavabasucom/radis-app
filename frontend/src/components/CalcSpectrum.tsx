@@ -23,6 +23,7 @@ interface ValidationErrors {
   molecule?: string;
   tgas?: string;
   tvib?: string;
+  trot?: string;
   pressure?: string;
 }
 
@@ -37,6 +38,7 @@ const CalcSpectrum: React.FC = () => {
     max_wavenumber_range: 2300,
     tgas: 700,
     tvib: null,
+    trot: null,
     pressure: 1.01325,
     simulate_slit: false,
   });
@@ -82,6 +84,21 @@ const CalcSpectrum: React.FC = () => {
 
   const validate = (): void => {
     const updatedValidationErrors: ValidationErrors = {};
+
+    if ((params.tvib || params.trot) && !(params.tvib && params.trot)) {
+      if (!params.tvib) {
+        updatedValidationErrors.tvib =
+          "Tvib must be defined if Trot is defined";
+        updatedValidationErrors.trot = undefined;
+      } else {
+        updatedValidationErrors.trot =
+          "Trot must be defined if Tvib is defined";
+        updatedValidationErrors.tvib = undefined;
+      }
+    } else {
+      updatedValidationErrors.trot = undefined;
+      updatedValidationErrors.tvib = undefined;
+    }
 
     if (!params.molecule) {
       updatedValidationErrors.molecule = "Molecule must be defined";
@@ -177,6 +194,32 @@ const CalcSpectrum: React.FC = () => {
                 inputProps: { step: 1 },
               }}
               label="Tvib"
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextField
+              id="trot-input"
+              error={validationErrors.trot !== undefined}
+              value={params.trot}
+              type="number"
+              helperText={
+                validationErrors.trot ||
+                "If undefined, equilibrium calculation is run with Tgas"
+              }
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  trot: event.target.value
+                    ? parseFloat(event.target.value)
+                    : null,
+                })
+              }
+              InputProps={{
+                endAdornment: <InputAdornment position="end">K</InputAdornment>,
+                inputProps: { step: 1 },
+              }}
+              label="Trot"
             />
           </Grid>
 

@@ -5,6 +5,7 @@ export interface CalcSpectrumParams
   max_wavenumber_range: number;
   tgas: number;
   tvib: number | null;
+  trot: number | null;
   pressure: number;
   simulate_slit: boolean;
 }
