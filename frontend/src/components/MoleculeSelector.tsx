@@ -36,6 +36,7 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
 
   return (
     <Autocomplete
+      id="molecule-selector"
       options={allMolecules}
       renderInput={(params) => (
         <TextField
