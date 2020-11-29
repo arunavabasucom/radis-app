@@ -86,10 +86,9 @@ const CalcSpectrum: React.FC = () => {
     }
 
     if (Number.isNaN(params.tgas)) {
-      updatedValidationErrors.tgas = "Gas temperature must be defined";
+      updatedValidationErrors.tgas = "Tgas must be defined";
     } else if (params.tgas < 70 || params.tgas > 3000) {
-      updatedValidationErrors.tgas =
-        "Gas temperature must be between 70K and 3000K";
+      updatedValidationErrors.tgas = "Tgas must be between 70K and 3000K";
     } else {
       updatedValidationErrors.tgas = undefined;
     }
@@ -131,6 +130,7 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={4}>
             <TextField
+              id="tgas-input"
               error={validationErrors.tgas !== undefined}
               value={params.tgas}
               type="number"
@@ -177,6 +177,7 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={12}>
             <Button
+              id="calc-spectrum-button"
               disabled={calcSpectrumButtonDisabled}
               variant="contained"
               color="primary"
