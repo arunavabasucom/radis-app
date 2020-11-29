@@ -1,4 +1,3 @@
-from collections import namedtuple
 from typing import List, Optional
 
 import radis
@@ -9,9 +8,6 @@ from flask_limiter.util import get_remote_address
 from flask_pydantic import validate
 from pydantic.main import BaseModel
 from radis.io import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
-
-Isotopologue = namedtuple("Isotopologue", ["id", "formula", "afgl"])
-
 
 app = Flask(__name__)
 CORS(app)
