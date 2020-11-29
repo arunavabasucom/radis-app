@@ -37,12 +37,10 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   return (
     <Autocomplete
       options={allMolecules}
-      style={{ width: 300 }}
       renderInput={(params) => (
         <TextField
           {...params}
           label="Molecule"
-          variant="outlined"
           error={moleculeValidationError !== undefined}
           helperText={moleculeValidationError}
         />

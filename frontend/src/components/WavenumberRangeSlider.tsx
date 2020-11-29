@@ -15,7 +15,7 @@ interface WavelengthRangeSliderProps {
 
 const useStyles = makeStyles({
   root: {
-    width: 300,
+    width: 380,
   },
   input: {
     width: 52,
