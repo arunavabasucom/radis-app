@@ -13,6 +13,7 @@ import { CalcSpectrumParams, CalcSpectrumResponseData } from "../constants";
 import MoleculeSelector from "./MoleculeSelector";
 import SimulateSlit from "./SimulateSlit";
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
+import IsotopologueSelector from "./IsotopologueSelector";
 
 interface Response<T> {
   data?: T;
@@ -127,6 +128,10 @@ const CalcSpectrum: React.FC = () => {
               setParams={setParams}
               moleculeValidationError={validationErrors.molecule}
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <IsotopologueSelector params={params} setParams={setParams} />
           </Grid>
 
           <Grid item xs={12}>

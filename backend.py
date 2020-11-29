@@ -1,3 +1,4 @@
+from collections import namedtuple
 from typing import List, Optional
 
 import radis
@@ -8,6 +9,9 @@ from flask_limiter.util import get_remote_address
 from flask_pydantic import validate
 from pydantic.main import BaseModel
 from radis.io import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
+
+Isotopologue = namedtuple("Isotopologue", ["id", "formula", "afgl"])
+
 
 app = Flask(__name__)
 CORS(app)
@@ -80,6 +84,28 @@ def molecules():
         "molecules": sorted(
             set(MOLECULES_LIST_EQUILIBRIUM) | set(MOLECULES_LIST_NONEQUILIBRIUM)
         )
+    }
+
+
+class Isotopologue(BaseModel):
+    # https://hitran.org/docs/iso-meta/
+    local_id: int
+    formula: str
+    afgl_code: int
+
+
+@app.route("/isotopologues/<molecule>")
+def isotopologues_for_molecule(molecule: str):
+    isotopologues = {
+        "H2O": [
+            Isotopologue(local_id=1, formula="H₂¹⁶O", afgl_code=161),
+            Isotopologue(local_id=2, formula="H₂¹⁸O", afgl_code=181),
+        ]
+    }
+    return {
+        "isotopologues": [
+            isotopologue.dict() for isotopologue in isotopologues[molecule]
+        ]
     }
 
 
