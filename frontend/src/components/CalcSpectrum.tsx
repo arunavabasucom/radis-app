@@ -121,7 +121,7 @@ const CalcSpectrum: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={4}>
             <MoleculeSelector
               params={params}
               setParams={setParams}
@@ -129,7 +129,7 @@ const CalcSpectrum: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={4}>
             <TextField
               error={validationErrors.tgas !== undefined}
               value={params.tgas}
@@ -145,11 +145,11 @@ const CalcSpectrum: React.FC = () => {
                 endAdornment: <InputAdornment position="end">K</InputAdornment>,
                 inputProps: { step: 1 },
               }}
-              label="Gas temperature"
+              label="Tgas"
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={4}>
             <TextField
               error={validationErrors.pressure !== undefined}
               value={params.pressure}
