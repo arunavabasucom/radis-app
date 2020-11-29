@@ -22,6 +22,7 @@ class QueryModel(BaseModel):
     min_wavenumber_range: int
     max_wavenumber_range: int
     tgas: float
+    tvib: Optional[float]
     pressure: float
     simulate_slit: bool
 
@@ -49,6 +50,7 @@ def call_calc_spectrum():
             isotope="1",
             pressure=request.query_params.pressure,
             Tgas=request.query_params.tgas,
+            Tvib=request.query_params.tvib,
             mole_fraction=0.1,
             path_length=1,
         )

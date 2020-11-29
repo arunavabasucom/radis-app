@@ -20,7 +20,7 @@ def test_no_data_at_wavenumber_range(sb):
     sb.assert_text("No spectrum at specified wavenumber range")
 
 
-def test_tgas_validation(sb):
+def test_tgas(sb):
     sb.type("#tgas-input", "")
     sb.assert_text("Tgas must be defined")
     sb.assert_element("#calc-spectrum-button:disabled")
@@ -34,5 +34,12 @@ def test_tgas_validation(sb):
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#tgas-input", "80")
+    sb.click("#calc-spectrum-button")
+    sb.assert_text("Spectrum for CO")
+
+
+def test_tvib(sb):
+    # Can be undefined
+    sb.type("#tvib-input", "")
     sb.click("#calc-spectrum-button")
     sb.assert_text("Spectrum for CO")

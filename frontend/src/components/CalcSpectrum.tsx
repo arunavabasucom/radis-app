@@ -22,6 +22,7 @@ interface Response<T> {
 interface ValidationErrors {
   molecule?: string;
   tgas?: string;
+  tvib?: string;
   pressure?: string;
 }
 
@@ -35,6 +36,7 @@ const CalcSpectrum: React.FC = () => {
     min_wavenumber_range: 1900,
     max_wavenumber_range: 2300,
     tgas: 700,
+    tvib: null,
     pressure: 1.01325,
     simulate_slit: false,
   });
@@ -62,7 +64,9 @@ const CalcSpectrum: React.FC = () => {
   const calcSpectrumHandler = () => {
     setLoading(true);
     fetch(
-      `http://localhost:5000/calc-spectrum?${queryString.stringify(params)}`,
+      `http://localhost:5000/calc-spectrum?${queryString.stringify(params, {
+        skipNull: true,
+      })}`,
       {
         method: "GET",
       }
@@ -130,6 +134,7 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={4}>
             <TextField
+              required
               id="tgas-input"
               error={validationErrors.tgas !== undefined}
               value={params.tgas}
@@ -151,6 +156,33 @@ const CalcSpectrum: React.FC = () => {
 
           <Grid item xs={4}>
             <TextField
+              id="tvib-input"
+              error={validationErrors.tvib !== undefined}
+              value={params.tvib}
+              type="number"
+              helperText={
+                validationErrors.tvib ||
+                "If undefined, equilibrium calculation is run with Tgas"
+              }
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  tvib: event.target.value
+                    ? parseFloat(event.target.value)
+                    : null,
+                })
+              }
+              InputProps={{
+                endAdornment: <InputAdornment position="end">K</InputAdornment>,
+                inputProps: { step: 1 },
+              }}
+              label="Tvib"
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextField
+              required
               error={validationErrors.pressure !== undefined}
               value={params.pressure}
               type="number"
