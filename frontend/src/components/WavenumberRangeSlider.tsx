@@ -70,9 +70,11 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
 
   const rangeInput = (
     value: number | "",
-    setRange: (range: number | "") => void
+    setRange: (range: number | "") => void,
+    id: string
   ) => (
     <Input
+      id={id}
       className={classes.input}
       value={value}
       margin="dense"
@@ -94,7 +96,9 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
         Wavenumber range (cm⁻¹)
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        <Grid item>{rangeInput(lowerRange, setLowerRange)}</Grid>
+        <Grid item>
+          {rangeInput(lowerRange, setLowerRange, "min-wavenumber-input")}
+        </Grid>
         <Grid item xs>
           <Slider
             value={[
@@ -107,7 +111,9 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
             max={maxRange}
           />
         </Grid>
-        <Grid item>{rangeInput(upperRange, setUpperRange)}</Grid>
+        <Grid item>
+          {rangeInput(upperRange, setUpperRange, "max-wavenumber-input")}
+        </Grid>
       </Grid>
     </div>
   );
