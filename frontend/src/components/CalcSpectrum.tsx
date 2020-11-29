@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Grid,
   Button,
-  FormControl,
   CircularProgress,
   InputAdornment,
   TextField,
@@ -114,72 +113,62 @@ const CalcSpectrum: React.FC = () => {
       <Grid item xs={4}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <FormControl>
-              <WavenumberRangeSlider
-                minRange={1000}
-                maxRange={3000}
-                params={params}
-                setParams={setParams}
-              />
-            </FormControl>
+            <WavenumberRangeSlider
+              minRange={1000}
+              maxRange={3000}
+              params={params}
+              setParams={setParams}
+            />
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl>
-              <MoleculeSelector
-                params={params}
-                setParams={setParams}
-                moleculeValidationError={validationErrors.molecule}
-              />
-            </FormControl>
+            <MoleculeSelector
+              params={params}
+              setParams={setParams}
+              moleculeValidationError={validationErrors.molecule}
+            />
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl>
-              <TextField
-                error={validationErrors.tgas !== undefined}
-                value={params.tgas}
-                type="number"
-                helperText={validationErrors.tgas}
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    tgas: parseFloat(event.target.value),
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">K</InputAdornment>
-                  ),
-                  inputProps: { step: 1 },
-                }}
-                label="Gas temperature"
-              />
-            </FormControl>
+            <TextField
+              error={validationErrors.tgas !== undefined}
+              value={params.tgas}
+              type="number"
+              helperText={validationErrors.tgas}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  tgas: parseFloat(event.target.value),
+                })
+              }
+              InputProps={{
+                endAdornment: <InputAdornment position="end">K</InputAdornment>,
+                inputProps: { step: 1 },
+              }}
+              label="Gas temperature"
+            />
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl>
-              <TextField
-                error={validationErrors.pressure !== undefined}
-                value={params.pressure}
-                type="number"
-                helperText={validationErrors.pressure}
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    pressure: parseFloat(event.target.value),
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">bar</InputAdornment>
-                  ),
-                  inputProps: { step: 0.001 },
-                }}
-                label="Pressure"
-              />
-            </FormControl>
+            <TextField
+              error={validationErrors.pressure !== undefined}
+              value={params.pressure}
+              type="number"
+              helperText={validationErrors.pressure}
+              onChange={(event) =>
+                setParams({
+                  ...params,
+                  pressure: parseFloat(event.target.value),
+                })
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">bar</InputAdornment>
+                ),
+                inputProps: { step: 0.001 },
+              }}
+              label="Pressure"
+            />
           </Grid>
 
           <Grid item xs={12}>
