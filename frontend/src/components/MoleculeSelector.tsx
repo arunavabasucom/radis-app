@@ -41,6 +41,7 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          required
           label="Molecule"
           error={moleculeValidationError !== undefined}
           helperText={moleculeValidationError}

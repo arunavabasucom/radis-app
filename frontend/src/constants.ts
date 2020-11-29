@@ -1,9 +1,10 @@
 export interface CalcSpectrumParams
-  extends Record<string, string | number | boolean> {
+  extends Record<string, string | number | boolean | null> {
   molecule: string;
   min_wavenumber_range: number;
   max_wavenumber_range: number;
   tgas: number;
+  tvib: number | null;
   pressure: number;
   simulate_slit: boolean;
 }
