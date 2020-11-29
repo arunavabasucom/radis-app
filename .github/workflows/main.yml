@@ -73,10 +73,11 @@ jobs:
       - name: Lint
         run: make lint
 
-    # TODO
-    # - name: Test
-    #   run: |
-    #     make test
+      - name: Test
+        run: |
+          make backend &
+          cd frontend && yarn start &
+          make test
 
   # TODO: Add Docker image building + deploy to GitHub Packages
   # CD:
