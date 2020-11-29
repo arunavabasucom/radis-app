@@ -14,9 +14,6 @@ interface WavelengthRangeSliderProps {
 }
 
 const useStyles = makeStyles({
-  root: {
-    width: 300,
-  },
   input: {
     width: 52,
   },
@@ -92,7 +89,7 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   );
 
   return (
-    <div className={classes.root}>
+    <div>
       <Typography id="input-slider" gutterBottom>
         Wavenumber range (cm⁻¹)
       </Typography>
