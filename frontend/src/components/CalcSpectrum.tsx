@@ -141,7 +141,7 @@ const CalcSpectrum: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <MoleculeSelector
               params={params}
               setParams={setParams}
