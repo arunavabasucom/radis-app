@@ -12,7 +12,7 @@
     "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "fontsource-roboto": "^3.0.3",
+    "fontsource-roboto": "^3.1.5",
     "plotly.js": "^1.58.1",
     "query-string": "^6.13.7",
     "react": "^17.0.1",
