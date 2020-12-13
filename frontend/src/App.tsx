@@ -41,7 +41,7 @@ const Header: React.FC = () => {
   );
 };
 
-function App() {
+function App(): React.ReactElement {
   const classes = useStyles();
   return (
     <div className={classes.root}>
