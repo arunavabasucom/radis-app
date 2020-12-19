@@ -63,23 +63,23 @@ const CalcSpectrum: React.FC = () => {
     }
   }, [validationErrors]);
 
-  const calcSpectrumHandler = () => {
+  const calcSpectrumHandler = async (): Promise<void> => {
     setLoading(true);
-    fetch(
+    const rawResponse = await fetch(
       `http://localhost:5000/calc-spectrum?${queryString.stringify(params, {
         skipNull: true,
       })}`,
       {
         method: "GET",
       }
-    )
-      .then((response) => response.json())
-      .then((responseData) => {
-        setCalcSpectrumResponse(responseData);
-        setLoading(false);
-      })
-      // TODO: Add an error alert that the query failed
-      .catch(() => setLoading(false));
+    );
+    if (!rawResponse.ok) {
+      setLoading(false);
+      throw new Error("Error occurred");
+    }
+    const response = await rawResponse.json();
+    setCalcSpectrumResponse(response);
+    setLoading(false);
   };
 
   const validate = (): void => {
