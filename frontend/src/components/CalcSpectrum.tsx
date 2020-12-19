@@ -285,7 +285,15 @@ const CalcSpectrum: React.FC = () => {
 
         <Grid item xs={8}>
           {loading ? (
-            <CircularProgress />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 200,
+              }}
+            >
+              <CircularProgress />
+            </div>
           ) : (
             calcSpectrumResponse?.data && (
               <CalcSpectrumPlot
