@@ -275,6 +275,8 @@ const CalcSpectrum: React.FC = () => {
             <CalcSpectrumPlot
               data={calcSpectrumResponse.data}
               molecule={params.molecule}
+              minWavenumberRange={params.min_wavenumber_range}
+              maxWavenumberRange={params.max_wavenumber_range}
             />
           )
         )}
