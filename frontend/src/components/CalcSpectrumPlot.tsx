@@ -6,11 +6,15 @@ import { addSubscriptsToMolecule } from "../utils";
 interface CalcSpectrumPlotProps {
   data: CalcSpectrumResponseData;
   molecule: string;
+  minWavenumberRange: number;
+  maxWavenumberRange: number;
 }
 
 const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
   data,
   molecule,
+  minWavenumberRange,
+  maxWavenumberRange,
 }) => (
   <Plot
     className="Plot"
@@ -28,10 +32,16 @@ const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
       title: `Spectrum for ${addSubscriptsToMolecule(molecule)}`,
       font: { family: "Roboto", color: "#000" },
       xaxis: {
+        autorange: true,
+        range: [minWavenumberRange, maxWavenumberRange],
         title: { text: "Wavenumber (cm⁻¹)" },
+        rangeslider: { range: [minWavenumberRange, maxWavenumberRange] },
+        type: "linear",
       },
       yaxis: {
+        autorange: true,
         title: { text: "Radiance (mW/cm²/sr/nm)" },
+        type: "linear",
       },
     }}
   />
