@@ -7,16 +7,15 @@ import {
   TextField,
 } from "@material-ui/core";
 import * as queryString from "query-string";
-import WavenumberRangeSlider from "./fields/WavenumberRangeSlider";
+import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
   ValidationErrors,
 } from "../constants";
-import SimulateSlit from "./fields/SimulateSlit";
+
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
 import ErrorAlert from "./ErrorAlert";
-import Species from "./fields/Species";
 
 interface Response<T> {
   data?: T;
