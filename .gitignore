@@ -247,3 +247,6 @@ dist
 
 # direnv
 .envrc
+
+# seleniumbase
+latest_logs/

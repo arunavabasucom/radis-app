@@ -24,6 +24,7 @@ class QueryModel(BaseModel):
     tgas: float
     tvib: Optional[float]
     pressure: float
+    path_length: float
     simulate_slit: bool
 
 
@@ -52,7 +53,7 @@ def call_calc_spectrum():
             Tgas=request.query_params.tgas,
             Tvib=request.query_params.tvib,
             mole_fraction=0.1,
-            path_length=1,
+            path_length=request.query_params.path_length,
         )
     except radis.misc.warning.EmptyDatabaseError:
         return ResponseModel(error="No spectrum at specified wavenumber range")

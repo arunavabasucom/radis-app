@@ -60,3 +60,31 @@ def test_trot(sb):
     sb.type("#tvib-input", "80")
     sb.assert_text("Trot must be defined if Tvib is defined")
     sb.assert_element("#calc-spectrum-button:disabled")
+
+
+def test_pressure(sb):
+    sb.type("#pressure-input", "")
+    sb.assert_text("Pressure must be defined")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#pressure-input", "-1")
+    sb.assert_text("Pressure must be positive")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#pressure-input", "1.4")
+    sb.click("#calc-spectrum-button")
+    sb.assert_text("Spectrum for CO")
+
+
+def test_path_length(sb):
+    sb.type("#path-length-input", "")
+    sb.assert_text("Path length must be defined")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#path-length-input", "-1")
+    sb.assert_text("Path length must be positive")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#path-length-input", "0.9")
+    sb.click("#calc-spectrum-button")
+    sb.assert_text("Spectrum for CO")

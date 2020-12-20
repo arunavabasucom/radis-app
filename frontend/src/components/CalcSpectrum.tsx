@@ -25,6 +25,7 @@ interface ValidationErrors {
   tvib?: string;
   trot?: string;
   pressure?: string;
+  path_length?: string;
 }
 
 const CalcSpectrum: React.FC = () => {
@@ -39,6 +40,7 @@ const CalcSpectrum: React.FC = () => {
     tvib: null,
     trot: null,
     pressure: 1.01325,
+    path_length: 1,
     simulate_slit: false,
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
@@ -131,6 +133,14 @@ const CalcSpectrum: React.FC = () => {
       updatedValidationErrors.pressure = "Pressure cannot be negative";
     } else {
       updatedValidationErrors.pressure = undefined;
+    }
+
+    if (Number.isNaN(params.path_length)) {
+      updatedValidationErrors.path_length = "Path length must be defined";
+    } else if (params.path_length < 0) {
+      updatedValidationErrors.path_length = "Path length cannot be negative";
+    } else {
+      updatedValidationErrors.path_length = undefined;
     }
 
     setValidationErrors({ ...validationErrors, ...updatedValidationErrors });
@@ -245,6 +255,7 @@ const CalcSpectrum: React.FC = () => {
             <Grid item xs={4}>
               <TextField
                 required
+                id="pressure-input"
                 error={validationErrors.pressure !== undefined}
                 value={params.pressure}
                 type="number"
@@ -262,6 +273,30 @@ const CalcSpectrum: React.FC = () => {
                   inputProps: { step: 0.001 },
                 }}
                 label="Pressure"
+              />
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField
+                required
+                id="path-length-input"
+                error={validationErrors.path_length !== undefined}
+                value={params.path_length}
+                type="number"
+                helperText={validationErrors.path_length}
+                onChange={(event) =>
+                  setParams({
+                    ...params,
+                    path_length: parseFloat(event.target.value),
+                  })
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">cm</InputAdornment>
+                  ),
+                  inputProps: { step: 0.1 },
+                }}
+                label="Path length"
               />
             </Grid>
 
