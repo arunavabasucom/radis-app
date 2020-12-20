@@ -19,6 +19,7 @@ limiter = Limiter(
 
 class QueryModel(BaseModel):
     molecule: str
+    mole_fraction: float
     min_wavenumber_range: int
     max_wavenumber_range: int
     tgas: float
@@ -48,11 +49,11 @@ def call_calc_spectrum():
             wavenum_min=request.query_params.min_wavenumber_range,
             wavenum_max=request.query_params.max_wavenumber_range,
             molecule=request.query_params.molecule,
+            mole_fraction=request.query_params.mole_fraction,
             isotope="1",
             pressure=request.query_params.pressure,
             Tgas=request.query_params.tgas,
             Tvib=request.query_params.tvib,
-            mole_fraction=0.1,
             path_length=request.query_params.path_length,
         )
     except radis.misc.warning.EmptyDatabaseError:

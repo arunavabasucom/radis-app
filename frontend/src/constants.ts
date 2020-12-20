@@ -1,6 +1,7 @@
 export interface CalcSpectrumParams
   extends Record<string, string | number | boolean | null> {
   molecule: string;
+  mole_fraction: number;
   min_wavenumber_range: number;
   max_wavenumber_range: number;
   tgas: number;
@@ -30,3 +31,13 @@ export const palette = {
     contrastText: "#000",
   },
 };
+
+export interface ValidationErrors {
+  molecule?: string;
+  mole_fraction?: string;
+  tgas?: string;
+  tvib?: string;
+  trot?: string;
+  pressure?: string;
+  path_length?: string;
+}

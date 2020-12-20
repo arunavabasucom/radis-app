@@ -14,7 +14,7 @@ interface MoleculesResponseData {
 interface MoleculeSelectorProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
-  moleculeValidationError: string | undefined;
+  moleculeValidationError?: string;
 }
 
 const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({

@@ -8,24 +8,19 @@ import {
 } from "@material-ui/core";
 import * as queryString from "query-string";
 import WavenumberRangeSlider from "./WavenumberRangeSlider";
-import { CalcSpectrumParams, CalcSpectrumResponseData } from "../constants";
-import MoleculeSelector from "./MoleculeSelector";
+import {
+  CalcSpectrumParams,
+  CalcSpectrumResponseData,
+  ValidationErrors,
+} from "../constants";
 import SimulateSlit from "./SimulateSlit";
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
 import ErrorAlert from "./ErrorAlert";
+import Species from "./Species";
 
 interface Response<T> {
   data?: T;
   error?: string;
-}
-
-interface ValidationErrors {
-  molecule?: string;
-  tgas?: string;
-  tvib?: string;
-  trot?: string;
-  pressure?: string;
-  path_length?: string;
 }
 
 const CalcSpectrum: React.FC = () => {
@@ -34,6 +29,7 @@ const CalcSpectrum: React.FC = () => {
   >(undefined);
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
+    mole_fraction: 1,
     min_wavenumber_range: 1900,
     max_wavenumber_range: 2300,
     tgas: 700,
@@ -113,10 +109,19 @@ const CalcSpectrum: React.FC = () => {
       updatedValidationErrors.tvib = undefined;
     }
 
+    // TODO: Move this to children
     if (!params.molecule) {
       updatedValidationErrors.molecule = "Molecule must be defined";
     } else {
       updatedValidationErrors.molecule = undefined;
+    }
+    if (Number.isNaN(params.mole_fraction)) {
+      updatedValidationErrors.mole_fraction = "Mole fraction must be defined";
+    } else if (params.mole_fraction < 0) {
+      updatedValidationErrors.mole_fraction =
+        "Mole fraction cannot be negative";
+    } else {
+      updatedValidationErrors.mole_fraction = undefined;
     }
 
     if (Number.isNaN(params.tgas)) {
@@ -165,10 +170,10 @@ const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <MoleculeSelector
+              <Species
                 params={params}
                 setParams={setParams}
-                moleculeValidationError={validationErrors.molecule}
+                validationErrors={validationErrors}
               />
             </Grid>
 
