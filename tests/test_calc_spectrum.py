@@ -68,7 +68,7 @@ def test_pressure(sb):
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#pressure-input", "-1")
-    sb.assert_text("Pressure must be positive")
+    sb.assert_text("Pressure cannot be negative")
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#pressure-input", "1.4")
@@ -82,7 +82,7 @@ def test_path_length(sb):
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#path-length-input", "-1")
-    sb.assert_text("Path length must be positive")
+    sb.assert_text("Path length cannot be negative")
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#path-length-input", "0.9")
