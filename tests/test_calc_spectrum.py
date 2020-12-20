@@ -88,3 +88,17 @@ def test_path_length(sb):
     sb.type("#path-length-input", "0.9")
     sb.click("#calc-spectrum-button")
     sb.assert_text("Spectrum for CO")
+
+
+def test_mole_fraction(sb):
+    sb.type("#mole-fraction-input", "")
+    sb.assert_text("Mole fraction must be defined")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#mole-fraction-input", "-1")
+    sb.assert_text("Mole fraction cannot be negative")
+    sb.assert_element("#calc-spectrum-button:disabled")
+
+    sb.type("#mole-fraction-input", "0.01")
+    sb.click("#calc-spectrum-button")
+    sb.assert_text("Spectrum for CO")
