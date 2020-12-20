@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
-import { CalcSpectrumParams } from "../constants";
+import { CalcSpectrumParams } from "../../constants";
 
 interface WavelengthRangeSliderProps {
   minRange: number;
