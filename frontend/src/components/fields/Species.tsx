@@ -1,6 +1,6 @@
 import { Grid, TextField } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams, ValidationErrors } from "../constants";
+import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 import MoleculeSelector from "./MoleculeSelector";
 
 interface SpeciesProps {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { CalcSpectrumParams } from "../constants";
+import { CalcSpectrumParams } from "../../constants";
 import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
-} from "../utils";
+} from "../../utils";
 
 interface MoleculesResponseData {
   molecules: string[];

@@ -1,6 +1,6 @@
 import { FormControlLabel, Switch } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams } from "../constants";
+import { CalcSpectrumParams } from "../../constants";
 
 interface SimulateSlitProps {
   params: CalcSpectrumParams;
