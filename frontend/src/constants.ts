@@ -7,6 +7,7 @@ export interface CalcSpectrumParams
   tvib: number | null;
   trot: number | null;
   pressure: number;
+  path_length: number;
   simulate_slit: boolean;
 }
 
