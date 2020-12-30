@@ -57,7 +57,7 @@ def call_calc_spectrum():
             path_length=request.query_params.path_length,
         )
     except radis.misc.warning.EmptyDatabaseError:
-        return ResponseModel(error="No spectrum at specified wavenumber range")
+        return ResponseModel(error="No line in the specified wavenumber range")
     else:
         if request.query_params.simulate_slit:
             spectrum.apply_slit(0.5, "nm")
