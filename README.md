@@ -19,7 +19,7 @@ Install and start the backend.
 
 ```sh
 $ python3 -m venv .env && source .env/bin/activate
-$ pip install -r requirements.txt
+$ pip install -r requirements/prod.txt
 $ make backend
 ```
 
