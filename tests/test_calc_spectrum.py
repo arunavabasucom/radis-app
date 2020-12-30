@@ -17,7 +17,7 @@ def test_no_data_at_wavenumber_range(sb):
     sb.type("#min-wavenumber-input", 1000)
     sb.type("#max-wavenumber-input", 1001)
     sb.click("#calc-spectrum-button")
-    sb.assert_text("No spectrum at specified wavenumber range")
+    sb.assert_text("No line in the specified wavenumber range")
 
 
 def test_tgas(sb):
