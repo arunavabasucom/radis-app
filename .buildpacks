@@ -1,0 +1,2 @@
+server=https://github.com/heroku/heroku-buildpack-python
+web=https://github.com/heroku/heroku-buildpack-nodejs
