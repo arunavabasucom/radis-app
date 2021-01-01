@@ -1,2 +1,2 @@
-web: cd frontend/ && yarn start
+web: bin/boot
 server: python3 backend.py
