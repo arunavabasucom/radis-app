@@ -1,2 +1,2 @@
-web: cd frontend && bin/boot
+web: bin/boot
 server: python3 backend.py
