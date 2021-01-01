@@ -22,14 +22,13 @@ Install and start the backend.
 
 ```sh
 $ python3 -m venv .env && source .env/bin/activate
-$ pip install -r requirements/prod.txt
+$ make install
 $ make backend
 ```
 
 Install and start the frontend.
 
 ```sh
-$ cd frontend/
 $ yarn install
 $ yarn start
 ```
