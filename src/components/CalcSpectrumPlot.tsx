@@ -32,16 +32,22 @@ const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
       title: `Spectrum for ${addSubscriptsToMolecule(molecule)}`,
       font: { family: "Roboto", color: "#000" },
       xaxis: {
-        autorange: true,
         range: [minWavenumberRange, maxWavenumberRange],
         title: { text: "Wavenumber (cm⁻¹)" },
-        rangeslider: { range: [minWavenumberRange, maxWavenumberRange] },
+        rangeslider: {
+          // TODO: Update typing in DefinitelyTyped
+          // @ts-ignore
+          autorange: true,
+          // @ts-ignore
+          yaxis: { rangemode: "auto" },
+        },
         type: "linear",
       },
       yaxis: {
         autorange: true,
         title: { text: "Radiance (mW/cm²/sr/nm)" },
         type: "linear",
+        fixedrange: false,
       },
     }}
   />
