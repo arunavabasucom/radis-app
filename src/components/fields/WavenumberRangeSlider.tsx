@@ -82,7 +82,6 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
       onChange={(event) => handleInputChange(event, setRange)}
       onBlur={handleBlur}
       inputProps={{
-        step: 100,
         min: minRange,
         max: maxRange,
         type: "number",

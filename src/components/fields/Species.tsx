@@ -37,9 +37,6 @@ const Species: React.FC<SpeciesProps> = ({
               mole_fraction: parseFloat(event.target.value),
             })
           }
-          InputProps={{
-            inputProps: { step: 0.01 },
-          }}
           label="Mole fraction"
         />
       </Grid>

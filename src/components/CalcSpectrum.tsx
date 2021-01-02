@@ -194,7 +194,6 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">K</InputAdornment>
                   ),
-                  inputProps: { step: 1 },
                 }}
                 label="Tgas"
               />
@@ -222,7 +221,6 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">K</InputAdornment>
                   ),
-                  inputProps: { step: 1 },
                 }}
                 label="Tvib"
               />
@@ -250,7 +248,6 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">K</InputAdornment>
                   ),
-                  inputProps: { step: 1 },
                 }}
                 label="Trot"
               />
@@ -274,7 +271,6 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">bar</InputAdornment>
                   ),
-                  inputProps: { step: 0.001 },
                 }}
                 label="Pressure"
               />
@@ -298,7 +294,6 @@ const CalcSpectrum: React.FC = () => {
                   endAdornment: (
                     <InputAdornment position="end">cm</InputAdornment>
                   ),
-                  inputProps: { step: 0.1 },
                 }}
                 label="Path length"
               />
