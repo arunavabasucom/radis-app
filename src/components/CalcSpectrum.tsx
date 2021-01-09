@@ -22,6 +22,14 @@ interface Response<T> {
   error?: string;
 }
 
+interface PlotWavenumberRange {
+  min?: number;
+  max?: number;
+}
+
+const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
+const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
+
 const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
     Response<CalcSpectrumResponseData> | undefined
@@ -29,8 +37,8 @@ const CalcSpectrum: React.FC = () => {
   const [params, setParams] = useState<CalcSpectrumParams>({
     molecule: "CO",
     mole_fraction: 1,
-    min_wavenumber_range: 1900,
-    max_wavenumber_range: 2300,
+    min_wavenumber_range: DEFAULT_MIN_WAVENUMBER_RANGE,
+    max_wavenumber_range: DEFAULT_MAX_WAVENUMBER_RANGE,
     tgas: 700,
     tvib: null,
     trot: null,
@@ -47,6 +55,7 @@ const CalcSpectrum: React.FC = () => {
     calcSpectrumButtonDisabled,
     setCalcSpectrumButtonDisabled,
   ] = useState<boolean>(false);
+  const [plotWavenumberRange, setPlotWavenumberRange] = useState<PlotWavenumberRange>({min: undefined, max: undefined});
 
   useEffect(() => {
     validate();
@@ -69,6 +78,8 @@ const CalcSpectrum: React.FC = () => {
   const calcSpectrumHandler = async (): Promise<void> => {
     setLoading(true);
     setError(undefined);
+    setPlotWavenumberRange({min: params.min_wavenumber_range, max: params.max_wavenumber_range})
+
     const rawResponse = await fetch(
       `http://localhost:5000/calc-spectrum?${queryString.stringify(params, {
         skipNull: true,
@@ -333,8 +344,8 @@ const CalcSpectrum: React.FC = () => {
               <CalcSpectrumPlot
                 data={calcSpectrumResponse.data}
                 molecule={params.molecule}
-                minWavenumberRange={params.min_wavenumber_range}
-                maxWavenumberRange={params.max_wavenumber_range}
+                minWavenumberRange={plotWavenumberRange.min || DEFAULT_MIN_WAVENUMBER_RANGE}
+                maxWavenumberRange={plotWavenumberRange.max || DEFAULT_MAX_WAVENUMBER_RANGE}
               />
             )
           )}
