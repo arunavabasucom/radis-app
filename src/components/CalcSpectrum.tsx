@@ -62,11 +62,11 @@ const CalcSpectrum: React.FC = () => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
 
   useEffect(() => {
-    validate();
+    validate(params);
   }, [params]);
 
   useEffect(() => {
-    if (hasValidationErrors()) {
+    if (hasValidationErrors(validationErrors)) {
       setCalcSpectrumButtonDisabled(true);
     } else {
       setCalcSpectrumButtonDisabled(false);
@@ -105,7 +105,7 @@ const CalcSpectrum: React.FC = () => {
     setLoading(false);
   };
 
-  const validate = (): void => {
+  const validate = (params: CalcSpectrumParams): void => {
     const updatedValidationErrors: ValidationErrors = {};
 
     updatedValidationErrors.trot = undefined;
@@ -163,7 +163,7 @@ const CalcSpectrum: React.FC = () => {
     setValidationErrors({ ...validationErrors, ...updatedValidationErrors });
   };
 
-  const hasValidationErrors = (): boolean =>
+  const hasValidationErrors = (validationErrors: ValidationErrors): boolean =>
     Object.values(validationErrors).some((error: string | undefined) => error);
 
   const UseNonEquilibriumCalculations = () => <Switch
