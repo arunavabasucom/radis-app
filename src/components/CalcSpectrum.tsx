@@ -171,7 +171,7 @@ const CalcSpectrum: React.FC = () => {
     onChange={(e) => {
       setIsNonEquilibrium(e.target.checked)
       if (e.target.checked) {
-        setParams({...params, tvib: DEFAULT_TEMPERATURE, trot: DEFAULT_TEMPERATURE})
+        setParams({...params, tvib: params.tgas, trot: params.tgas})
       } else {
         setParams({...params, tvib: null, trot: null})
       }
