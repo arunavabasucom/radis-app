@@ -6,6 +6,7 @@ import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
 } from "../../utils";
+import './MoleculeSelector.css'
 
 interface MoleculesResponseData {
   molecules: string[];
@@ -23,6 +24,7 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   moleculeValidationError,
 }) => {
   const [allMolecules, setAllMolecules] = useState<string[]>([]);
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     fetch(`http://localhost:5000/molecules`, {
@@ -33,11 +35,11 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         setAllMolecules(responseData.molecules)
       );
   }, []);
-
   return (
     <Autocomplete
       id="molecule-selector"
-      options={allMolecules}
+      className="MoleculeSelector"
+      options={allMolecules.map(value => addSubscriptsToMolecule(value))}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -47,7 +49,10 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           helperText={moleculeValidationError}
         />
       )}
+
       value={addSubscriptsToMolecule(params.molecule)}
+      inputValue={input}
+      onInputChange={(_, newInput) => setInput(addSubscriptsToMolecule(newInput.toUpperCase()))}
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
       onChange={(event: React.ChangeEvent<Record<string, string>>) => {
         setParams({
