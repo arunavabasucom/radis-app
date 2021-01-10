@@ -38,30 +38,6 @@ def test_tgas(sb):
     sb.assert_text("Spectrum for CO")
 
 
-def test_tvib(sb):
-    # Can be undefined
-    sb.type("#tvib-input", "")
-    sb.click("#calc-spectrum-button")
-    sb.assert_text("Spectrum for CO")
-
-    # But can't be undefined if Trot is defined
-    sb.type("#trot-input", "80")
-    sb.assert_text("Tvib must be defined if Trot is defined")
-    sb.assert_element("#calc-spectrum-button:disabled")
-
-
-def test_trot(sb):
-    # Can be undefined
-    sb.type("#trot-input", "")
-    sb.click("#calc-spectrum-button")
-    sb.assert_text("Spectrum for CO")
-
-    # But can't be undefined if Tvib is defined
-    sb.type("#tvib-input", "80")
-    sb.assert_text("Trot must be defined if Tvib is defined")
-    sb.assert_element("#calc-spectrum-button:disabled")
-
-
 def test_pressure(sb):
     sb.type("#pressure-input", "")
     sb.assert_text("Pressure must be defined")

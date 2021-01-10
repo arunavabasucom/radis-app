@@ -24,6 +24,7 @@ class QueryModel(BaseModel):
     max_wavenumber_range: int
     tgas: float
     tvib: Optional[float]
+    trot: Optional[float]
     pressure: float
     path_length: float
     simulate_slit: bool
@@ -54,6 +55,7 @@ def call_calc_spectrum():
             pressure=request.query_params.pressure,
             Tgas=request.query_params.tgas,
             Tvib=request.query_params.tvib,
+            Trot=request.query_params.trot,
             path_length=request.query_params.path_length,
         )
     except radis.misc.warning.EmptyDatabaseError:

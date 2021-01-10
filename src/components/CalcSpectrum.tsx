@@ -5,6 +5,8 @@ import {
   CircularProgress,
   InputAdornment,
   TextField,
+  Switch,
+  FormControlLabel,
 } from "@material-ui/core";
 import * as queryString from "query-string";
 import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
@@ -29,6 +31,7 @@ interface PlotWavenumberRange {
 
 const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
+const DEFAULT_TEMPERATURE = 700; // K
 
 const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
@@ -39,7 +42,7 @@ const CalcSpectrum: React.FC = () => {
     mole_fraction: 1,
     min_wavenumber_range: DEFAULT_MIN_WAVENUMBER_RANGE,
     max_wavenumber_range: DEFAULT_MAX_WAVENUMBER_RANGE,
-    tgas: 700,
+    tgas: DEFAULT_TEMPERATURE,
     tvib: null,
     trot: null,
     pressure: 1.01325,
@@ -56,6 +59,7 @@ const CalcSpectrum: React.FC = () => {
     setCalcSpectrumButtonDisabled,
   ] = useState<boolean>(false);
   const [plotWavenumberRange, setPlotWavenumberRange] = useState<PlotWavenumberRange>({min: undefined, max: undefined});
+  const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
 
   useEffect(() => {
     validate();
@@ -104,19 +108,17 @@ const CalcSpectrum: React.FC = () => {
   const validate = (): void => {
     const updatedValidationErrors: ValidationErrors = {};
 
-    if ((params.tvib || params.trot) && !(params.tvib && params.trot)) {
+    updatedValidationErrors.trot = undefined;
+    updatedValidationErrors.tvib = undefined;
+    if (isNonEquilibrium) {
       if (!params.tvib) {
         updatedValidationErrors.tvib =
-          "Tvib must be defined if Trot is defined";
-        updatedValidationErrors.trot = undefined;
-      } else {
-        updatedValidationErrors.trot =
-          "Trot must be defined if Tvib is defined";
-        updatedValidationErrors.tvib = undefined;
+          "Tvib must be defined when running non-equilibrium calculations";
       }
-    } else {
-      updatedValidationErrors.trot = undefined;
-      updatedValidationErrors.tvib = undefined;
+      if (!params.trot) {
+        updatedValidationErrors.trot =
+          "Trot must be defined when running non-equilibrium calculations";
+      }
     }
 
     // TODO: Move this to children
@@ -164,12 +166,30 @@ const CalcSpectrum: React.FC = () => {
   const hasValidationErrors = (): boolean =>
     Object.values(validationErrors).some((error: string | undefined) => error);
 
+  const UseNonEquilibriumCalculations = () => <Switch
+    checked={isNonEquilibrium}
+    onChange={(e) => {
+      setIsNonEquilibrium(e.target.checked)
+      if (e.target.checked) {
+        setParams({...params, tvib: DEFAULT_TEMPERATURE, trot: DEFAULT_TEMPERATURE})
+      } else {
+        setParams({...params, tvib: null, trot: null})
+      }
+    }}
+  />
+
   return (
     <>
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={1}>
         <Grid item xs={4}>
           <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <FormControlLabel
+                label="Use non-equilibrium calculations"
+                control={<UseNonEquilibriumCalculations />}
+              />
+            </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={1000}
@@ -192,9 +212,9 @@ const CalcSpectrum: React.FC = () => {
                 required
                 id="tgas-input"
                 error={validationErrors.tgas !== undefined}
+                helperText={validationErrors.tgas}
                 value={params.tgas}
                 type="number"
-                helperText={validationErrors.tgas}
                 onChange={(event) =>
                   setParams({
                     ...params,
@@ -210,59 +230,58 @@ const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={4}>
-              <TextField
-                id="tvib-input"
-                error={validationErrors.tvib !== undefined}
-                value={params.tvib}
-                type="number"
-                helperText={
-                  validationErrors.tvib ||
-                  "If undefined, equilibrium calculation is run with Tgas"
-                }
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    tvib: event.target.value
-                      ? parseFloat(event.target.value)
-                      : null,
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">K</InputAdornment>
-                  ),
-                }}
-                label="Tvib"
-              />
-            </Grid>
-
-            <Grid item xs={4}>
-              <TextField
-                id="trot-input"
-                error={validationErrors.trot !== undefined}
-                value={params.trot}
-                type="number"
-                helperText={
-                  validationErrors.trot ||
-                  "If undefined, equilibrium calculation is run with Tgas"
-                }
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    trot: event.target.value
-                      ? parseFloat(event.target.value)
-                      : null,
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">K</InputAdornment>
-                  ),
-                }}
-                label="Trot"
-              />
-            </Grid>
+            {isNonEquilibrium ? (
+              <>
+                <Grid item xs={4}>
+                  <TextField
+                    required
+                    id="tvib-input"
+                    error={validationErrors.tvib !== undefined}
+                    helperText={validationErrors.tvib}
+                    value={params.tvib}
+                    type="number"
+                    onChange={(event) =>
+                      setParams({
+                        ...params,
+                        tvib: event.target.value
+                          ? parseFloat(event.target.value)
+                          : null,
+                      })
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">K</InputAdornment>
+                      ),
+                    }}
+                    label="Tvib"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    required
+                    id="trot-input"
+                    error={validationErrors.trot !== undefined}
+                    helperText={validationErrors.trot}
+                    value={params.trot}
+                    type="number"
+                    onChange={(event) =>
+                      setParams({
+                        ...params,
+                        trot: event.target.value
+                          ? parseFloat(event.target.value)
+                          : null,
+                      })
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">K</InputAdornment>
+                      ),
+                    }}
+                    label="Trot"
+                  />
+                </Grid>
+              </>
+            ) : null}
 
             <Grid item xs={4}>
               <TextField
