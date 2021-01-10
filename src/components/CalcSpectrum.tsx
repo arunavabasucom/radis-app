@@ -185,12 +185,6 @@ const CalcSpectrum: React.FC = () => {
         <Grid item xs={4}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <FormControlLabel
-                label="Use non-equilibrium calculations"
-                control={<UseNonEquilibriumCalculations />}
-              />
-            </Grid>
-            <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={1000}
                 maxRange={3000}
@@ -329,6 +323,12 @@ const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
+            <Grid item xs={12}>
+              <FormControlLabel
+                label="Use non-equilibrium calculations"
+                control={<UseNonEquilibriumCalculations />}
+              />
+            </Grid>
             <Grid item xs={12}>
               <SimulateSlit params={params} setParams={setParams} />
             </Grid>
