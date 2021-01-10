@@ -111,13 +111,13 @@ const CalcSpectrum: React.FC = () => {
     updatedValidationErrors.trot = undefined;
     updatedValidationErrors.tvib = undefined;
     if (isNonEquilibrium) {
-      if (!params.tvib) {
-        updatedValidationErrors.tvib =
-          "Tvib must be defined when running non-equilibrium calculations";
-      }
       if (!params.trot) {
         updatedValidationErrors.trot =
           "Trot must be defined when running non-equilibrium calculations";
+      }
+      if (!params.tvib) {
+        updatedValidationErrors.tvib =
+          "Tvib must be defined when running non-equilibrium calculations";
       }
     }
 
@@ -235,30 +235,6 @@ const CalcSpectrum: React.FC = () => {
                 <Grid item xs={4}>
                   <TextField
                     required
-                    id="tvib-input"
-                    error={validationErrors.tvib !== undefined}
-                    helperText={validationErrors.tvib}
-                    value={params.tvib}
-                    type="number"
-                    onChange={(event) =>
-                      setParams({
-                        ...params,
-                        tvib: event.target.value
-                          ? parseFloat(event.target.value)
-                          : null,
-                      })
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">K</InputAdornment>
-                      ),
-                    }}
-                    label="Tvib"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    required
                     id="trot-input"
                     error={validationErrors.trot !== undefined}
                     helperText={validationErrors.trot}
@@ -278,6 +254,30 @@ const CalcSpectrum: React.FC = () => {
                       ),
                     }}
                     label="Trot"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    required
+                    id="tvib-input"
+                    error={validationErrors.tvib !== undefined}
+                    helperText={validationErrors.tvib}
+                    value={params.tvib}
+                    type="number"
+                    onChange={(event) =>
+                      setParams({
+                        ...params,
+                        tvib: event.target.value
+                          ? parseFloat(event.target.value)
+                          : null,
+                      })
+                    }
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">K</InputAdornment>
+                      ),
+                    }}
+                    label="Tvib"
                   />
                 </Grid>
               </>
