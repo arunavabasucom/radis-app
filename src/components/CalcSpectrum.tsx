@@ -85,7 +85,7 @@ const CalcSpectrum: React.FC = () => {
     setPlotWavenumberRange({min: params.min_wavenumber_range, max: params.max_wavenumber_range})
 
     const rawResponse = await fetch(
-      `http://localhost:5000/calc-spectrum?${queryString.stringify(params, {
+      `/calc-spectrum?${queryString.stringify(params, {
         skipNull: true,
       })}`,
       {

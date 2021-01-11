@@ -27,7 +27,7 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/molecules`, {
+    fetch(`/molecules`, {
       method: "GET",
     })
       .then((response) => response.json())
