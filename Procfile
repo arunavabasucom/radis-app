@@ -1,2 +1,2 @@
 web: bin/boot
-server: python3 backend.py
+server: gunicorn --bind 0.0.0:5000 backend:app

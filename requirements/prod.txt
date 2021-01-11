@@ -2,4 +2,5 @@ flask_cors==3.0.10
 flask_limiter==1.4
 flask_pydantic==0.4.0
 flask==1.1.2
+gunicorn==20.0.4
 radis==0.9.27
