@@ -106,4 +106,4 @@ def serve(path):
 
 
 if __name__ == "__main__":
-    app.run(use_reloader=True, threaded=True, port=5000)
+    app.run(port=os.environ.get("PORT", 80))
