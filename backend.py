@@ -2,7 +2,6 @@ from typing import List, Optional
 
 import radis
 from flask import Flask, request
-from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -92,12 +91,6 @@ def molecules():
             set(MOLECULES_LIST_EQUILIBRIUM) | set(MOLECULES_LIST_NONEQUILIBRIUM)
         )
     }
-
-
-@app.route("/")
-@cross_origin()
-def serve():
-    return send_from_directory(app.static_folder, "index.html")
 
 
 if __name__ == "__main__":
