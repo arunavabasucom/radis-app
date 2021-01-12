@@ -1,1 +1,1 @@
-web: yarn global add serve && (serve -s build &) && gunicorn -b localhost:5000 backend:app
+web: (bin/boot &) && gunicorn -b localhost:5000 backend:app
