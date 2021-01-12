@@ -28,7 +28,7 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    axios.get(`/molecules`)
+    axios.get(`http://localhost:5000/molecules`)
       .then((response) => response.data)
       .then((responseData: MoleculesResponseData) =>
         setAllMolecules(responseData.molecules)
