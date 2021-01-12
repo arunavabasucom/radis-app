@@ -18,6 +18,7 @@ import {
 
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
 import ErrorAlert from "./ErrorAlert";
+import axios from "axios";
 
 interface Response<T> {
   data?: T;
@@ -84,18 +85,17 @@ const CalcSpectrum: React.FC = () => {
     setError(undefined);
     setPlotWavenumberRange({min: params.min_wavenumber_range, max: params.max_wavenumber_range})
 
-    const rawResponse = await fetch(
-      `/calc-spectrum?${queryString.stringify(params, {
-        skipNull: true,
-      })}`,
-      {
+    const rawResponse = await axios({
+        url: `/calc-spectrum?${queryString.stringify(params, {
+          skipNull: true,
+        })}`,
         method: "GET",
       }
     );
-    if (!rawResponse.ok) {
+    if (!(rawResponse.statusText === 'OK')) {
       handleBadResponse("Bad response from backend!");
     } else {
-      const response = await rawResponse.json();
+      const response = await rawResponse.data;
       if (response.error) {
         handleBadResponse(response.error);
       } else {

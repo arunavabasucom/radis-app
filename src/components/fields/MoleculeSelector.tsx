@@ -7,6 +7,7 @@ import {
   removeSubscriptsFromMolecule,
 } from "../../utils";
 import './MoleculeSelector.css'
+import axios from "axios";
 
 interface MoleculesResponseData {
   molecules: string[];
@@ -27,10 +28,11 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    fetch(`/molecules`, {
+    axios({
+      url: `/molecules`,
       method: "GET",
     })
-      .then((response) => response.json())
+      .then((response) => response.data)
       .then((responseData: MoleculesResponseData) =>
         setAllMolecules(responseData.molecules)
       );
