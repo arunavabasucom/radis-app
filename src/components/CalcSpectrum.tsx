@@ -85,12 +85,9 @@ const CalcSpectrum: React.FC = () => {
     setError(undefined);
     setPlotWavenumberRange({min: params.min_wavenumber_range, max: params.max_wavenumber_range})
 
-    const rawResponse = await axios({
-        url: `/calc-spectrum?${queryString.stringify(params, {
+    const rawResponse = await axios.get(`/calc-spectrum?${queryString.stringify(params, {
           skipNull: true,
-        })}`,
-        method: "GET",
-      }
+        })}`
     );
     if (!(rawResponse.statusText === 'OK')) {
       handleBadResponse("Bad response from backend!");
