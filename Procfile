@@ -1,1 +1,1 @@
-web: python backend.py
+web: gunicorn -b localhost:$PORT backend:app
