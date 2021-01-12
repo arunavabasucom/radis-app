@@ -3,7 +3,7 @@ from typing import List, Optional
 import radis
 from flask import Flask, request
 from flask.helpers import send_from_directory
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_pydantic import validate
@@ -12,6 +12,8 @@ from radis.db import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
 
 app = Flask(__name__)
 CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
+
 limiter = Limiter(
     app,
     key_func=get_remote_address,
@@ -42,6 +44,7 @@ class ResponseModel(BaseModel):
 
 
 @app.route("/calc-spectrum")
+@cross_origin()
 @limiter.limit("1/second")
 @validate(query=QueryModel)
 def call_calc_spectrum():
@@ -77,6 +80,7 @@ def plot_spectrum(spectrum) -> ResponseModel:
 
 
 @app.route("/molecules")
+@cross_origin()
 def molecules():
     """Get all possible molecules.
 
@@ -91,6 +95,7 @@ def molecules():
 
 
 @app.route("/")
+@cross_origin()
 def serve():
     return send_from_directory(app.static_folder, "index.html")
 
