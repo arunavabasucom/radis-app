@@ -1,2 +1,1 @@
-web: bin/boot
-server: gunicorn -b localhost:5000 backend:app
+web: yarn start && gunicorn -b localhost:5000 backend:app
