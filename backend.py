@@ -10,7 +10,7 @@ from pydantic.main import BaseModel
 from radis.db import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.config["CORS_HEADERS"] = "Content-Type"
 
 limiter = Limiter(
