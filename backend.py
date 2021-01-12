@@ -1,7 +1,9 @@
+import os
 from typing import List, Optional
 
 import radis
 from flask import Flask, request
+from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -9,8 +11,8 @@ from flask_pydantic import validate
 from pydantic.main import BaseModel
 from radis.db import MOLECULES_LIST_EQUILIBRIUM, MOLECULES_LIST_NONEQUILIBRIUM
 
-app = Flask(__name__)
-CORS(app, supports_credentials=True)
+app = Flask(__name__, static_folder="./build")
+CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
 
 limiter = Limiter(
@@ -93,5 +95,15 @@ def molecules():
     }
 
 
+# Serve React App
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
+
+
 if __name__ == "__main__":
-    app.run(threaded=True, port=5000)
+    app.run(use_reloader=True, threaded=True, port=5000)

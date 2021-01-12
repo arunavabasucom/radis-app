@@ -1,1 +1,1 @@
-web: (bin/boot &) && gunicorn -b localhost:5000 backend:app
+web: gunicorn -b localhost:$PORT backend:app
