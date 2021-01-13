@@ -64,7 +64,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 15.x
 
       - name: Install Node.js dependencies
         working-directory: frontend
@@ -75,8 +75,8 @@ jobs:
 
       - name: Test
         run: |
-          make backend &
-          cd frontend && yarn start &
+          PORT=5000 make backend &
+          yarn start &
           make test
 
   # TODO: Add Docker image building + deploy to GitHub Packages
