@@ -61,6 +61,7 @@ def call_calc_spectrum():
             Tvib=request.query_params.tvib,
             Trot=request.query_params.trot,
             path_length=request.query_params.path_length,
+            export_lines=False,
         )
     except radis.misc.warning.EmptyDatabaseError:
         return ResponseModel(error="No line in the specified wavenumber range")
