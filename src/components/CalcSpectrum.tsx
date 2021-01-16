@@ -200,7 +200,6 @@ const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={4}>
               <TextField
-                required
                 id="tgas-input"
                 error={validationErrors.tgas !== undefined}
                 helperText={validationErrors.tgas}
@@ -225,7 +224,6 @@ const CalcSpectrum: React.FC = () => {
               <>
                 <Grid item xs={4}>
                   <TextField
-                    required
                     id="trot-input"
                     error={validationErrors.trot !== undefined}
                     helperText={validationErrors.trot}
@@ -249,7 +247,6 @@ const CalcSpectrum: React.FC = () => {
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
-                    required
                     id="tvib-input"
                     error={validationErrors.tvib !== undefined}
                     helperText={validationErrors.tvib}
@@ -276,7 +273,6 @@ const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={4}>
               <TextField
-                required
                 id="pressure-input"
                 error={validationErrors.pressure !== undefined}
                 value={params.pressure}
@@ -299,7 +295,6 @@ const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={4}>
               <TextField
-                required
                 id="path-length-input"
                 error={validationErrors.path_length !== undefined}
                 value={params.path_length}

@@ -74,7 +74,6 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
     id: string
   ) => (
     <Input
-      required
       id={id}
       className={classes.input}
       value={value}
