@@ -7,7 +7,10 @@ interface SimulateSlitProps {
   setParams: (params: CalcSpectrumParams) => void;
 }
 
-const SimulateSlit: React.FC<SimulateSlitProps> = ({ params, setParams }) => {
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({
+  params,
+  setParams,
+}) => {
   return (
     <FormControlLabel
       control={
@@ -22,5 +25,3 @@ const SimulateSlit: React.FC<SimulateSlitProps> = ({ params, setParams }) => {
     />
   );
 };
-
-export default SimulateSlit;

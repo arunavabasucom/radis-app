@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
+export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   minRange,
   maxRange,
   params,
@@ -117,5 +117,3 @@ const WavelengthRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
     </div>
   );
 };
-
-export default WavelengthRangeSlider;

@@ -16,8 +16,8 @@ import {
   ValidationErrors,
 } from "../constants";
 
-import CalcSpectrumPlot from "./CalcSpectrumPlot";
-import ErrorAlert from "./ErrorAlert";
+import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
+import { ErrorAlert } from "./ErrorAlert";
 import axios from "axios";
 import { TGas } from "./fields/TGas";
 
@@ -35,7 +35,7 @@ const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
 const DEFAULT_TEMPERATURE = 700; // K
 
-const CalcSpectrum: React.FC = () => {
+export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
     Response<CalcSpectrumResponseData> | undefined
   >(undefined);
@@ -365,5 +365,3 @@ const CalcSpectrum: React.FC = () => {
     </>
   );
 };
-
-export default CalcSpectrum;

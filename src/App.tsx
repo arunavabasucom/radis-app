@@ -6,7 +6,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import "fontsource-roboto";
-import CalcSpectrum from "./components/CalcSpectrum";
+import { CalcSpectrum } from "./components/CalcSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
 

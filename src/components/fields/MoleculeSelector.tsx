@@ -19,7 +19,7 @@ interface MoleculeSelectorProps {
   moleculeValidationError?: string;
 }
 
-const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
+export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   params,
   setParams,
   moleculeValidationError,
@@ -65,5 +65,3 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
     />
   );
 };
-
-export default MoleculeSelector;
