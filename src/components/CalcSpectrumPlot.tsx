@@ -1,18 +1,18 @@
 import React from "react";
 import Plot from "react-plotly.js";
-import { CalcSpectrumResponseData, palette } from "../constants";
+import { CalcSpectrumResponseData, palette, Species } from "../constants";
 import { addSubscriptsToMolecule } from "../utils";
 
 interface CalcSpectrumPlotProps {
   data: CalcSpectrumResponseData;
-  molecule: string;
+  species: Species[];
   minWavenumberRange: number;
   maxWavenumberRange: number;
 }
 
 export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
   data,
-  molecule,
+  species,
   minWavenumberRange,
   maxWavenumberRange,
 }) => (
@@ -29,7 +29,16 @@ export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
     layout={{
       width: 800,
       height: 600,
-      title: `Spectrum for ${addSubscriptsToMolecule(molecule)}`,
+      title: `Spectrum for ${species
+        .map(({ molecule, mole_fraction }) => {
+          const moleculeWithSubscripts = addSubscriptsToMolecule(
+            molecule || ""
+          );
+          return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${
+            mole_fraction as number
+          })`;
+        })
+        .join(", ")}`,
       font: { family: "Roboto", color: "#000" },
       xaxis: {
         range: [minWavenumberRange, maxWavenumberRange],

@@ -20,9 +20,13 @@ limiter = Limiter(
 )
 
 
-class QueryModel(BaseModel):
+class Species(BaseModel):
     molecule: str
     mole_fraction: float
+
+
+class RequestModel(BaseModel):
+    species: List[Species]
     min_wavenumber_range: int
     max_wavenumber_range: int
     tgas: float
@@ -43,30 +47,35 @@ class ResponseModel(BaseModel):
     data: Optional[CalcSpectrumResult]
 
 
-@app.route("/calc-spectrum")
+@app.route("/calc-spectrum", methods=["POST"])
 @cross_origin()
 @limiter.limit("1/second")
-@validate(query=QueryModel)
+@validate(body=RequestModel)
 def call_calc_spectrum():
+
     # If too many requests happen at once, RADIS will segfault!
     try:
         spectrum = radis.calc_spectrum(
-            wavenum_min=request.query_params.min_wavenumber_range,
-            wavenum_max=request.query_params.max_wavenumber_range,
-            molecule=request.query_params.molecule,
-            mole_fraction=request.query_params.mole_fraction,
-            isotope="1",
-            pressure=request.query_params.pressure,
-            Tgas=request.query_params.tgas,
-            Tvib=request.query_params.tvib,
-            Trot=request.query_params.trot,
-            path_length=request.query_params.path_length,
+            wavenum_min=request.body_params.min_wavenumber_range,
+            wavenum_max=request.body_params.max_wavenumber_range,
+            molecule=[species.molecule for species in request.body_params.species],
+            mole_fraction={
+                species.molecule: species.mole_fraction
+                for species in request.body_params.species
+            },
+            # TODO: Hard-coding "1" as the isotopologue for the time-being
+            isotope={species.molecule: "1" for species in request.body_params.species},
+            pressure=request.body_params.pressure,
+            Tgas=request.body_params.tgas,
+            Tvib=request.body_params.tvib,
+            Trot=request.body_params.trot,
+            path_length=request.body_params.path_length,
             export_lines=False,
         )
     except radis.misc.warning.EmptyDatabaseError:
         return ResponseModel(error="No line in the specified wavenumber range")
     else:
-        if request.query_params.simulate_slit:
+        if request.body_params.simulate_slit:
             spectrum.apply_slit(0.5, "nm")
 
         return plot_spectrum(spectrum)

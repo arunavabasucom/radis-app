@@ -14,15 +14,17 @@ interface MoleculesResponseData {
 }
 
 interface MoleculeSelectorProps {
+  index: number;
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
-  moleculeValidationError?: string;
+  moleculeValidationErrors: string[];
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
+  index,
   params,
   setParams,
-  moleculeValidationError,
+  moleculeValidationErrors,
 }) => {
   const [allMolecules, setAllMolecules] = useState<string[]>([]);
   const [input, setInput] = useState("");
@@ -43,23 +45,27 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          label="HITRAN 2016 Molecule"
-          error={moleculeValidationError !== undefined}
-          helperText={moleculeValidationError}
+          error={moleculeValidationErrors[index] !== undefined}
+          variant="outlined"
         />
       )}
-      value={addSubscriptsToMolecule(params.molecule)}
+      value={addSubscriptsToMolecule(params.species[index].molecule || "")}
       inputValue={input}
       onInputChange={(_, newInput) =>
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
       onChange={(event: React.ChangeEvent<Record<string, string>>) => {
-        setParams({
-          ...params,
+        const newSpecies = [...params.species];
+        newSpecies[index] = {
+          ...newSpecies[index],
           molecule: event.target.textContent
             ? removeSubscriptsFromMolecule(event.target.textContent)
             : "",
+        };
+        setParams({
+          ...params,
+          species: newSpecies,
         });
       }}
     />
