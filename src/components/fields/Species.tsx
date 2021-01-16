@@ -25,7 +25,6 @@ const Species: React.FC<SpeciesProps> = ({
       </Grid>
       <Grid item xs={4}>
         <TextField
-          required
           id="mole-fraction-input"
           error={validationErrors.mole_fraction !== undefined}
           value={params.mole_fraction}

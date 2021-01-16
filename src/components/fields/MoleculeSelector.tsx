@@ -42,7 +42,6 @@ const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          required
           label="HITRAN 2016 Molecule"
           error={moleculeValidationError !== undefined}
           helperText={moleculeValidationError}
