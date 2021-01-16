@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { CalcSpectrumParams } from "../../constants";
+import { CalcSpectrumParams } from "../../../constants";
 import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
-} from "../../utils";
-import "./MoleculeSelector.css";
+} from "../../../utils";
+import "./index.css";
 import axios from "axios";
 
 interface MoleculesResponseData {
