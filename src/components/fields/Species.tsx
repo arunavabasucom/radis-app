@@ -1,7 +1,7 @@
 import { Grid, TextField } from "@material-ui/core";
 import React from "react";
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
-import MoleculeSelector from "./MoleculeSelector";
+import { MoleculeSelector } from "./MoleculeSelector";
 
 interface SpeciesProps {
   params: CalcSpectrumParams;
@@ -9,7 +9,7 @@ interface SpeciesProps {
   validationErrors: ValidationErrors;
 }
 
-const Species: React.FC<SpeciesProps> = ({
+export const Species: React.FC<SpeciesProps> = ({
   params,
   setParams,
   validationErrors,
@@ -42,5 +42,3 @@ const Species: React.FC<SpeciesProps> = ({
     </Grid>
   );
 };
-
-export default Species;

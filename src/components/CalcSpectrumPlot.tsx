@@ -10,7 +10,7 @@ interface CalcSpectrumPlotProps {
   maxWavenumberRange: number;
 }
 
-const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
+export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
   data,
   molecule,
   minWavenumberRange,
@@ -52,5 +52,3 @@ const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
     }}
   />
 );
-
-export default CalcSpectrumPlot;

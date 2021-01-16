@@ -6,7 +6,7 @@ interface ErrorAlertInterface {
   message: string;
 }
 
-const ErrorAlert: React.FC<ErrorAlertInterface> = ({ message }) => {
+export const ErrorAlert: React.FC<ErrorAlertInterface> = ({ message }) => {
   const [open, setOpen] = useState<boolean>(true);
   return (
     <>
@@ -21,5 +21,3 @@ const ErrorAlert: React.FC<ErrorAlertInterface> = ({ message }) => {
     </>
   );
 };
-
-export default ErrorAlert;
