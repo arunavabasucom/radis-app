@@ -19,6 +19,7 @@ import {
 import CalcSpectrumPlot from "./CalcSpectrumPlot";
 import ErrorAlert from "./ErrorAlert";
 import axios from "axios";
+import { TGas } from "./fields/TGas";
 
 interface Response<T> {
   data?: T;
@@ -59,7 +60,10 @@ const CalcSpectrum: React.FC = () => {
     calcSpectrumButtonDisabled,
     setCalcSpectrumButtonDisabled,
   ] = useState<boolean>(false);
-  const [plotWavenumberRange, setPlotWavenumberRange] = useState<PlotWavenumberRange>({min: undefined, max: undefined});
+  const [
+    plotWavenumberRange,
+    setPlotWavenumberRange,
+  ] = useState<PlotWavenumberRange>({ min: undefined, max: undefined });
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
 
   useEffect(() => {
@@ -83,13 +87,17 @@ const CalcSpectrum: React.FC = () => {
   const calcSpectrumHandler = async (): Promise<void> => {
     setLoading(true);
     setError(undefined);
-    setPlotWavenumberRange({min: params.min_wavenumber_range, max: params.max_wavenumber_range})
+    setPlotWavenumberRange({
+      min: params.min_wavenumber_range,
+      max: params.max_wavenumber_range,
+    });
 
-    const rawResponse = await axios.get(`/calc-spectrum?${queryString.stringify(params, {
-          skipNull: true,
-        })}`
+    const rawResponse = await axios.get(
+      `/calc-spectrum?${queryString.stringify(params, {
+        skipNull: true,
+      })}`
     );
-    if (!(rawResponse.statusText === 'OK')) {
+    if (!(rawResponse.statusText === "OK")) {
       handleBadResponse("Bad response from backend!");
     } else {
       const response = await rawResponse.data;
@@ -163,17 +171,19 @@ const CalcSpectrum: React.FC = () => {
   const hasValidationErrors = (validationErrors: ValidationErrors): boolean =>
     Object.values(validationErrors).some((error: string | undefined) => error);
 
-  const UseNonEquilibriumCalculations = () => <Switch
-    checked={isNonEquilibrium}
-    onChange={(e) => {
-      setIsNonEquilibrium(e.target.checked)
-      if (e.target.checked) {
-        setParams({...params, tvib: params.tgas, trot: params.tgas})
-      } else {
-        setParams({...params, tvib: null, trot: null})
-      }
-    }}
-  />
+  const UseNonEquilibriumCalculations = () => (
+    <Switch
+      checked={isNonEquilibrium}
+      onChange={(e) => {
+        setIsNonEquilibrium(e.target.checked);
+        if (e.target.checked) {
+          setParams({ ...params, tvib: params.tgas, trot: params.tgas });
+        } else {
+          setParams({ ...params, tvib: null, trot: null });
+        }
+      }}
+    />
+  );
 
   return (
     <>
@@ -199,24 +209,10 @@ const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={4}>
-              <TextField
-                id="tgas-input"
-                error={validationErrors.tgas !== undefined}
-                helperText={validationErrors.tgas}
-                value={params.tgas}
-                type="number"
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    tgas: parseFloat(event.target.value),
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">K</InputAdornment>
-                  ),
-                }}
-                label="Tgas"
+              <TGas
+                params={params}
+                setParams={setParams}
+                validationErrors={validationErrors}
               />
             </Grid>
 
@@ -355,8 +351,12 @@ const CalcSpectrum: React.FC = () => {
               <CalcSpectrumPlot
                 data={calcSpectrumResponse.data}
                 molecule={params.molecule}
-                minWavenumberRange={plotWavenumberRange.min || DEFAULT_MIN_WAVENUMBER_RANGE}
-                maxWavenumberRange={plotWavenumberRange.max || DEFAULT_MAX_WAVENUMBER_RANGE}
+                minWavenumberRange={
+                  plotWavenumberRange.min || DEFAULT_MIN_WAVENUMBER_RANGE
+                }
+                maxWavenumberRange={
+                  plotWavenumberRange.max || DEFAULT_MAX_WAVENUMBER_RANGE
+                }
               />
             )
           )}
