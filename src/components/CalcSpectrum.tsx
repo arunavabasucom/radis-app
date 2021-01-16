@@ -22,6 +22,7 @@ import axios from "axios";
 import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";
+import { Pressure } from "./fields/Pressure";
 
 interface Response<T> {
   data?: T;
@@ -238,24 +239,10 @@ export const CalcSpectrum: React.FC = () => {
             ) : null}
 
             <Grid item xs={4}>
-              <TextField
-                id="pressure-input"
-                error={validationErrors.pressure !== undefined}
-                value={params.pressure}
-                type="number"
-                helperText={validationErrors.pressure}
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    pressure: parseFloat(event.target.value),
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">bar</InputAdornment>
-                  ),
-                }}
-                label="Pressure"
+              <Pressure
+                params={params}
+                setParams={setParams}
+                validationErrors={validationErrors}
               />
             </Grid>
 
