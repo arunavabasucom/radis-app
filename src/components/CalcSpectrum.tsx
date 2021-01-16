@@ -21,6 +21,7 @@ import { ErrorAlert } from "./ErrorAlert";
 import axios from "axios";
 import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
+import { TVib } from "./fields/TVib";
 
 interface Response<T> {
   data?: T;
@@ -227,26 +228,10 @@ export const CalcSpectrum: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField
-                    id="tvib-input"
-                    error={validationErrors.tvib !== undefined}
-                    helperText={validationErrors.tvib}
-                    value={params.tvib}
-                    type="number"
-                    onChange={(event) =>
-                      setParams({
-                        ...params,
-                        tvib: event.target.value
-                          ? parseFloat(event.target.value)
-                          : null,
-                      })
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">K</InputAdornment>
-                      ),
-                    }}
-                    label="Tvib"
+                  <TVib
+                    params={params}
+                    setParams={setParams}
+                    validationErrors={validationErrors}
                   />
                 </Grid>
               </>
