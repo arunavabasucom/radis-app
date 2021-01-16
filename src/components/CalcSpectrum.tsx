@@ -20,6 +20,7 @@ import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
 import axios from "axios";
 import { TGas } from "./fields/TGas";
+import { TRot } from "./fields/TRot";
 
 interface Response<T> {
   data?: T;
@@ -219,26 +220,10 @@ export const CalcSpectrum: React.FC = () => {
             {isNonEquilibrium ? (
               <>
                 <Grid item xs={4}>
-                  <TextField
-                    id="trot-input"
-                    error={validationErrors.trot !== undefined}
-                    helperText={validationErrors.trot}
-                    value={params.trot}
-                    type="number"
-                    onChange={(event) =>
-                      setParams({
-                        ...params,
-                        trot: event.target.value
-                          ? parseFloat(event.target.value)
-                          : null,
-                      })
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">K</InputAdornment>
-                      ),
-                    }}
-                    label="Trot"
+                  <TRot
+                    params={params}
+                    setParams={setParams}
+                    validationErrors={validationErrors}
                   />
                 </Grid>
                 <Grid item xs={4}>
