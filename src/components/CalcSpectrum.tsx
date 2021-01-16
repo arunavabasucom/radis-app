@@ -187,6 +187,18 @@ export const CalcSpectrum: React.FC = () => {
     />
   );
 
+  const CalcSpectrumButton: React.FC<{}> = () => (
+    <Button
+      id="calc-spectrum-button"
+      disabled={calcSpectrumButtonDisabled}
+      variant="contained"
+      color="primary"
+      onClick={calcSpectrumHandler}
+    >
+      Calculate spectrum
+    </Button>
+  );
+
   return (
     <>
       {error ? <ErrorAlert message={error} /> : null}
@@ -264,15 +276,7 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button
-                id="calc-spectrum-button"
-                disabled={calcSpectrumButtonDisabled}
-                variant="contained"
-                color="primary"
-                onClick={calcSpectrumHandler}
-              >
-                Calculate spectrum
-              </Button>
+              <CalcSpectrumButton />
             </Grid>
           </Grid>
         </Grid>
