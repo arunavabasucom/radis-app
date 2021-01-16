@@ -37,7 +37,7 @@ const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
 const DEFAULT_TEMPERATURE = 700; // K
 
-export const CalcSpectrum: React.FC = () => {
+export const CalcSpectrum: React.FC<{}> = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
     Response<CalcSpectrumResponseData> | undefined
   >(undefined);
