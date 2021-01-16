@@ -75,18 +75,6 @@ jobs:
 
       - name: Test
         run: |
-          PORT=5000 make backend &
+          make backend &
           yarn start &
           make test
-
-  # TODO: Add Docker image building + deploy to GitHub Packages
-  # CD:
-  #   needs: CI
-  #   if: github.event_name == 'release'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Set up Python
-  #     uses: actions/setup-python@v2
-  #     with:
-  #       python-version: 3.8

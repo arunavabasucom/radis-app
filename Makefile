@@ -7,7 +7,7 @@ install:
 .PHONY: backend
 ## Start the backend
 backend:
-	python backend.py
+	PORT=5000 python backend.py
 
 .PHONY: lint
 ## Lint the frontend and backend
