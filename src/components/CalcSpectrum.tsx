@@ -174,16 +174,21 @@ export const CalcSpectrum: React.FC = () => {
     Object.values(validationErrors).some((error: string | undefined) => error);
 
   const UseNonEquilibriumCalculations = () => (
-    <Switch
-      checked={isNonEquilibrium}
-      onChange={(e) => {
-        setIsNonEquilibrium(e.target.checked);
-        if (e.target.checked) {
-          setParams({ ...params, tvib: params.tgas, trot: params.tgas });
-        } else {
-          setParams({ ...params, tvib: null, trot: null });
-        }
-      }}
+    <FormControlLabel
+      label="Use non-equilibrium calculations"
+      control={
+        <Switch
+          checked={isNonEquilibrium}
+          onChange={(e) => {
+            setIsNonEquilibrium(e.target.checked);
+            if (e.target.checked) {
+              setParams({ ...params, tvib: params.tgas, trot: params.tgas });
+            } else {
+              setParams({ ...params, tvib: null, trot: null });
+            }
+          }}
+        />
+      }
     />
   );
 
@@ -266,10 +271,7 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <FormControlLabel
-                label="Use non-equilibrium calculations"
-                control={<UseNonEquilibriumCalculations />}
-              />
+              <UseNonEquilibriumCalculations />
             </Grid>
             <Grid item xs={12}>
               <SimulateSlit params={params} setParams={setParams} />
