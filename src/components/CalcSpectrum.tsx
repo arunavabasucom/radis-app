@@ -3,8 +3,6 @@ import {
   Grid,
   Button,
   CircularProgress,
-  InputAdornment,
-  TextField,
   Switch,
   FormControlLabel,
 } from "@material-ui/core";
@@ -23,6 +21,7 @@ import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
+import { PathLength } from "./fields/PathLength";
 
 interface Response<T> {
   data?: T;
@@ -247,24 +246,10 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={4}>
-              <TextField
-                id="path-length-input"
-                error={validationErrors.path_length !== undefined}
-                value={params.path_length}
-                type="number"
-                helperText={validationErrors.path_length}
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    path_length: parseFloat(event.target.value),
-                  })
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">cm</InputAdornment>
-                  ),
-                }}
-                label="Path length"
+              <PathLength
+                params={params}
+                setParams={setParams}
+                validationErrors={validationErrors}
               />
             </Grid>
 
