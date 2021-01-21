@@ -27,7 +27,7 @@ const Header: React.FC = () => {
   const classes = useStyles();
   return (
     <AppBar position="static">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Toolbar>
           <Box m={1}>
             <img src={logo} height={50} alt="Radish logo" />

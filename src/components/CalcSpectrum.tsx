@@ -6,11 +6,11 @@ import {
   Switch,
   FormControlLabel,
 } from "@material-ui/core";
-import * as queryString from "query-string";
 import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
+  CalcSpectrumPlotData,
   ValidationErrors,
 } from "../constants";
 
@@ -28,11 +28,6 @@ interface Response<T> {
   error?: string;
 }
 
-interface PlotWavenumberRange {
-  min?: number;
-  max?: number;
-}
-
 const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
 const DEFAULT_TEMPERATURE = 700; // K
@@ -42,8 +37,7 @@ export const CalcSpectrum: React.FC<{}> = () => {
     Response<CalcSpectrumResponseData> | undefined
   >(undefined);
   const [params, setParams] = useState<CalcSpectrumParams>({
-    molecule: "CO",
-    mole_fraction: 1,
+    species: [{ molecule: "CO", mole_fraction: 0.1 }],
     min_wavenumber_range: DEFAULT_MIN_WAVENUMBER_RANGE,
     max_wavenumber_range: DEFAULT_MAX_WAVENUMBER_RANGE,
     tgas: DEFAULT_TEMPERATURE,
@@ -53,19 +47,19 @@ export const CalcSpectrum: React.FC<{}> = () => {
     path_length: 1,
     simulate_slit: false,
   });
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
+    molecule: [],
+    mole_fraction: [],
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [
     calcSpectrumButtonDisabled,
     setCalcSpectrumButtonDisabled,
   ] = useState<boolean>(false);
-  const [
-    plotWavenumberRange,
-    setPlotWavenumberRange,
-  ] = useState<PlotWavenumberRange>({ min: undefined, max: undefined });
+  const [plotData, setPlotData] = useState<CalcSpectrumPlotData | undefined>(
+    undefined
+  );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
 
   useEffect(() => {
@@ -89,16 +83,13 @@ export const CalcSpectrum: React.FC<{}> = () => {
   const calcSpectrumHandler = async (): Promise<void> => {
     setLoading(true);
     setError(undefined);
-    setPlotWavenumberRange({
-      min: params.min_wavenumber_range,
-      max: params.max_wavenumber_range,
+    setPlotData({
+      species: params.species.map((species) => ({ ...species })),
+      minWavenumber: params.min_wavenumber_range,
+      maxWavenumber: params.max_wavenumber_range,
     });
 
-    const rawResponse = await axios.get(
-      `/calc-spectrum?${queryString.stringify(params, {
-        skipNull: true,
-      })}`
-    );
+    const rawResponse = await axios.post(`/calc-spectrum`, params);
     if (!(rawResponse.statusText === "OK")) {
       handleBadResponse("Bad response from backend!");
     } else {
@@ -113,7 +104,10 @@ export const CalcSpectrum: React.FC<{}> = () => {
   };
 
   const validate = (params: CalcSpectrumParams): void => {
-    const updatedValidationErrors: ValidationErrors = {};
+    const updatedValidationErrors: ValidationErrors = {
+      molecule: [],
+      mole_fraction: [],
+    };
 
     updatedValidationErrors.trot = undefined;
     updatedValidationErrors.tvib = undefined;
@@ -128,20 +122,28 @@ export const CalcSpectrum: React.FC<{}> = () => {
       }
     }
 
-    // TODO: Move this to children
-    if (!params.molecule) {
-      updatedValidationErrors.molecule = "Molecule must be defined";
-    } else {
-      updatedValidationErrors.molecule = undefined;
-    }
-    if (Number.isNaN(params.mole_fraction)) {
-      updatedValidationErrors.mole_fraction = "Mole fraction must be defined";
-    } else if (params.mole_fraction < 0) {
-      updatedValidationErrors.mole_fraction =
-        "Mole fraction cannot be negative";
-    } else {
-      updatedValidationErrors.mole_fraction = undefined;
-    }
+    updatedValidationErrors.molecule = new Array(params.species.length).fill(
+      undefined
+    );
+    updatedValidationErrors.mole_fraction = new Array(
+      params.species.length
+    ).fill(undefined);
+
+    params.species.forEach((species, index) => {
+      if (!species.molecule) {
+        updatedValidationErrors.molecule[index] = "Molecule must be defined";
+      }
+      if (
+        species.mole_fraction === undefined ||
+        Number.isNaN(species.mole_fraction)
+      ) {
+        updatedValidationErrors.mole_fraction[index] =
+          "Mole fraction must be defined";
+      } else if (species.mole_fraction && species.mole_fraction < 0) {
+        updatedValidationErrors.mole_fraction[index] =
+          "Mole fraction cannot be negative";
+      }
+    });
 
     if (Number.isNaN(params.tgas)) {
       updatedValidationErrors.tgas = "Tgas must be defined";
@@ -171,7 +173,13 @@ export const CalcSpectrum: React.FC<{}> = () => {
   };
 
   const hasValidationErrors = (validationErrors: ValidationErrors): boolean =>
-    Object.values(validationErrors).some((error: string | undefined) => error);
+    Object.values(
+      validationErrors
+    ).some((error: string | string[] | undefined) =>
+      Array.isArray(error)
+        ? error.some((error: string | undefined) => error)
+        : error
+    );
 
   const UseNonEquilibriumCalculations = () => (
     <FormControlLabel
@@ -207,8 +215,8 @@ export const CalcSpectrum: React.FC<{}> = () => {
   return (
     <>
       {error ? <ErrorAlert message={error} /> : null}
-      <Grid container spacing={1}>
-        <Grid item xs={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={5}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <WavenumberRangeSlider
@@ -216,14 +224,6 @@ export const CalcSpectrum: React.FC<{}> = () => {
                 maxRange={3000}
                 params={params}
                 setParams={setParams}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Species
-                params={params}
-                setParams={setParams}
-                validationErrors={validationErrors}
               />
             </Grid>
 
@@ -271,6 +271,14 @@ export const CalcSpectrum: React.FC<{}> = () => {
             </Grid>
 
             <Grid item xs={12}>
+              <Species
+                params={params}
+                setParams={setParams}
+                validationErrors={validationErrors}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
               <UseNonEquilibriumCalculations />
             </Grid>
             <Grid item xs={12}>
@@ -283,7 +291,7 @@ export const CalcSpectrum: React.FC<{}> = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           {loading ? (
             <div
               style={{
@@ -295,16 +303,13 @@ export const CalcSpectrum: React.FC<{}> = () => {
               <CircularProgress />
             </div>
           ) : (
-            calcSpectrumResponse?.data && (
+            calcSpectrumResponse?.data &&
+            plotData?.species && (
               <CalcSpectrumPlot
                 data={calcSpectrumResponse.data}
-                molecule={params.molecule}
-                minWavenumberRange={
-                  plotWavenumberRange.min || DEFAULT_MIN_WAVENUMBER_RANGE
-                }
-                maxWavenumberRange={
-                  plotWavenumberRange.max || DEFAULT_MAX_WAVENUMBER_RANGE
-                }
+                species={plotData.species}
+                minWavenumberRange={plotData.minWavenumber}
+                maxWavenumberRange={plotData.maxWavenumber}
               />
             )
           )}
