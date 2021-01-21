@@ -45,8 +45,8 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          label="HITRAN 2016 Molecule"
           error={moleculeValidationErrors[index] !== undefined}
-          variant="outlined"
         />
       )}
       value={addSubscriptsToMolecule(params.species[index].molecule || "")}

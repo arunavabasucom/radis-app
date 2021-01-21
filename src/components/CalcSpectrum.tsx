@@ -215,7 +215,7 @@ export const CalcSpectrum: React.FC<{}> = () => {
   return (
     <>
       {error ? <ErrorAlert message={error} /> : null}
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Grid item xs={5}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
