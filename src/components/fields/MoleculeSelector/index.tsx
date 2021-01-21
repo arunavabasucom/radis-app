@@ -47,6 +47,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           {...params}
           label="HITRAN 2016 Molecule"
           error={moleculeValidationErrors[index] !== undefined}
+          autoFocus={index !== 0}
         />
       )}
       value={addSubscriptsToMolecule(params.species[index].molecule || "")}
@@ -55,13 +56,14 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-      onChange={(event: React.ChangeEvent<Record<string, string>>) => {
+      onChange={(
+        _: React.ChangeEvent<Record<string, string>>,
+        value: string | null
+      ) => {
         const newSpecies = [...params.species];
         newSpecies[index] = {
           ...newSpecies[index],
-          molecule: event.target.textContent
-            ? removeSubscriptsFromMolecule(event.target.textContent)
-            : "",
+          molecule: value ? removeSubscriptsFromMolecule(value) : "",
         };
         setParams({
           ...params,
