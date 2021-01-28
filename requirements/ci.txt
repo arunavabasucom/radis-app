@@ -1,4 +1,4 @@
-pre-commit==2.9.3
+pre-commit==2.10.0
 pytest-base-url==1.4.2
 pytest-rerunfailures==9.1.1
 pytest==6.2.1
