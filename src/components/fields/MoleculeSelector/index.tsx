@@ -13,7 +13,7 @@ interface MoleculesResponseData {
   molecules: string[];
 }
 
-interface MoleculeSelectorProps {
+export interface MoleculeSelectorProps {
   index: number;
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
