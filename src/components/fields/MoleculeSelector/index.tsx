@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { CalcSpectrumParams } from "../../../constants";
-import {
-  addSubscriptsToMolecule,
-  removeSubscriptsFromMolecule,
-} from "../../../utils";
+import { addSubscriptsToMolecule } from "../../../utils";
 import "./index.css";
 
 export interface MoleculeSelectorProps {
-  index: number;
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  moleculeValidationErrors: string[];
+  molecule: string;
+  validationError?: string;
   moleculeOptions: string[];
+  handleChange: (
+    _: React.ChangeEvent<Record<string, string>>,
+    value: string | null
+  ) => void;
+  autofocus?: boolean;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
-  index,
-  params,
-  setParams,
-  moleculeValidationErrors,
+  molecule,
+  validationError,
   moleculeOptions,
+  handleChange,
+  autofocus = false,
 }) => {
   const [input, setInput] = useState("");
 
@@ -34,30 +33,17 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         <TextField
           {...params}
           label="HITRAN 2016 Molecule"
-          error={moleculeValidationErrors[index] !== undefined}
-          autoFocus={index !== 0}
+          error={validationError !== undefined}
+          autoFocus={autofocus}
         />
       )}
-      value={addSubscriptsToMolecule(params.species[index].molecule || "")}
+      value={addSubscriptsToMolecule(molecule || "")}
       inputValue={input}
       onInputChange={(_, newInput) =>
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-      onChange={(
-        _: React.ChangeEvent<Record<string, string>>,
-        value: string | null
-      ) => {
-        const newSpecies = [...params.species];
-        newSpecies[index] = {
-          ...newSpecies[index],
-          molecule: value ? removeSubscriptsFromMolecule(value) : "",
-        };
-        setParams({
-          ...params,
-          species: newSpecies,
-        });
-      }}
+      onChange={handleChange}
     />
   );
 };
