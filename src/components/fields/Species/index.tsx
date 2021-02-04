@@ -5,6 +5,7 @@ import { MoleculeSelector } from "../MoleculeSelector";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 import "./index.css";
+import { removeSubscriptsFromMolecule } from "../../../utils";
 
 interface SpeciesProps {
   params: CalcSpectrumParams;
@@ -25,11 +26,24 @@ export const Species: React.FC<SpeciesProps> = ({
         <>
           <Grid item xs={7}>
             <MoleculeSelector
-              index={index}
-              params={params}
-              setParams={setParams}
-              moleculeValidationErrors={validationErrors.molecule}
+              molecule={params.species[index].molecule || ""}
+              validationError={validationErrors.molecule[index]}
               moleculeOptions={moleculeOptions}
+              handleChange={(
+                _: React.ChangeEvent<Record<string, string>>,
+                value: string | null
+              ) => {
+                const newSpecies = [...params.species];
+                newSpecies[index] = {
+                  ...newSpecies[index],
+                  molecule: value ? removeSubscriptsFromMolecule(value) : "",
+                };
+                setParams({
+                  ...params,
+                  species: newSpecies,
+                });
+              }}
+              autofocus={index !== 0}
             />
           </Grid>
           <Grid item xs={4}>
