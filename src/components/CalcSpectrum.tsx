@@ -61,6 +61,7 @@ export const CalcSpectrum: React.FC<{}> = () => {
     undefined
   );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
+  const [moleculeOptions, setMoleculeOptions] = useState<string[]>([]);
 
   useEffect(() => {
     validate(params);
@@ -73,6 +74,15 @@ export const CalcSpectrum: React.FC<{}> = () => {
       setCalcSpectrumButtonDisabled(false);
     }
   }, [validationErrors]);
+
+  useEffect(() => {
+    axios
+      .get(`/molecules`)
+      .then((response) => response.data)
+      .then((responseData: { molecules: string[] }) =>
+        setMoleculeOptions(responseData.molecules)
+      );
+  }, []);
 
   const handleBadResponse = (message: string) => {
     // Clear any existing data
@@ -275,6 +285,7 @@ export const CalcSpectrum: React.FC<{}> = () => {
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}
+                moleculeOptions={moleculeOptions}
               />
             </Grid>
 

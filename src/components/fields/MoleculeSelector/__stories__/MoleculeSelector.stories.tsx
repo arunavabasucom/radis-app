@@ -27,4 +27,5 @@ Primary.args = {
   },
   setParams: (_) => null,
   moleculeValidationErrors: [],
+  moleculeOptions: ["H2O", "H2O2", "CO", "CO2", "COCl2", "CF4", "SF6"],
 };
