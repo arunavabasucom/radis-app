@@ -21,7 +21,7 @@ export const Species: React.FC<SpeciesProps> = ({
   moleculeOptions,
 }) => {
   return (
-    <Grid container spacing={1} alignItems="flex-end">
+    <Grid container spacing={1}>
       {params.species.map((species, index) => (
         <>
           <Grid item xs={7}>
@@ -48,6 +48,7 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={4}>
             <TextField
+              fullWidth
               id="mole-fraction-input"
               label="Mole Fraction"
               error={validationErrors.mole_fraction[index] !== undefined}
@@ -70,7 +71,6 @@ export const Species: React.FC<SpeciesProps> = ({
             {index === 0 ? (
               <IconButton
                 color="primary"
-                style={{ marginTop: 10, marginRight: 20 }}
                 onClick={() =>
                   setParams({
                     ...params,

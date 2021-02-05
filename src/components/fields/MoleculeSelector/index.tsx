@@ -32,6 +32,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          fullWidth
           label="HITRAN 2016 Molecule"
           error={validationError !== undefined}
           autoFocus={autofocus}
