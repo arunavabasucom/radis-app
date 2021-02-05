@@ -7,7 +7,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import "./index.css";
 import { removeSubscriptsFromMolecule } from "../../../utils";
 
-interface SpeciesProps {
+export interface SpeciesProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
