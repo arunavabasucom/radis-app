@@ -29,3 +29,10 @@ PreFilled.args = {
   molecule: "H2O",
 };
 PreFilled.argTypes = { ...Primary.argTypes };
+
+export const ValidationError = Template.bind({});
+ValidationError.args = {
+  ...Primary.args,
+  validationError: "It's no good",
+};
+ValidationError.argTypes = { ...Primary.argTypes };
