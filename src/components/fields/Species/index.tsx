@@ -21,7 +21,7 @@ export const Species: React.FC<SpeciesProps> = ({
   moleculeOptions,
 }) => {
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={3}>
       {params.species.map((species, index) => (
         <>
           <Grid item xs={7}>
