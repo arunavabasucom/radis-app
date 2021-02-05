@@ -1,6 +1,6 @@
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { useState } from "react";
-import { MoleculeSelector, MoleculeSelectorProps } from "..";
+import { useArgs } from "@storybook/client-api";
+import { MoleculeSelector, MoleculeSelectorProps } from "../MoleculeSelector";
 
 export default {
   title: "Fields/MoleculeSelector",
@@ -8,25 +8,24 @@ export default {
 } as Meta;
 
 const Template: Story<MoleculeSelectorProps> = (args) => {
-  const [molecule, setMolecule] = useState("CO2");
+  const [, updateArgs] = useArgs();
   const handleChange = (_: any, value: string | null) => {
-    setMolecule(value || "");
+    updateArgs({ molecule: value || "" });
   };
-  return (
-    <MoleculeSelector
-      {...args}
-      molecule={molecule}
-      handleChange={handleChange}
-    />
-  );
+  return <MoleculeSelector {...args} handleChange={handleChange} />;
 };
 
 export const Primary = Template.bind({});
 Primary.args = {
   moleculeOptions: ["H2O", "H2O2", "CO", "CO2", "COCl2", "CF4", "SF6"],
 };
-// TODO: Can I set this at the template-level?
 Primary.argTypes = {
-  molecule: { table: { disable: true } },
   handleChange: { table: { disable: true } },
 };
+
+export const PreFilled = Template.bind({});
+PreFilled.args = {
+  ...Primary.args,
+  molecule: "H2O",
+};
+PreFilled.argTypes = { ...Primary.argTypes };
