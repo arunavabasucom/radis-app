@@ -74,6 +74,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
     id: string
   ) => (
     <Input
+      fullWidth
       id={id}
       className={classes.input}
       value={value}

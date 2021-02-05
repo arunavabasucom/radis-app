@@ -14,6 +14,7 @@ export const TVib: React.FC<TVibProps> = ({
   validationErrors,
 }) => (
   <TextField
+    fullWidth
     id="tvib-input"
     error={validationErrors.tvib !== undefined}
     helperText={validationErrors.tvib}

@@ -46,7 +46,7 @@ export const Species: React.FC<SpeciesProps> = ({
               autofocus={index !== 0}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               fullWidth
               id="mole-fraction-input"
@@ -67,7 +67,7 @@ export const Species: React.FC<SpeciesProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             {index === 0 ? (
               <IconButton
                 color="primary"

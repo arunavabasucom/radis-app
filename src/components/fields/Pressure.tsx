@@ -14,6 +14,7 @@ export const Pressure: React.FC<PressureProps> = ({
   validationErrors,
 }) => (
   <TextField
+    fullWidth
     id="pressure-input"
     error={validationErrors.pressure !== undefined}
     value={params.pressure}

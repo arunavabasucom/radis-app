@@ -14,6 +14,7 @@ export const TRot: React.FC<TRotProps> = ({
   validationErrors,
 }) => (
   <TextField
+    fullWidth
     id="trot-input"
     error={validationErrors.trot !== undefined}
     helperText={validationErrors.trot}

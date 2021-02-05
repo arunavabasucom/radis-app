@@ -14,6 +14,7 @@ export const PathLength: React.FC<PathLengthProps> = ({
   validationErrors,
 }) => (
   <TextField
+    fullWidth
     id="path-length-input"
     error={validationErrors.path_length !== undefined}
     value={params.path_length}
