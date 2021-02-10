@@ -71,6 +71,9 @@ def call_calc_spectrum():
             Trot=request.body_params.trot,
             path_length=request.body_params.path_length,
             export_lines=False,
+            warnings={
+                "AccuracyError": "warn",  # do not raise error if grid too coarse. Discard once we have wstep='auto'. https://github.com/radis/radis/issues/184
+            },
         )
     except radis.misc.warning.EmptyDatabaseError:
         return ResponseModel(error="No line in the specified wavenumber range")
