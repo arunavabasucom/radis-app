@@ -157,8 +157,8 @@ export const CalcSpectrum: React.FC<{}> = () => {
 
     if (Number.isNaN(params.tgas)) {
       updatedValidationErrors.tgas = "Tgas must be defined";
-    } else if (params.tgas < 70 || params.tgas > 3000) {
-      updatedValidationErrors.tgas = "Tgas must be between 70K and 3000K";
+    } else if (params.tgas < 1 || params.tgas > 9000) {
+      updatedValidationErrors.tgas = "Tgas must be between 1K and 9000K";
     } else {
       updatedValidationErrors.tgas = undefined;
     }

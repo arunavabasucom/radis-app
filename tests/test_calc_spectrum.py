@@ -25,12 +25,12 @@ def test_tgas(sb):
     sb.assert_text("Tgas must be defined")
     sb.assert_element("#calc-spectrum-button:disabled")
 
-    sb.type("#tgas-input", "1")
-    sb.assert_text("Tgas must be between 70K and 3000K")
+    sb.type("#tgas-input", "0")
+    sb.assert_text("Tgas must be between 1K and 9000K")
     sb.assert_element("#calc-spectrum-button:disabled")
 
-    sb.type("#tgas-input", "4000")
-    sb.assert_text("Tgas must be between 70K and 3000K")
+    sb.type("#tgas-input", "10000")
+    sb.assert_text("Tgas must be between 1K and 9000K")
     sb.assert_element("#calc-spectrum-button:disabled")
 
     sb.type("#tgas-input", "80")
