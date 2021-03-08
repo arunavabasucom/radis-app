@@ -1,4 +1,4 @@
 pre-commit==2.11.0
 pytest-base-url==1.4.2
 pytest-rerunfailures==9.1.1
-seleniumbase==1.56.7
+seleniumbase==1.57.0
