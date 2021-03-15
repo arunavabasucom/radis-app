@@ -58,7 +58,7 @@
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.1.17",
     "@types/react-plotly.js": "^2.2.4",
-    "eslint": "^7.21.0",
+    "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
