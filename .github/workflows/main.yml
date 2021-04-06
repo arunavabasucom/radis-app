@@ -67,7 +67,6 @@ jobs:
           node-version: 15.x
 
       - name: Install Node.js dependencies
-        working-directory: frontend
         run: yarn install --frozen-lockfile
 
       - name: Lint
