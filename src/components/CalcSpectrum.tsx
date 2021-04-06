@@ -6,17 +6,17 @@ import {
   Switch,
   FormControlLabel,
 } from "@material-ui/core";
-import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
+import axios from "axios";
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
   CalcSpectrumPlotData,
   ValidationErrors,
 } from "../constants";
+import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
 
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
-import axios from "axios";
 import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";

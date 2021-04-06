@@ -1,9 +1,9 @@
 import { IconButton, Grid, TextField } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams, ValidationErrors } from "../../../constants";
-import { MoleculeSelector } from "../MoleculeSelector";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
+import { CalcSpectrumParams, ValidationErrors } from "../../../constants";
+import { MoleculeSelector } from "../MoleculeSelector";
 import "./index.css";
 import { removeSubscriptsFromMolecule } from "../../../utils";
 

@@ -21,5 +21,8 @@
         "@typescript-eslint/ban-ts-comment": "off"
       }
     }
-  ]
+  ],
+  "rules": {
+    "import/order": "error"
+  }
 }
