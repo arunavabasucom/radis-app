@@ -90,7 +90,8 @@ export const CalcSpectrum: React.FC = () => {
     setError(message);
   };
 
-  const calcSpectrumHandler = async (): Promise<void> => {
+  const onSubmitHandler = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -216,14 +217,14 @@ export const CalcSpectrum: React.FC = () => {
       disabled={calcSpectrumButtonDisabled}
       variant="contained"
       color="primary"
-      onClick={calcSpectrumHandler}
+      type="submit"
     >
       Calculate spectrum
     </Button>
   );
 
   return (
-    <>
+    <form onSubmit={onSubmitHandler}>
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
         <Grid item xs={5}>
@@ -326,6 +327,6 @@ export const CalcSpectrum: React.FC = () => {
           )}
         </Grid>
       </Grid>
-    </>
+    </form>
   );
 };
