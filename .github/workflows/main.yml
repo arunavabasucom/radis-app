@@ -48,9 +48,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
-      - name: AWS CDK GitHub Actions
-        uses: youyo/aws-cdk-github-actions@v2.0.0
-
       - name: Install the backend
         run: |
           pip install -U pip setuptools wheel
@@ -85,8 +82,10 @@ jobs:
           yarn start &
           make test
 
-          # Make sure CloudFormation template generates without error
-          cdk synth
+      - name: Test template generation
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: "synth"
 
   CD:
     needs: CI
@@ -112,8 +111,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
-      - name: AWS CDK GitHub Actions
-        uses: youyo/aws-cdk-github-actions@v2.0.0
-
       - name: Deploy stack to AWS
-        run: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: "deploy"
+          actions_comment: false
