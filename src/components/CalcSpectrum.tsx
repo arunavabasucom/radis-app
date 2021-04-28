@@ -194,7 +194,7 @@ export const CalcSpectrum: React.FC = () => {
 
   const UseNonEquilibriumCalculations = () => (
     <FormControlLabel
-      label="Use non-equilibrium calculations"
+      label="Use non-equilibrium calculations (CO only)"
       control={
         <Switch
           checked={isNonEquilibrium}
