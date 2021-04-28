@@ -4,9 +4,6 @@ on:
   pull_request:
   push:
     branches: [master]
-  release:
-    branches: [master]
-    types: [published]
 
 jobs:
   cancel_previous_runs:
@@ -44,6 +41,16 @@ jobs:
           path: ~/.cache/pre-commit
           key: ${{ runner.os }}-pre-commit-${{ matrix.python-version }}-${{ hashFiles('**/requirements/ci.txt') }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: AWS CDK GitHub Actions
+        uses: youyo/aws-cdk-github-actions@v2.0.0
+
       - name: Install the backend
         run: |
           pip install -U pip setuptools wheel
@@ -77,3 +84,36 @@ jobs:
           make backend &
           yarn start &
           make test
+
+          # Make sure CloudFormation template generates without error
+          cdk synth
+
+  CD:
+    needs: CI
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: AWS CDK GitHub Actions
+        uses: youyo/aws-cdk-github-actions@v2.0.0
+
+      - name: Deploy stack to AWS
+        run: cdk deploy
