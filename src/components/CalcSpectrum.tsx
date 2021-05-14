@@ -232,7 +232,7 @@ export const CalcSpectrum: React.FC = () => {
             <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={1}
-                maxRange={30000}
+                maxRange={5000}
                 params={params}
                 setParams={setParams}
               />
