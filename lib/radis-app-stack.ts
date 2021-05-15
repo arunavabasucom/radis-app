@@ -4,7 +4,7 @@ import * as s3 from "@aws-cdk/aws-s3";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as apigw from "@aws-cdk/aws-apigateway";
 import { inlineSource } from "./inline-source";
-import { Duration } from "@aws-cdk/core";
+import { Duration, RemovalPolicy } from "@aws-cdk/core";
 
 export class RadisAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -45,6 +45,8 @@ export class RadisAppStack extends cdk.Stack {
       bucketName: "radis.app",
       websiteIndexDocument: "index.html",
       publicReadAccess: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
 
     const configSource = inlineSource(
