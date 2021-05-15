@@ -11,15 +11,20 @@
 
 ## Development
 
-Install and deploy the backend to your AWS account:
+Install all dependencies:
 
 ```sh
 $ yarn install
-$ yarn cdk deploy
 ```
 
-Start the frontend:
+Start the frontend locally:
 
 ```sh
 $ cd website/ && yarn start
+```
+
+Deploy the backend to your AWS account:
+
+```sh
+$ yarn build && yarn cdk deploy
 ```
