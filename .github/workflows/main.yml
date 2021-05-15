@@ -32,7 +32,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 15.x
+          node-version: 14.x
 
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
