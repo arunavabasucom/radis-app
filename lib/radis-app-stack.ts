@@ -42,6 +42,7 @@ export class RadisAppStack extends cdk.Stack {
     calculateSpectrum.addMethod("POST");
 
     const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
+      bucketName: "radis.app",
       websiteIndexDocument: "index.html",
       publicReadAccess: true,
     });
