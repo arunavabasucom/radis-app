@@ -1,53 +1,14 @@
 name: GH
 
 on:
-  pull_request:
   push:
     branches: [master]
-  release:
-    branches: [master]
-    types: [published]
 
 jobs:
-  cancel_previous_runs:
-    if: github.event_name == 'pull_request'
+  CD:
     runs-on: ubuntu-latest
-    steps:
-      - uses: n1hility/cancel-previous-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-  CI:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Pip cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements/*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Pre-commit cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-pre-commit-${{ matrix.python-version }}-${{ hashFiles('**/requirements/ci.txt') }}-${{ hashFiles('.pre-commit-config.yaml') }}
-
-      - name: Install the backend
-        run: |
-          pip install -U pip setuptools wheel
-          make install
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -69,11 +30,5 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: make lint
-
-      - name: Test
-        run: |
-          make backend &
-          yarn start &
-          make test
+      - name: Deploy to AWS
+        run: yarn cdk deploy
