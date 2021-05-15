@@ -38,4 +38,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Deploy to AWS
-        run: yarn build && yarn cdk deploy --ci --require-approval never
+        run: CI=false yarn build && yarn cdk deploy --ci --require-approval never
