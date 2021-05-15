@@ -38,4 +38,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Deploy to AWS
-        run: yarn cdk deploy
+        run: yarn cdk deploy --ci
