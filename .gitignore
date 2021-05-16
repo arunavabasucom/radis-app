@@ -123,4 +123,5 @@ dist
 cdk.out
 
 *.js
+!lib/inline-lambda/index.js
 *.d.ts
