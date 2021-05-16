@@ -38,4 +38,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Deploy to AWS
+        env:
+          PUBLIC_URL: https://dmy1b6c4l1fk.cloudfront.net
         run: CI=false yarn build && yarn cdk deploy --ci --require-approval never
