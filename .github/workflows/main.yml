@@ -39,5 +39,5 @@ jobs:
 
       - name: Deploy to AWS
         env:
-          PUBLIC_URL: https://dmy1b6c4l1fk.cloudfront.net
+          PUBLIC_URL: https://www.radis.app
         run: CI=false yarn build && yarn cdk deploy --ci --require-approval never
