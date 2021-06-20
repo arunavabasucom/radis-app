@@ -147,12 +147,10 @@ export const CalcSpectrum: React.FC = () => {
     });
 
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      console.log({ apiEndpoint: module.apiEndpoint });
       const rawResponse = await axios.post(
         module.apiEndpoint + `calculate-spectrum`,
         params
       );
-      console.log({ rawResponse });
       if (
         rawResponse.data.data === undefined &&
         rawResponse.data.error === undefined
