@@ -33,7 +33,7 @@ const Header: React.FC = () => {
             <img src={logo} height={50} alt="Radish logo" />
           </Box>
           <Typography variant="h6" className={classes.title}>
-            RADIS UI
+            RADIS app
           </Typography>
         </Toolbar>
       </Container>
