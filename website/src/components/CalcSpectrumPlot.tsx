@@ -53,10 +53,9 @@ export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
         type: "linear",
       },
       yaxis: {
-        autorange: true,
         title: { text: "Radiance (mW/cm²/sr/nm)" },
         type: "linear",
-        fixedrange: false,
+        fixedrange: true,
       },
     }}
   />
