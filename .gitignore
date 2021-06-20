@@ -122,6 +122,9 @@ dist
 .cdk.staging
 cdk.out
 
+# AWS SAM
+.aws-sam/
+
 *.js
 !lib/inline-lambda/index.js
 *.d.ts
