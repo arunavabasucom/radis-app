@@ -1,10 +1,19 @@
 import React from "react";
-import { AppBar, Box, Container, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Container,
+  IconButton,
+  Popover,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import {
   makeStyles,
   createMuiTheme,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import InfoIcon from "@material-ui/icons/Info";
 import "fontsource-roboto";
 import { CalcSpectrum } from "./components/CalcSpectrum";
 import { palette } from "./constants";
@@ -23,6 +32,58 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const InfoPopover = () => {
+  const [anchorEl, setAnchorEl] =
+    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  return (
+    <div>
+      <IconButton onClick={handleClick}>
+        <InfoIcon style={{ color: "white" }} />
+      </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Typography style={{ width: 300, padding: 10 }}>
+          Powered by{" "}
+          <a href="https://radis.github.io/" rel="noreferrer">
+            RADIS
+          </a>
+          .<br />
+          <br />
+          For research-grade use, start{" "}
+          <a href="https://radis.github.io/radis-lab/" rel="noreferrer">
+            Radis-Lab
+          </a>{" "}
+          with precomputed databases and an online Jupyter environment.
+        </Typography>
+      </Popover>
+    </div>
+  );
+};
+
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
@@ -35,6 +96,7 @@ const Header: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             RADIS app
           </Typography>
+          <InfoPopover />
         </Toolbar>
       </Container>
     </AppBar>
