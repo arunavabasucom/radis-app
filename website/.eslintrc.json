@@ -18,7 +18,8 @@
       "files": ["**/*.tsx"],
       "rules": {
         "react/prop-types": "off",
-        "@typescript-eslint/ban-ts-comment": "off"
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off"
       }
     }
   ],

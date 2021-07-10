@@ -1,27 +1,22 @@
 import { FormControlLabel, Switch } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams } from "../../constants";
+import { Controller, Control } from "react-hook-form";
+import { FormValues } from "../types";
 
 interface SimulateSlitProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
+  control: Control<FormValues>;
 }
 
-export const SimulateSlit: React.FC<SimulateSlitProps> = ({
-  params,
-  setParams,
-}) => {
-  return (
-    <FormControlLabel
-      control={
-        <Switch
-          checked={params.simulate_slit}
-          onChange={() =>
-            setParams({ ...params, simulate_slit: !params.simulate_slit })
-          }
-        />
-      }
-      label="Simulate an experimental slit"
-    />
-  );
-};
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
+  <Controller
+    name="simulate_slit"
+    control={control}
+    defaultValue={false}
+    render={({ field: { onChange, value } }) => (
+      <FormControlLabel
+        control={<Switch checked={value} onChange={onChange} />}
+        label="Simulate an experimental slit"
+      />
+    )}
+  />
+);

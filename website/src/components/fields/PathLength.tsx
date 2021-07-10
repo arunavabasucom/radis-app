@@ -1,34 +1,35 @@
 import { TextField, InputAdornment } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
+import { Controller, Control } from "react-hook-form";
+import { ValidationErrors } from "../../constants";
+import { FormValues } from "../types";
 
 interface PathLengthProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
+  control: Control<FormValues>;
 }
 
 export const PathLength: React.FC<PathLengthProps> = ({
-  params,
-  setParams,
   validationErrors,
+  control,
 }) => (
-  <TextField
-    fullWidth
-    id="path-length-input"
-    error={validationErrors.path_length !== undefined}
-    value={params.path_length}
-    type="number"
-    helperText={validationErrors.path_length}
-    onChange={(event) =>
-      setParams({
-        ...params,
-        path_length: parseFloat(event.target.value),
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-    }}
-    label="Path length"
+  <Controller
+    name="path_length"
+    control={control}
+    defaultValue={1}
+    render={({ field: { onChange, value } }) => (
+      <TextField
+        fullWidth
+        id="path-length-input"
+        value={value}
+        type="number"
+        helperText={validationErrors.path_length}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+        }}
+        label="Path length"
+      />
+    )}
   />
 );

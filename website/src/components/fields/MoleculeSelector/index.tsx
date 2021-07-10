@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { addSubscriptsToMolecule } from "../../../utils";
+import {
+  addSubscriptsToMolecule,
+  removeSubscriptsFromMolecule,
+} from "../../../utils";
 import "./index.css";
 import { moleculeOptions } from "./molecules";
 
 export interface MoleculeSelectorProps {
-  molecule: string;
   validationError?: string;
-  handleChange: (
-    _: React.ChangeEvent<Record<string, string>>,
-    value: string | null
-  ) => void;
   autofocus?: boolean;
+  onChange: (...event: string[]) => void;
+  value: string;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
-  molecule,
   validationError,
-  handleChange,
   autofocus = false,
+  onChange,
+  value,
 }) => {
   const [input, setInput] = useState("");
 
@@ -37,13 +37,19 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           autoFocus={autofocus}
         />
       )}
-      value={addSubscriptsToMolecule(molecule || "")}
+      value={addSubscriptsToMolecule(value || "")}
       inputValue={input}
-      onInputChange={(_, newInput) =>
-        setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
-      }
+      onInputChange={(_, newInput) => {
+        setInput(addSubscriptsToMolecule(newInput.toUpperCase()));
+      }}
       renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-      onChange={handleChange}
+      onChange={(
+        _: React.ChangeEvent<Record<string, string>>,
+        value: string | null
+      ) => {
+        const newMolecule = value ? removeSubscriptsFromMolecule(value) : "";
+        onChange(newMolecule);
+      }}
     />
   );
 };

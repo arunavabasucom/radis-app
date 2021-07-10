@@ -1,34 +1,34 @@
 import { InputAdornment, TextField } from "@material-ui/core";
 import React from "react";
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
+import { Controller, Control } from "react-hook-form";
+import { ValidationErrors } from "../../constants";
+import { FormValues } from "../types";
 
 interface TVibProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
+  control: Control<FormValues>;
 }
 
-export const TVib: React.FC<TVibProps> = ({
-  params,
-  setParams,
-  validationErrors,
-}) => (
-  <TextField
-    fullWidth
-    id="tvib-input"
-    error={validationErrors.tvib !== undefined}
-    helperText={validationErrors.tvib}
-    value={params.tvib}
-    type="number"
-    onChange={(e) =>
-      setParams({
-        ...params,
-        tvib: e.target.value ? parseFloat(e.target.value) : null,
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">K</InputAdornment>,
-    }}
-    label="Tvib"
+export const TVib: React.FC<TVibProps> = ({ validationErrors, control }) => (
+  <Controller
+    name="tvib"
+    control={control}
+    defaultValue={undefined}
+    render={({ field: { onChange, value } }) => (
+      <TextField
+        fullWidth
+        id="tvib-input"
+        helperText={validationErrors.tvib}
+        value={value}
+        type="number"
+        onChange={(e) =>
+          onChange(e.target.value ? parseFloat(e.target.value) : undefined)
+        }
+        InputProps={{
+          endAdornment: <InputAdornment position="end">K</InputAdornment>,
+        }}
+        label="Tvib"
+      />
+    )}
   />
 );
