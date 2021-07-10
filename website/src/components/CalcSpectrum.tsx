@@ -31,57 +31,6 @@ interface Response<T> {
 const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
 const DEFAULT_TEMPERATURE = 700; // K
-const MOLECULE_OPTIONS = [
-  "PH3",
-  "C4H2",
-  "C2H2",
-  "CO2",
-  "SO2",
-  "SF6",
-  "HCN",
-  "O",
-  "NO2",
-  "ClO",
-  "N2",
-  "HOBr",
-  "C2H6",
-  "CH3Cl",
-  "N2O",
-  "H2O",
-  "HO2",
-  "H2O2",
-  "H2CO",
-  "SO3",
-  "CS",
-  "CH4",
-  "NH3",
-  "HCOOH",
-  "OH",
-  "O2",
-  "HI",
-  "OCS",
-  "H2S",
-  "CO",
-  "CH3OH",
-  "HBr",
-  "HOCl",
-  "ClONO2",
-  "HC3N",
-  "COF2",
-  "NO",
-  "HCl",
-  "HNO3",
-  "CH3Br",
-  "CF4",
-  "C2N2",
-  "C2H4",
-  "COCl2",
-  "CH3CN",
-  "HF",
-  "H2",
-  "NO+",
-  "O3",
-];
 
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
@@ -339,7 +288,6 @@ export const CalcSpectrum: React.FC = () => {
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}
-                moleculeOptions={MOLECULE_OPTIONS}
               />
             </Grid>
 

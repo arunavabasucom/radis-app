@@ -3,11 +3,11 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { addSubscriptsToMolecule } from "../../../utils";
 import "./index.css";
+import { moleculeOptions } from "./molecules";
 
 export interface MoleculeSelectorProps {
   molecule: string;
   validationError?: string;
-  moleculeOptions: string[];
   handleChange: (
     _: React.ChangeEvent<Record<string, string>>,
     value: string | null
@@ -18,7 +18,6 @@ export interface MoleculeSelectorProps {
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   molecule,
   validationError,
-  moleculeOptions,
   handleChange,
   autofocus = false,
 }) => {
