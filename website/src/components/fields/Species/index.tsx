@@ -11,14 +11,12 @@ export interface SpeciesProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
-  moleculeOptions: string[];
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   params,
   setParams,
   validationErrors,
-  moleculeOptions,
 }) => {
   return (
     <Grid container spacing={3}>
@@ -28,7 +26,6 @@ export const Species: React.FC<SpeciesProps> = ({
             <MoleculeSelector
               molecule={params.species[index].molecule || ""}
               validationError={validationErrors.molecule[index]}
-              moleculeOptions={moleculeOptions}
               handleChange={(
                 _: React.ChangeEvent<Record<string, string>>,
                 value: string | null
