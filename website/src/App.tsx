@@ -75,9 +75,9 @@ const InfoPopover = () => {
           <br />
           For research-grade use, start{" "}
           <a href="https://radis.github.io/radis-lab/" rel="noreferrer">
-            Radis-Lab
+            🌱 Radis-Lab
           </a>{" "}
-          with precomputed databases and an online Jupyter environment.
+          with preconfigured databases (HITRAN, HITEMP) and an online Python Jupyter environment (no install needed).
         </Typography>
       </Popover>
     </div>
