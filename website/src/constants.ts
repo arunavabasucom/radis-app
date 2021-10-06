@@ -13,6 +13,7 @@ export interface CalcSpectrumParams {
   pressure: number;
   path_length: number;
   simulate_slit: boolean;
+  mode: "radiance_noslit" | "transmittance_noslit" | "abscoeff";
 }
 
 export interface CalcSpectrumResponseData {

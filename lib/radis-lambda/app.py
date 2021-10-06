@@ -68,9 +68,8 @@ def lambda_handler(event, context):
             spectrum.apply_slit(0.5, "nm")
 
         wunit = spectrum.get_waveunit()
-        var = "radiance_noslit"
         iunit = "default"
-        x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
+        x, y = spectrum.get(payload["mode"], wunit=wunit, Iunit=iunit)
 
         return {
             "statusCode": 200,
