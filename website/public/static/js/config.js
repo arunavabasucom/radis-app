@@ -1,2 +1,1 @@
-export const apiEndpoint =
-  "https://0cfrg17v18.execute-api.us-east-2.amazonaws.com/prod/";
+export const apiEndpoint = "http://localhost:8010/proxy/";

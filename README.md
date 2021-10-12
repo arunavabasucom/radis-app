@@ -28,10 +28,12 @@ Deploy the backend to your AWS account:
 $ yarn build && yarn cdk deploy
 ```
 
-To change which API endpoint the app uses, adjust `website/static/js/config.js`:
+Alternatively, to run the backend locally, please follow the installation instructions [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk-getting-started.html) to install the `sam-beta-cdk` executable. Then run the following commands:
 
-```js
-// Use production API endpoint
-export const apiEndpoint =
-  "https://0cfrg17v18.execute-api.us-east-2.amazonaws.com/prod/";
+```sh
+# For some reason we need to build first or else the image name will be invalid for Docker to invoke
+$ sam-beta-cdk build RadisAppStack/CalculateSpectrumFunction
+$ sam-beta-cdk local start-api
+# Run in a new session, needed for CORS to work
+$ npx lcp --proxyUrl http://127.0.0.1:3000/
 ```
