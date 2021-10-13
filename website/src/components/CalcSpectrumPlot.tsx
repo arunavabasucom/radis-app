@@ -21,6 +21,7 @@ export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
   let modeLabel;
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
+    data.units = "-ln(I/I0)";
   } else if (mode === "transmittance_noslit") {
     modeLabel = "Transmittance";
   } else if (mode === "radiance_noslit") {
