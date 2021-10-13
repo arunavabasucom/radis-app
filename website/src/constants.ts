@@ -13,12 +13,13 @@ export interface CalcSpectrumParams {
   pressure: number;
   path_length: number;
   simulate_slit: boolean;
-  mode: "radiance_noslit" | "transmittance_noslit" | "abscoeff";
+  mode: "radiance_noslit" | "transmittance_noslit" | "absorbance";
 }
 
 export interface CalcSpectrumResponseData {
   x: number[];
   y: number[];
+  units: string;
 }
 
 export const palette = {
@@ -50,4 +51,5 @@ export interface CalcSpectrumPlotData {
   species: Species[];
   minWavenumber: number;
   maxWavenumber: number;
+  mode: string;
 }

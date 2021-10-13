@@ -21,13 +21,13 @@ export const Mode: React.FC<ModeProps> = ({ params, setParams }) => (
           mode: event.target.value as
             | "radiance_noslit"
             | "transmittance_noslit"
-            | "abscoeff",
+            | "absorbance",
         })
       }
     >
+      <MenuItem value={"absorbance"}>Absorbance</MenuItem>
       <MenuItem value={"radiance_noslit"}>Radiance</MenuItem>
       <MenuItem value={"transmittance_noslit"}>Transmittance</MenuItem>
-      <MenuItem value={"abscoeff"}>Absorption Coefficient</MenuItem>
     </Select>
   </FormControl>
 );

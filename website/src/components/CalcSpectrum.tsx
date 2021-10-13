@@ -46,7 +46,7 @@ export const CalcSpectrum: React.FC = () => {
     pressure: 1.01325,
     path_length: 1,
     simulate_slit: false,
-    mode: "radiance_noslit",
+    mode: "absorbance",
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     molecule: [],
@@ -95,6 +95,7 @@ export const CalcSpectrum: React.FC = () => {
       species: params.species.map((species) => ({ ...species })),
       minWavenumber: params.min_wavenumber_range,
       maxWavenumber: params.max_wavenumber_range,
+      mode: params.mode,
     });
 
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
@@ -328,6 +329,7 @@ export const CalcSpectrum: React.FC = () => {
                 species={plotData.species}
                 minWavenumberRange={plotData.minWavenumber}
                 maxWavenumberRange={plotData.maxWavenumber}
+                mode={plotData.mode}
               />
             )
           )}
