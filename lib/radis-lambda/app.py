@@ -68,13 +68,20 @@ def lambda_handler(event, context):
             spectrum.apply_slit(0.5, "nm")
 
         wunit = spectrum.get_waveunit()
-        var = "radiance_noslit"
         iunit = "default"
-        x, y = spectrum.get(var, wunit=wunit, Iunit=iunit)
+        x, y = spectrum.get(payload["mode"], wunit=wunit, Iunit=iunit)
 
         return {
             "statusCode": 200,
-            "body": json.dumps({"data": {"x": list(x), "y": list(y)}}),
+            "body": json.dumps(
+                {
+                    "data": {
+                        "x": list(x),
+                        "y": list(y),
+                        "units": spectrum.units[payload["mode"]],
+                    },
+                }
+            ),
             "headers": {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",

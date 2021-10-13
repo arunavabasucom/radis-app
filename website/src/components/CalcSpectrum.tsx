@@ -22,6 +22,7 @@ import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
+import { Mode } from "./fields/Mode";
 
 interface Response<T> {
   data?: T;
@@ -45,6 +46,7 @@ export const CalcSpectrum: React.FC = () => {
     pressure: 1.01325,
     path_length: 1,
     simulate_slit: false,
+    mode: "absorbance",
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     molecule: [],
@@ -93,6 +95,7 @@ export const CalcSpectrum: React.FC = () => {
       species: params.species.map((species) => ({ ...species })),
       minWavenumber: params.min_wavenumber_range,
       maxWavenumber: params.max_wavenumber_range,
+      mode: params.mode,
     });
 
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
@@ -232,6 +235,9 @@ export const CalcSpectrum: React.FC = () => {
         <Grid item xs={5}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
+              <Mode params={params} setParams={setParams} />
+            </Grid>
+            <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={1}
                 maxRange={5000}
@@ -323,6 +329,7 @@ export const CalcSpectrum: React.FC = () => {
                 species={plotData.species}
                 minWavenumberRange={plotData.minWavenumber}
                 maxWavenumberRange={plotData.maxWavenumber}
+                mode={plotData.mode}
               />
             )
           )}
