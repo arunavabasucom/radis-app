@@ -29,6 +29,9 @@ export const Pressure: React.FC<PressureProps> = ({
     InputProps={{
       endAdornment: <InputAdornment position="end">bar</InputAdornment>,
     }}
+    inputProps={{
+      step: "any",
+    }}
     label="Pressure"
   />
 );

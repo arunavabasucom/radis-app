@@ -20,6 +20,9 @@ export const PathLength: React.FC<PathLengthProps> = ({
     value={params.path_length}
     type="number"
     helperText={validationErrors.path_length}
+    inputProps={{
+      step: "any",
+    }}
     onChange={(event) =>
       setParams({
         ...params,
