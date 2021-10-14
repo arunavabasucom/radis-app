@@ -21,7 +21,7 @@ export const SimulateSlit: React.FC<SimulateSlitProps> = ({
           }
         />
       }
-      label="Simulate an experimental slit"
+      label="Simulate a 1.5 nm instrumental slit"
     />
   );
 };
