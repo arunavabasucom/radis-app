@@ -51,6 +51,9 @@ export const Species: React.FC<SpeciesProps> = ({
               error={validationErrors.mole_fraction[index] !== undefined}
               value={species.mole_fraction}
               type="number"
+              inputProps={{
+                step: "any",
+              }}
               onChange={(event) => {
                 const newSpecies = [...params.species];
                 newSpecies[index] = {

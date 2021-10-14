@@ -20,6 +20,9 @@ export const TRot: React.FC<TRotProps> = ({
     helperText={validationErrors.trot}
     value={params.trot}
     type="number"
+    inputProps={{
+      step: "any",
+    }}
     onChange={(e) =>
       setParams({
         ...params,

@@ -86,6 +86,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
         max: maxRange,
         type: "number",
         "aria-labelledby": "input-slider",
+        step: "any",
       }}
     />
   );

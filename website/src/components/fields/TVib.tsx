@@ -20,6 +20,9 @@ export const TVib: React.FC<TVibProps> = ({
     helperText={validationErrors.tvib}
     value={params.tvib}
     type="number"
+    inputProps={{
+      step: "any",
+    }}
     onChange={(e) =>
       setParams({
         ...params,
