@@ -65,7 +65,7 @@ def lambda_handler(event, context):
         }
     else:
         if payload["simulate_slit"]:
-            spectrum.apply_slit(0.5, "nm")
+            spectrum.apply_slit(1.5, "nm")
 
         wunit = spectrum.get_waveunit()
         iunit = "default"
