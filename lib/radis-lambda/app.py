@@ -36,10 +36,7 @@ def lambda_handler(event, context):
             Trot=payload["trot"],
             path_length=payload["path_length"],
             export_lines=False,
-            warnings={
-                # Do not raise error if grid too coarse. Discard once we have wstep='auto'. https://github.com/radis/radis/issues/184
-                "AccuracyError": "warn",
-            },
+            wstep='auto',
             use_cached=True,
         )
     except radis.misc.warning.EmptyDatabaseError:
