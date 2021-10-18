@@ -40,7 +40,7 @@ def lambda_handler(event, context):
                 # Do not raise error if grid too coarse. Discard once we have wstep='auto'. https://github.com/radis/radis/issues/184
                 "AccuracyError": "warn",
             },
-            use_cached=False,
+            use_cached=True,
         )
     except radis.misc.warning.EmptyDatabaseError:
         return {
