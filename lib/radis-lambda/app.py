@@ -28,7 +28,8 @@ def lambda_handler(event, context):
                 species["molecule"]: species["mole_fraction"]
                 for species in payload["species"]
             },
-            isotope={species["molecule"]: "all" for species in payload["species"]},
+            # TODO: Hard-coding "1" as the isotopologue for the time-being
+            isotope={species["molecule"]: "1" for species in payload["species"]},
             pressure=payload["pressure"],
             Tgas=payload["tgas"],
             Tvib=payload["tvib"],
