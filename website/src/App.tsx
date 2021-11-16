@@ -71,7 +71,10 @@ const InfoPopover = () => {
           <a href="https://radis.github.io/" rel="noreferrer">
             RADIS
           </a>
-          .<br />
+          ., based on {" "}
+          <a href="https://https://hitran.org/" rel="noreferrer">
+            the HITRAN database
+          </a><br />
           <br />
           For research-grade use, start{" "}
           <a href="https://radis.github.io/radis-lab/" rel="noreferrer">
