@@ -17,7 +17,7 @@ export class RadisAppStack extends cdk.Stack {
         functionName: "CalculateSpectrumFunction",
         code: lambda.DockerImageCode.fromImageAsset("./lib/radis-lambda"),
         tracing: lambda.Tracing.PASS_THROUGH,
-        memorySize: 1024 * 5,
+        memorySize: 10_240,
         timeout: Duration.seconds(30),
         environment: {
           HOME: "/tmp",
