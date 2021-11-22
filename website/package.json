@@ -21,10 +21,11 @@
     "react-plotly.js": "^2.5.1",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.5",
+    "use-location-state": "^3.0.0",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "PORT=5000 react-scripts start",
+    "start": "PORT=5001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

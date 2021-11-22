@@ -8,37 +8,36 @@ import "./index.css";
 import { removeSubscriptsFromMolecule } from "../../../utils";
 
 export interface SpeciesProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
+  value: CalcSpectrumParams["species"];
+  setValue: (value: CalcSpectrumParams["species"]) => void;
   validationErrors: ValidationErrors;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
-  params,
-  setParams,
+  value,
+  setValue,
   validationErrors,
 }) => {
   return (
     <Grid container spacing={3}>
-      {params.species.map((species, index) => (
+      {value.map((specie, index) => (
         <>
           <Grid item xs={7}>
             <MoleculeSelector
-              molecule={params.species[index].molecule || ""}
+              molecule={value[index].molecule || ""}
               validationError={validationErrors.molecule[index]}
               handleChange={(
                 _: React.ChangeEvent<Record<string, string>>,
-                value: string | null
+                eventValue: string | null
               ) => {
-                const newSpecies = [...params.species];
+                const newSpecies = [...value];
                 newSpecies[index] = {
                   ...newSpecies[index],
-                  molecule: value ? removeSubscriptsFromMolecule(value) : "",
+                  molecule: eventValue
+                    ? removeSubscriptsFromMolecule(eventValue)
+                    : "",
                 };
-                setParams({
-                  ...params,
-                  species: newSpecies,
-                });
+                setValue(newSpecies);
               }}
               autofocus={index !== 0}
             />
@@ -49,21 +48,18 @@ export const Species: React.FC<SpeciesProps> = ({
               id="mole-fraction-input"
               label="Mole Fraction"
               error={validationErrors.mole_fraction[index] !== undefined}
-              value={species.mole_fraction}
+              value={specie.mole_fraction}
               type="number"
               inputProps={{
                 step: "any",
               }}
               onChange={(event) => {
-                const newSpecies = [...params.species];
+                const newSpecies = [...value];
                 newSpecies[index] = {
                   ...newSpecies[index],
                   mole_fraction: parseFloat(event.target.value),
                 };
-                setParams({
-                  ...params,
-                  species: newSpecies,
-                });
+                setValue(newSpecies);
               }}
             />
           </Grid>
@@ -72,13 +68,10 @@ export const Species: React.FC<SpeciesProps> = ({
               <IconButton
                 color="primary"
                 onClick={() =>
-                  setParams({
-                    ...params,
-                    species: [
-                      ...params.species,
-                      { molecule: undefined, mole_fraction: undefined },
-                    ],
-                  })
+                  setValue([
+                    ...value,
+                    { molecule: undefined, mole_fraction: undefined },
+                  ])
                 }
               >
                 <AddIcon />
@@ -86,14 +79,11 @@ export const Species: React.FC<SpeciesProps> = ({
             ) : (
               <IconButton
                 color="primary"
-                disabled={params.species.length === 1}
+                disabled={value.length === 1}
                 onClick={() => {
-                  const newSpecies = [...params.species];
+                  const newSpecies = [...value];
                   newSpecies.splice(index, 1);
-                  setParams({
-                    ...params,
-                    species: newSpecies,
-                  });
+                  setValue(newSpecies);
                 }}
               >
                 <CloseIcon />

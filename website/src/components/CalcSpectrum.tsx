@@ -7,11 +7,13 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import axios from "axios";
+import { useQueryState } from "use-location-state";
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
   CalcSpectrumPlotData,
   ValidationErrors,
+  Specie,
 } from "../constants";
 import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
 
@@ -48,6 +50,12 @@ export const CalcSpectrum: React.FC = () => {
     simulate_slit: false,
     mode: "absorbance",
   });
+
+  const [species, setSpecies] = useQueryState<Specie[]>("species", [
+    { molecule: "CO", mole_fraction: 0.1 },
+  ]);
+  const [tgas, setTgas] = useQueryState("tgas", DEFAULT_TEMPERATURE);
+
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     molecule: [],
     mole_fraction: [],
@@ -92,7 +100,7 @@ export const CalcSpectrum: React.FC = () => {
     setLoading(true);
     setError(undefined);
     setPlotData({
-      species: params.species.map((species) => ({ ...species })),
+      species: species.map((species) => ({ ...species })),
       minWavenumber: params.min_wavenumber_range,
       maxWavenumber: params.max_wavenumber_range,
       mode: params.mode,
@@ -248,8 +256,8 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={4}>
               <TGas
-                params={params}
-                setParams={setParams}
+                value={tgas}
+                setValue={setTgas}
                 validationErrors={validationErrors}
               />
             </Grid>
@@ -291,8 +299,8 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                params={params}
-                setParams={setParams}
+                value={species}
+                setValue={setSpecies}
                 validationErrors={validationErrors}
               />
             </Grid>

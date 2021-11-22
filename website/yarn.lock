@@ -11271,6 +11271,11 @@ quat-slerp@^1.0.0:
   dependencies:
     gl-quat "^1.0.0"
 
+query-state-core@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/query-state-core/-/query-state-core-3.0.0.tgz#b830d1d34e2dabcad65ecd2b8c8c68cb58a29604"
+  integrity sha512-Vmo3LLQn6YHJGbkhlEaHxh+NihLbyeov5Svz2F/kznLg07ax4bJr/CwioAnWK8eZI2eq0wBAKZgoYfLaqeqx+Q==
+
 query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
@@ -13795,6 +13800,13 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-location-state@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/use-location-state/-/use-location-state-3.0.0.tgz#5bc56e700eb6d5dc78bb5dae674238d818a4f0b7"
+  integrity sha512-VvnbBfBYrFh2EO8I1j7zbC49xh8fqa6ZGrQIs5oImsKOWdzWW2xqaOzXElFX6MNscJhHzXkN+6HO2mOC7Fs9ZQ==
+  dependencies:
+    query-state-core "^3.0.0"
 
 use@^3.1.0:
   version "3.1.1"

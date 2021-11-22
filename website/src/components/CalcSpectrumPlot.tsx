@@ -1,11 +1,11 @@
 import React from "react";
 import Plot from "react-plotly.js";
-import { CalcSpectrumResponseData, palette, Species } from "../constants";
+import { CalcSpectrumResponseData, palette, Specie } from "../constants";
 import { addSubscriptsToMolecule } from "../utils";
 
 interface CalcSpectrumPlotProps {
   data: CalcSpectrumResponseData;
-  species: Species[];
+  species: Specie[];
   minWavenumberRange: number;
   maxWavenumberRange: number;
   mode: string;

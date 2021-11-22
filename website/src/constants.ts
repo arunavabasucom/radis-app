@@ -1,10 +1,10 @@
-export interface Species {
+export interface Specie {
   molecule?: string;
   mole_fraction?: number;
 }
 
 export interface CalcSpectrumParams {
-  species: Species[];
+  species: Specie[];
   min_wavenumber_range: number;
   max_wavenumber_range: number;
   tgas: number;
@@ -48,7 +48,7 @@ export interface ValidationErrors {
 }
 
 export interface CalcSpectrumPlotData {
-  species: Species[];
+  species: Specie[];
   minWavenumber: number;
   maxWavenumber: number;
   mode: string;
