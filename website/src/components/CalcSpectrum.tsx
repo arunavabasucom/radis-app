@@ -31,7 +31,7 @@ interface Response<T> {
 
 const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
-const DEFAULT_TEMPERATURE = 700; // K
+const DEFAULT_TEMPERATURE = 300; // K
 
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
@@ -239,8 +239,8 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
-                minRange={1}
-                maxRange={5000}
+                minRange={500}
+                maxRange={10000}
                 params={params}
                 setParams={setParams}
               />
