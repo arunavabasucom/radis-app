@@ -33,8 +33,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const InfoPopover = () => {
-  const [anchorEl, setAnchorEl] =
-    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,7 +72,7 @@ const InfoPopover = () => {
           <a href="https://radis.github.io/" rel="noreferrer">
             RADIS
           </a>
-          , based on {" "}
+          , based on{" "}
           <a href="https://https://hitran.org/" rel="noreferrer">
             the HITRAN database
           </a>
