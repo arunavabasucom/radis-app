@@ -73,6 +73,7 @@ def lambda_handler(event, context):
         
         # Reduce payload size
         if len(spectrum) * 8 * 2 > 4e6:
+            print("Reducing the payload size")
             # payload limit is 6 MB, we set a limit at ~4 MB here
             # one float is about 8 bytes 
             # we return 2 arrays (w, I)
