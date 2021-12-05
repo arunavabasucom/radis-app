@@ -80,6 +80,17 @@ def lambda_handler(event, context):
             #     from the x min, max and step --> less data transfer. TODO )
             resample = int(len(spectrum) * 8 * 2  // 4e6)
             x, y = x[::resample], y[::resample]
+            
+        result = json.dumps(
+            {
+                "data": {
+                    "x": list(x),
+                    "y": list(y),
+                    "units": spectrum.units[payload["mode"]],
+                },
+            }
+        )
+        print("Size of result", len(result.encode('utf-8')))
 
         return {
             "statusCode": 200,
