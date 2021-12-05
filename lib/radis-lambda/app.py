@@ -72,14 +72,14 @@ def lambda_handler(event, context):
         x, y = spectrum.get(payload["mode"], wunit=wunit, Iunit=iunit)
         
         # Reduce payload size
-        if len(spectrum) * 8 * 2 > 4e6:
+        if len(spectrum) * 8 * 2 > 3e6:
             print("Reducing the payload size")
             # payload limit is 6 MB, we set a limit at ~4 MB here
             # one float is about 8 bytes 
             # we return 2 arrays (w, I)
             #     (note: we could avoid returning the full w-range, and recompute it on the client
             #     from the x min, max and step --> less data transfer. TODO )
-            resample = int(len(spectrum) * 8 * 2  // 4e6)
+            resample = int(len(spectrum) * 8 * 2  // 3e6)
             x, y = x[::resample], y[::resample]
             
         result = json.dumps(
