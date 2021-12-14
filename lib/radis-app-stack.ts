@@ -19,9 +19,9 @@ export class RadisAppStack extends cdk.Stack {
         tracing: lambda.Tracing.PASS_THROUGH,
         memorySize: 10_240,
         timeout: Duration.seconds(30),
-//         environment: {
-//           HOME: "/tmp",
-//         },
+        environment: {
+          HOME: "/tmp",
+        },
         reservedConcurrentExecutions: 3,
       }
     );
