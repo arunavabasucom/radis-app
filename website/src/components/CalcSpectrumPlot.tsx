@@ -11,7 +11,7 @@ interface CalcSpectrumPlotProps {
   mode: string;
 }
 
-export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
+const CalcSpectrumPlot_: React.FC<CalcSpectrumPlotProps> = ({
   data,
   species,
   minWavenumberRange,
@@ -80,3 +80,5 @@ export const CalcSpectrumPlot: React.FC<CalcSpectrumPlotProps> = ({
     />
   );
 };
+
+export const CalcSpectrumPlot = React.memo(CalcSpectrumPlot_);
