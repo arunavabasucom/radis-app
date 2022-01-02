@@ -11,6 +11,11 @@ from radis.misc.config import get_config
 
 print(get_config())
 
+import os
+
+print("Who am I", os.system("whoami"))
+print("I belong to group", os.system("whoami | groups"))
+
 
 def lambda_handler(event, context):
     payload = json.loads(event["body"])
