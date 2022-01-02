@@ -1,14 +1,7 @@
 import json
 import traceback
-import os
-import shutil
-
-if not os.path.exists("/tmp/radis.json"):
-    shutil.copy("/root/radis.json", "/tmp/radis.json")
 
 import radis
-from radis.misc.config import get_config
-print(get_config())
 
 
 def lambda_handler(event, context):
@@ -36,8 +29,7 @@ def lambda_handler(event, context):
                 for species in payload["species"]
             },
             # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
-            isotope={species["molecule"]
-                : "1,2,3" for species in payload["species"]},
+            isotope={species["molecule"]: "1,2,3" for species in payload["species"]},
             pressure=payload["pressure"],
             Tgas=payload["tgas"],
             Tvib=payload["tvib"],
@@ -78,18 +70,18 @@ def lambda_handler(event, context):
         wunit = spectrum.get_waveunit()
         iunit = "default"
         x, y = spectrum.get(payload["mode"], wunit=wunit, Iunit=iunit)
-
+        
         # Reduce payload size
         if len(spectrum) * 8 * 2 > 3e6:
             print("Reducing the payload size")
             # payload limit is 6 MB, we set a limit at ~4 MB here
-            # one float is about 8 bytes
+            # one float is about 8 bytes 
             # we return 2 arrays (w, I)
             #     (note: we could avoid returning the full w-range, and recompute it on the client
             #     from the x min, max and step --> less data transfer. TODO )
-            resample = int(len(spectrum) * 8 * 2 // 3e6)
+            resample = int(len(spectrum) * 8 * 2  // 3e6)
             x, y = x[::resample], y[::resample]
-
+            
         result = json.dumps(
             {
                 "data": {
