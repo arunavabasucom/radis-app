@@ -3,18 +3,17 @@ import traceback
 import os
 import shutil
 
-if not os.path.exists("/tmp/radis.json"):
-    shutil.copy("/root/radis.json", "/tmp/radis.json")
-
-import radis
-from radis.misc.config import get_config
-
-print(get_config())
-
 import os
 
 print("Who am I", os.system("whoami"))
 print("I belong to group", os.system("whoami | groups"))
+
+import radis
+from radis.misc.config import get_config
+
+print("/tmp contents", os.listdir("/tmp"))
+
+print("config", get_config())
 
 
 def lambda_handler(event, context):
