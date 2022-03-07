@@ -1,6 +1,8 @@
 import * as cdk from "@aws-cdk/core";
 import * as s3deploy from "@aws-cdk/aws-s3-deployment";
 import * as s3 from "@aws-cdk/aws-s3";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as efs from "@aws-cdk/aws-efs";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as apigw from "@aws-cdk/aws-apigateway";
 import { inlineSource } from "./inline-source";
@@ -9,6 +11,29 @@ import { Duration, RemovalPolicy } from "@aws-cdk/core";
 export class RadisAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // Get the default vpc
+    const vpc = ec2.Vpc.fromLookup(this, "VPC", {
+      isDefault: true,
+    });
+
+    const fs = new efs.FileSystem(this, "FileSystem", {
+      vpc,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    const accessPoint = fs.addAccessPoint("AccessPoint", {
+      createAcl: {
+        ownerGid: "1001",
+        ownerUid: "1001",
+        permissions: "750",
+      },
+      path: "/export/lambda",
+      posixUser: {
+        gid: "1001",
+        uid: "1001",
+      },
+    });
 
     const calculateSpectrumFunction = new lambda.DockerImageFunction(
       this,
@@ -20,9 +45,14 @@ export class RadisAppStack extends cdk.Stack {
         memorySize: 10_240,
         timeout: Duration.seconds(30),
         environment: {
-          HOME: "/tmp",
+          HOME: "/mnt/msg",
         },
         reservedConcurrentExecutions: 3,
+        vpc,
+        filesystem: lambda.FileSystem.fromEfsAccessPoint(
+          accessPoint,
+          "/mnt/msg"
+        ),
       }
     );
 

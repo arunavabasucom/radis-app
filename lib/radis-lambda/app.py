@@ -11,7 +11,7 @@ print("I belong to group", os.system("whoami | groups"))
 import radis
 from radis.misc.config import get_config
 
-print("/tmp contents", os.listdir("/tmp"))
+print("/mnt/msg contents", os.listdir("/mnt/msg"))
 
 print("config", get_config())
 
