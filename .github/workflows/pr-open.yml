@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-
     steps:
       - uses: actions/checkout@v2
 
