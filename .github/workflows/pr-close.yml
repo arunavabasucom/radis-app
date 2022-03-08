@@ -36,4 +36,4 @@ jobs:
         run: yarn build
 
       - name: Destroy the stack on AWS
-        run: yarn cdk destroy --force --yes RadisAppStackPreview
+        run: yarn cdk destroy --force --yes --app RadisAppStackPreview
