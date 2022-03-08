@@ -1431,12 +1431,12 @@ browser-process-hrtime@^1.0.0:
   integrity sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==
 
 browserslist@^4.17.5:
-  version "4.19.3"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.19.3.tgz#29b7caad327ecf2859485f696f9604214bedd383"
-  integrity sha512-XK3X4xtKJ+Txj8G5c30B4gsm71s69lqXlkYui4s6EkKxuv49qjYlY6oVd+IFJ73d4YymtM3+djvvt/R/iJwwDg==
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.20.0.tgz#35951e3541078c125d36df76056e94738a52ebe9"
+  integrity sha512-bnpOoa+DownbciXj0jVGENf8VYQnE2LNWomhYuCsMmmx9Jd9lwq0WXODuwpSsp8AVdKM2/HorrzxAfbKvWTByQ==
   dependencies:
-    caniuse-lite "^1.0.30001312"
-    electron-to-chromium "^1.4.71"
+    caniuse-lite "^1.0.30001313"
+    electron-to-chromium "^1.4.76"
     escalade "^3.1.1"
     node-releases "^2.0.2"
     picocolors "^1.0.0"
@@ -1503,10 +1503,10 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
-caniuse-lite@^1.0.30001312:
-  version "1.0.30001313"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001313.tgz#a380b079db91621e1b7120895874e2fd62ed2e2f"
-  integrity sha512-rI1UN0koZUiKINjysQDuRi2VeSCce3bYJNmDcj3PIKREiAmjakugBul1QSkg/fPrlULYl6oWfGg3PbgOSY9X4Q==
+caniuse-lite@^1.0.30001313:
+  version "1.0.30001314"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001314.tgz#65c7f9fb7e4594fca0a333bec1d8939662377596"
+  integrity sha512-0zaSO+TnCHtHJIbpLroX7nsD+vYuOVjl3uzFbJO1wMVbuveJA0RK2WcQA9ZUIOiO0/ArMiMgHJLxfEZhQiC0kw==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -1646,9 +1646,9 @@ concat-map@0.0.1:
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
 constructs@^3.3.69:
-  version "3.3.234"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.234.tgz#21fc96bdf6a06d52620c2dfff90f56a3783952a4"
-  integrity sha512-u6SX0mT98lVZoFuHX3H2xsJPt8gEGRg1E5vvr3I8RFR6VMKShDZw25AhpxokghVaCeIVFzqNV/8Ao9WcpX9HRA==
+  version "3.3.236"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.236.tgz#f70b58d97a43219abefc275850c479e5f386f9d4"
+  integrity sha512-tYYAn8XtPOMa24KEBtIYeHwi5OxVQGKu19Ie9NhojOLlQsCgP+6knjEVfuZ0Hgn1T8nMRqMriwAgM19GiwCjDg==
 
 convert-source-map@^1.4.0, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   version "1.8.0"
@@ -1837,10 +1837,10 @@ domexception@^2.0.1:
   dependencies:
     webidl-conversions "^5.0.0"
 
-electron-to-chromium@^1.4.71:
-  version "1.4.75"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.75.tgz#d1ad9bb46f2f1bf432118c2be21d27ffeae82fdd"
-  integrity sha512-LxgUNeu3BVU7sXaKjUDD9xivocQLxFtq6wgERrutdY/yIOps3ODOZExK1jg8DTEg4U8TUCb5MLGeWFOYuxjF3Q==
+electron-to-chromium@^1.4.76:
+  version "1.4.77"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.77.tgz#c26e454cb8721d4ebdae3e276c57cd32e51c32ed"
+  integrity sha512-fiDxw8mO9Ph1Z0bjX2sFTPpi0J0QkOiwOJF+5Q0J0baNc/F9lLePAvDPlnoxvbUYYMizqrKPeotRRkJ9LtxAew==
 
 emittery@^0.7.1:
   version "0.7.2"
