@@ -6,6 +6,14 @@
 
 ![image](https://user-images.githubusercontent.com/16088743/103406077-b2457100-4b59-11eb-82c0-e4de027a91c4.png)
 
+## Architecture
+
+```mermaid
+flowchart LR
+    user[User] --> bucket[S3 Website]
+    user --> api[API Gateway] --> lambda[Lambda]
+```
+
 ## Development
 
 Install all dependencies:
