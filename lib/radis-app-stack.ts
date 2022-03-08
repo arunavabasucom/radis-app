@@ -4,17 +4,25 @@ import * as s3 from "@aws-cdk/aws-s3";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as apigw from "@aws-cdk/aws-apigateway";
 import { inlineSource } from "./inline-source";
-import { Duration, RemovalPolicy } from "@aws-cdk/core";
+import { CfnOutput, Duration, RemovalPolicy } from "@aws-cdk/core";
+
+interface RadisAppStackProps extends cdk.StackProps {
+  /** Name of the bucket which hosts the site. */
+  websiteBucketName?: string;
+}
 
 export class RadisAppStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(
+    scope: cdk.Construct,
+    id: string,
+    props: RadisAppStackProps = {}
+  ) {
     super(scope, id, props);
 
     const calculateSpectrumFunction = new lambda.DockerImageFunction(
       this,
       "CalculateSpectrumFunction",
       {
-        functionName: "CalculateSpectrumFunction",
         code: lambda.DockerImageCode.fromImageAsset("./lib/radis-lambda"),
         tracing: lambda.Tracing.PASS_THROUGH,
         memorySize: 10_240,
@@ -42,7 +50,7 @@ export class RadisAppStack extends cdk.Stack {
     calculateSpectrum.addMethod("POST");
 
     const websiteBucket = new s3.Bucket(this, "WebsiteBucket", {
-      bucketName: "www.radis.app",
+      bucketName: props.websiteBucketName,
       websiteIndexDocument: "index.html",
       publicReadAccess: true,
       removalPolicy: RemovalPolicy.DESTROY,
@@ -58,6 +66,10 @@ export class RadisAppStack extends cdk.Stack {
       sources: [s3deploy.Source.asset("./website/build"), configSource],
       destinationBucket: websiteBucket,
       retainOnDelete: false,
+    });
+
+    new CfnOutput(this, "WebsiteBucketOutput", {
+      value: websiteBucket.bucketWebsiteUrl,
     });
   }
 }

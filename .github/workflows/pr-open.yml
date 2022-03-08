@@ -1,7 +1,7 @@
-name: Production deployment
+name: Preview deployment
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 permissions:
@@ -9,10 +9,11 @@ permissions:
   contents: read
 
 jobs:
-  CD:
+  CI:
     runs-on: ubuntu-latest
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -36,6 +37,4 @@ jobs:
         run: yarn build
 
       - name: Deploy to AWS
-        env:
-          PUBLIC_URL: https://www.radis.app
-        run: yarn cdk deploy --ci --require-approval never RadisAppStackProd
+        run: yarn cdk deploy --ci --require-approval never RadisAppStackPreview
