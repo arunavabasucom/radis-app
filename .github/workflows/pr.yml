@@ -1,22 +1,27 @@
-name: Production deployment
+name: PR deployment
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  CD:
+  CI:
     runs-on: ubuntu-latest
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          role-session-name: RadisAppPreviewDeploySession
           aws-region: us-east-2
 
       - name: Get yarn cache directory path
@@ -39,7 +44,8 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Deploy to AWS
-        env:
-          PUBLIC_URL: https://www.radis.app
-        run: CI=false yarn build && yarn cdk deploy --ci --require-approval never --app 'cdk.out/' RadisAppStackProd
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        run: yarn cdk deploy --ci --require-approval never RadisAppStackPreview
