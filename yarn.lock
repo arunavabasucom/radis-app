@@ -1294,10 +1294,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-aws-cdk@2.15.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.15.0.tgz#ec4ef5a7aadc96d794d6db13c8115da63ffd9a2d"
-  integrity sha512-MtMkebXK+rSkT1cLwRr6yFjwpbHcJq5TE0XpJm7qFVpeiLAWZR+P2gAvCayxjaI+XUEGqGXnSfiAgDSm+IlX5g==
+aws-cdk@2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/aws-cdk/-/aws-cdk-2.16.0.tgz#953610e7bbd398dc1f1771f9c9a99595d84214e3"
+  integrity sha512-7pX1FNY2lhBwFJwrD4b0fTfbaYqLgxiGrd0KEu3oOk2yAR/GFaSo9L83jT7fdNzpZE1GzB4Ryd6svCCyPLE18A==
   optionalDependencies:
     fsevents "2.3.2"
 
