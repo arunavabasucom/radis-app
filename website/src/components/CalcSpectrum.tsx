@@ -246,7 +246,7 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item sm={8} lg={4}>
               <TGas
                 params={params}
                 setParams={setParams}
@@ -256,14 +256,14 @@ export const CalcSpectrum: React.FC = () => {
 
             {isNonEquilibrium ? (
               <>
-                <Grid item xs={4}>
+                <Grid item sm={8} lg={4}>
                   <TRot
                     params={params}
                     setParams={setParams}
                     validationErrors={validationErrors}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item sm={8} lg={4}>
                   <TVib
                     params={params}
                     setParams={setParams}
@@ -273,7 +273,7 @@ export const CalcSpectrum: React.FC = () => {
               </>
             ) : null}
 
-            <Grid item xs={4}>
+            <Grid item sm={8} lg={4}>
               <Pressure
                 params={params}
                 setParams={setParams}
@@ -281,7 +281,7 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item sm={8} lg={4}>
               <PathLength
                 params={params}
                 setParams={setParams}
@@ -310,7 +310,7 @@ export const CalcSpectrum: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={7}>
+        <Grid item xs={8} sm={8} lg={4} xl={4}>
           {loading ? (
             <div
               style={{
