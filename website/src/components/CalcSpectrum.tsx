@@ -232,7 +232,7 @@ export const CalcSpectrum: React.FC = () => {
     <form onSubmit={onSubmitHandler}>
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={5} md={5} lg={5}>
+        <Grid item xs={12} sm={8} md={5} lg={5}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Mode params={params} setParams={setParams} />
