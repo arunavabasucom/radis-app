@@ -23,10 +23,10 @@ export const PathLength: React.FC<PathLengthProps> = ({
     inputProps={{
       step: "any",
     }}
-    onChange={(event) =>
+    onChange={(e) =>
       setParams({
         ...params,
-        path_length: parseFloat(event.target.value),
+        path_length: parseFloat(e.target.value),
       })
     }
     InputProps={{
