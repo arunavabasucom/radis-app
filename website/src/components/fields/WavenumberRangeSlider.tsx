@@ -106,20 +106,20 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
           </Grid>
         </Tooltip>
         {/* slider */}
-        <Tooltip title="Slider" arrow TransitionComponent={Zoom}>
-          <Grid item xs={8}>
-            <Slider
-              value={[
-                lowerRange === "" ? minRange : lowerRange,
-                upperRange === "" ? maxRange : upperRange,
-              ]}
-              onChange={handleSliderChange}
-              aria-labelledby="input-slider"
-              min={minRange}
-              max={maxRange}
-            />
-          </Grid>
-        </Tooltip>
+
+        <Grid item xs={8}>
+          <Slider
+            value={[
+              lowerRange === "" ? minRange : lowerRange,
+              upperRange === "" ? maxRange : upperRange,
+            ]}
+            onChange={handleSliderChange}
+            aria-labelledby="input-slider"
+            min={minRange}
+            max={maxRange}
+          />
+        </Grid>
+
         {/* Max wavenumber*/}
         <Tooltip title="Maximum Wavenumber" arrow TransitionComponent={Zoom}>
           <Grid item xs={2}>

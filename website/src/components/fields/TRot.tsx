@@ -13,7 +13,7 @@ export const TRot: React.FC<TRotProps> = ({
   setParams,
   validationErrors,
 }) => (
-  <Tooltip title="TRot" arrow TransitionComponent={Zoom}>
+  <Tooltip title="Rotational Temperature" arrow TransitionComponent={Zoom}>
     <TextField
       fullWidth
       id="trot-input"

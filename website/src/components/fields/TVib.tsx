@@ -13,7 +13,7 @@ export const TVib: React.FC<TVibProps> = ({
   setParams,
   validationErrors,
 }) => (
-  <Tooltip title="Tvib" arrow TransitionComponent={Zoom}>
+  <Tooltip title="Vibrational temperature" arrow TransitionComponent={Zoom}>
     <TextField
       fullWidth
       id="tvib-input"
