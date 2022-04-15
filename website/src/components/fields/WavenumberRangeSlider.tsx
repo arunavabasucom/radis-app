@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Tooltip, Zoom } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -96,25 +97,35 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
       <Typography id="input-slider" gutterBottom>
         Wavenumber range (cm⁻¹)
       </Typography>
+
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={2}>
-          {rangeInput(lowerRange, setLowerRange, "min-wavenumber-input")}
-        </Grid>
-        <Grid item xs={8}>
-          <Slider
-            value={[
-              lowerRange === "" ? minRange : lowerRange,
-              upperRange === "" ? maxRange : upperRange,
-            ]}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-            min={minRange}
-            max={maxRange}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          {rangeInput(upperRange, setUpperRange, "max-wavenumber-input")}
-        </Grid>
+        {/* Max wavenumber*/}
+        <Tooltip title="Minimum Wavenumber" arrow TransitionComponent={Zoom}>
+          <Grid item xs={2}>
+            {rangeInput(lowerRange, setLowerRange, "min-wavenumber-input")}
+          </Grid>
+        </Tooltip>
+        {/* slider */}
+        <Tooltip title="Slider" arrow TransitionComponent={Zoom}>
+          <Grid item xs={8}>
+            <Slider
+              value={[
+                lowerRange === "" ? minRange : lowerRange,
+                upperRange === "" ? maxRange : upperRange,
+              ]}
+              onChange={handleSliderChange}
+              aria-labelledby="input-slider"
+              min={minRange}
+              max={maxRange}
+            />
+          </Grid>
+        </Tooltip>
+        {/* Max wavenumber*/}
+        <Tooltip title="Maximum Wavenumber" arrow TransitionComponent={Zoom}>
+          <Grid item xs={2}>
+            {rangeInput(upperRange, setUpperRange, "max-wavenumber-input")}
+          </Grid>
+        </Tooltip>
       </Grid>
     </div>
   );

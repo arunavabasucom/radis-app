@@ -1,4 +1,4 @@
-import { InputAdornment, TextField } from "@material-ui/core";
+import { InputAdornment, TextField, Tooltip, Zoom } from "@material-ui/core";
 import React from "react";
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
@@ -13,25 +13,27 @@ export const TVib: React.FC<TVibProps> = ({
   setParams,
   validationErrors,
 }) => (
-  <TextField
-    fullWidth
-    id="tvib-input"
-    error={validationErrors.tvib !== undefined}
-    helperText={validationErrors.tvib}
-    value={params.tvib}
-    type="number"
-    inputProps={{
-      step: "any",
-    }}
-    onChange={(e) =>
-      setParams({
-        ...params,
-        tvib: e.target.value ? parseFloat(e.target.value) : null,
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">K</InputAdornment>,
-    }}
-    label="Tvib"
-  />
+  <Tooltip title="Tvib" arrow TransitionComponent={Zoom}>
+    <TextField
+      fullWidth
+      id="tvib-input"
+      error={validationErrors.tvib !== undefined}
+      helperText={validationErrors.tvib}
+      value={params.tvib}
+      type="number"
+      inputProps={{
+        step: "any",
+      }}
+      onChange={(e) =>
+        setParams({
+          ...params,
+          tvib: e.target.value ? parseFloat(e.target.value) : null,
+        })
+      }
+      InputProps={{
+        endAdornment: <InputAdornment position="end">K</InputAdornment>,
+      }}
+      label="Tvib"
+    />
+  </Tooltip>
 );

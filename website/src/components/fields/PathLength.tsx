@@ -1,4 +1,4 @@
-import { TextField, InputAdornment } from "@material-ui/core";
+import { TextField, InputAdornment, Tooltip, Zoom } from "@material-ui/core";
 import React from "react";
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
@@ -13,25 +13,27 @@ export const PathLength: React.FC<PathLengthProps> = ({
   setParams,
   validationErrors,
 }) => (
-  <TextField
-    fullWidth
-    id="path-length-input"
-    error={validationErrors.path_length !== undefined}
-    value={params.path_length}
-    type="number"
-    helperText={validationErrors.path_length}
-    inputProps={{
-      step: "any",
-    }}
-    onChange={(e) =>
-      setParams({
-        ...params,
-        path_length: parseFloat(e.target.value),
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-    }}
-    label="Path length"
-  />
+  <Tooltip title="Path Length" arrow TransitionComponent={Zoom}>
+    <TextField
+      fullWidth
+      id="path-length-input"
+      error={validationErrors.path_length !== undefined}
+      value={params.path_length}
+      type="number"
+      helperText={validationErrors.path_length}
+      inputProps={{
+        step: "any",
+      }}
+      onChange={(e) =>
+        setParams({
+          ...params,
+          path_length: parseFloat(e.target.value),
+        })
+      }
+      InputProps={{
+        endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+      }}
+      label="Path length"
+    />
+  </Tooltip>
 );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, Tooltip, Zoom } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { addSubscriptsToMolecule } from "../../../utils";
 import "./index.css";
@@ -24,26 +24,28 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   const [input, setInput] = useState("");
 
   return (
-    <Autocomplete
-      id="molecule-selector"
-      className="MoleculeSelector"
-      options={moleculeOptions.map((value) => addSubscriptsToMolecule(value))}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          fullWidth
-          label="HITRAN 2016 Molecule"
-          error={validationError !== undefined}
-          autoFocus={autofocus}
-        />
-      )}
-      value={addSubscriptsToMolecule(molecule || "")}
-      inputValue={input}
-      onInputChange={(_, newInput) =>
-        setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
-      }
-      renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
-      onChange={handleChange}
-    />
+    <Tooltip title="Molecule" arrow TransitionComponent={Zoom}>
+      <Autocomplete
+        id="molecule-selector"
+        className="MoleculeSelector"
+        options={moleculeOptions.map((value) => addSubscriptsToMolecule(value))}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            fullWidth
+            label="HITRAN 2016 Molecule"
+            error={validationError !== undefined}
+            autoFocus={autofocus}
+          />
+        )}
+        value={addSubscriptsToMolecule(molecule || "")}
+        inputValue={input}
+        onInputChange={(_, newInput) =>
+          setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
+        }
+        renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
+        onChange={handleChange}
+      />
+    </Tooltip>
   );
 };

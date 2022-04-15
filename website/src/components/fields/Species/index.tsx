@@ -1,4 +1,4 @@
-import { IconButton, Grid, TextField } from "@material-ui/core";
+import { IconButton, Grid, TextField, Tooltip } from "@material-ui/core";
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
@@ -44,60 +44,67 @@ export const Species: React.FC<SpeciesProps> = ({
             />
           </Grid>
           <Grid item xs={3}>
-            <TextField
-              fullWidth
-              id="mole-fraction-input"
-              label="Mole Fraction"
-              error={validationErrors.mole_fraction[index] !== undefined}
-              value={species.mole_fraction}
-              type="number"
-              inputProps={{
-                step: "any",
-              }}
-              onChange={(event) => {
-                const newSpecies = [...params.species];
-                newSpecies[index] = {
-                  ...newSpecies[index],
-                  mole_fraction: parseFloat(event.target.value),
-                };
-                setParams({
-                  ...params,
-                  species: newSpecies,
-                });
-              }}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            {index === 0 ? (
-              <IconButton
-                color="primary"
-                onClick={() =>
-                  setParams({
-                    ...params,
-                    species: [
-                      ...params.species,
-                      { molecule: undefined, mole_fraction: undefined },
-                    ],
-                  })
-                }
-              >
-                <AddIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                color="primary"
-                disabled={params.species.length === 1}
-                onClick={() => {
+            <Tooltip title="Mole Fraction" arrow>
+              <TextField
+                fullWidth
+                id="mole-fraction-input"
+                label="Mole Fraction"
+                error={validationErrors.mole_fraction[index] !== undefined}
+                value={species.mole_fraction}
+                type="number"
+                inputProps={{
+                  step: "any",
+                }}
+                onChange={(event) => {
                   const newSpecies = [...params.species];
-                  newSpecies.splice(index, 1);
+                  newSpecies[index] = {
+                    ...newSpecies[index],
+                    mole_fraction: parseFloat(event.target.value),
+                  };
                   setParams({
                     ...params,
                     species: newSpecies,
                   });
                 }}
-              >
-                <CloseIcon />
-              </IconButton>
+              />
+            </Tooltip>
+          </Grid>
+          <Grid item xs={2}>
+            {index === 0 ? (
+              <Tooltip title="Add" arrow>
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    setParams({
+                      ...params,
+                      species: [
+                        ...params.species,
+                        { molecule: undefined, mole_fraction: undefined },
+                      ],
+                    })
+                  }
+                >
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              // closing button
+              <Tooltip title="Close" arrow>
+                <IconButton
+                  color="primary"
+                  disabled={params.species.length === 1}
+                  onClick={() => {
+                    const newSpecies = [...params.species];
+                    newSpecies.splice(index, 1);
+                    setParams({
+                      ...params,
+                      species: newSpecies,
+                    });
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Grid>
         </>
