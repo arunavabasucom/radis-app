@@ -14,6 +14,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import InfoIcon from "@material-ui/icons/Info";
+import { GitHub } from "@material-ui/icons";
 import "fontsource-roboto";
 import { CalcSpectrum } from "./components/CalcSpectrum";
 import { palette } from "./constants";
@@ -50,7 +51,7 @@ const InfoPopover = () => {
   return (
     <div>
       <IconButton onClick={handleClick}>
-        <InfoIcon style={{ color: "white" }} />
+        <InfoIcon style={{ color: "white", fontSize: "30" }} />
       </IconButton>
       <Popover
         id={id}
@@ -101,6 +102,14 @@ const Header: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             RADIS app
           </Typography>
+          <IconButton>
+            <GitHub
+              style={{ color: "white", fontSize: "28" }}
+              onClick={() =>
+                (window.location.href = "https://github.com/suzil/radis-app")
+              }
+            />
+          </IconButton>
           <InfoPopover />
         </Toolbar>
       </Container>
