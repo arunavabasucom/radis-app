@@ -32,6 +32,12 @@ export const TVib: React.FC<TVibProps> = ({
     InputProps={{
       endAdornment: <InputAdornment position="end">K</InputAdornment>,
     }}
+    //keystroke set to positive
+    onKeyPress={(event) => {
+      if (event?.key === "-" || event?.key === "+") {
+        event.preventDefault();
+      }
+    }}
     label="Tvib"
   />
 );
