@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Grid,
   Button,
-  CircularProgress,
+  // CircularProgress,
   Switch,
   FormControlLabel,
 } from "@material-ui/core";
@@ -310,18 +310,20 @@ export const CalcSpectrum: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={8} sm={8} lg={4} xl={4}>
+        <Grid
+          container
+          xs={8}
+          sm={8}
+          lg={7}
+          xl={8}
+          style={{ backgroundColor: "blue" }}
+        >
           {loading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 200,
-              }}
-            >
-              <CircularProgress />
-            </div>
+            <div style={{ backgroundColor: "red" }}></div>
           ) : (
+            // <CircularProgress style={{ backgroundColor: "red" }} />
+
+            // <CircularProgress style={{ backgroundColor: "red" }} />
             calcSpectrumResponse?.data &&
             plotData?.species && (
               <CalcSpectrumPlot
