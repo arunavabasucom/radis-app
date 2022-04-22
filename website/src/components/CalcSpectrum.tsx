@@ -126,8 +126,8 @@ export const CalcSpectrum: React.FC = () => {
       mole_fraction: [],
     };
 
-    // updatedValidationErrors.trot = undefined;
-    // updatedValidationErrors.tvib = undefined;
+    updatedValidationErrors.trot = undefined;
+    updatedValidationErrors.tvib = undefined;
     if (isNonEquilibrium) {
       //trot validation
       if (!params.trot) {
