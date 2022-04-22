@@ -129,28 +129,13 @@ export const CalcSpectrum: React.FC = () => {
     updatedValidationErrors.trot = undefined;
     updatedValidationErrors.tvib = undefined;
     if (isNonEquilibrium) {
-      //trot validation
       if (!params.trot) {
         updatedValidationErrors.trot =
           "Trot must be defined when running non-equilibrium calculations";
       }
-      // else if (params.trot < 1 || params.trot > 9000) {
-      //   updatedValidationErrors.trot = "Trot must be between 1K and 9000K";
-      // }
-      else {
-        updatedValidationErrors.trot = undefined;
-      }
-
-      //tvib validation
       if (!params.tvib) {
         updatedValidationErrors.tvib =
           "Tvib must be defined when running non-equilibrium calculations";
-      }
-      // else if (params.tvib < 1 || params.tvib > 9000) {
-      //   updatedValidationErrors.trot = "Tvib must be between 1K and 9000K";
-      // }
-      else {
-        updatedValidationErrors.tvib = undefined;
       }
     }
 
