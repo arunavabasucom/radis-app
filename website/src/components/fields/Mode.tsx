@@ -30,4 +30,4 @@ export const Mode: React.FC<ModeProps> = ({ params, setParams }) => (
       <MenuItem value={"transmittance_noslit"}>Transmittance</MenuItem>
     </Select>
   </FormControl>
-);
+); // TODO: remove this comment
