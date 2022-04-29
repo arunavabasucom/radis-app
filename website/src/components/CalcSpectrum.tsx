@@ -310,7 +310,7 @@ export const CalcSpectrum: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={8} sm={8} lg={8} xl={10}>
+        <Grid item xs={12} sm={5} md={7} lg={8}>
           {loading ? (
             <div
               style={{
