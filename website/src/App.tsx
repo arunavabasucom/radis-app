@@ -73,7 +73,7 @@ const InfoPopover = () => {
             RADIS
           </a>
           , based on{" "}
-          <a href="https://https://hitran.org/" rel="noreferrer">
+          <a href="https://hitran.org/" rel="noreferrer">
             the HITRAN database
           </a>
           .<br />
