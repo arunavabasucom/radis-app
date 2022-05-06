@@ -21,7 +21,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   validationError,
   handleChange,
   autofocus = false,
-  isNonquilibrium,
+  isNonEquilibrium,
 }) => {
   const [input, setInput] = useState("");
 
@@ -31,7 +31,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       className="MoleculeSelector"
       //itreating the array
       options={
-        isNonquilibrium
+        isNonEquilibrium
           ? moleculeOptionsNonequimolecules.map((value) =>
               addSubscriptsToMolecule(value)
             )
