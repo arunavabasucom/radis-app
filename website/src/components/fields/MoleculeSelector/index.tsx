@@ -3,7 +3,7 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { addSubscriptsToMolecule } from "../../../utils";
 import "./index.css";
-import { moleculeOptions } from "./molecules";
+import { moleculeOptions, moleculeOptionsNonequimolecules } from "./molecules";
 
 export interface MoleculeSelectorProps {
   molecule: string;
@@ -13,6 +13,7 @@ export interface MoleculeSelectorProps {
     value: string | null
   ) => void;
   autofocus?: boolean;
+  isNonquilibrium: boolean;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -20,6 +21,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   validationError,
   handleChange,
   autofocus = false,
+  isNonquilibrium,
 }) => {
   const [input, setInput] = useState("");
 
@@ -27,7 +29,12 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
     <Autocomplete
       id="molecule-selector"
       className="MoleculeSelector"
-      options={moleculeOptions.map((value) => addSubscriptsToMolecule(value))}
+      //itreating the array
+      options={
+        isNonquilibrium
+          ? moleculeOptionsNonequimolecules.map((value) => addSubscriptsToMolecule(value))
+          : moleculeOptions.map((value) => addSubscriptsToMolecule(value))
+      }
       renderInput={(params) => (
         <TextField
           {...params}
