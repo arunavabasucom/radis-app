@@ -32,7 +32,9 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       //itreating the array
       options={
         isNonquilibrium
-          ? moleculeOptionsNonequimolecules.map((value) => addSubscriptsToMolecule(value))
+          ? moleculeOptionsNonequimolecules.map((value) =>
+              addSubscriptsToMolecule(value)
+            )
           : moleculeOptions.map((value) => addSubscriptsToMolecule(value))
       }
       renderInput={(params) => (
