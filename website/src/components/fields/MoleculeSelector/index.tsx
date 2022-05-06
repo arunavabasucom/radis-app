@@ -13,7 +13,7 @@ export interface MoleculeSelectorProps {
     value: string | null
   ) => void;
   autofocus?: boolean;
-  isNonquilibrium: boolean;
+  isNonEquilibrium: boolean;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
