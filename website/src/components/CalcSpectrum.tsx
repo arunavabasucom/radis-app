@@ -58,6 +58,7 @@ export const CalcSpectrum: React.FC = () => {
     useState<boolean>(false);
   const [plotData, setPlotData] =
     useState<CalcSpectrumPlotData | undefined>(undefined);
+  //state
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
 
   useEffect(() => {
@@ -197,11 +198,13 @@ export const CalcSpectrum: React.FC = () => {
           : error
     );
 
+  //switch
   const UseNonEquilibriumCalculations = () => (
     <FormControlLabel
       label="Use non-equilibrium calculations"
       control={
         <Switch
+          //non-equ is true here
           checked={isNonEquilibrium}
           onChange={(e) => {
             setIsNonEquilibrium(e.target.checked);
@@ -291,6 +294,7 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
+                 isNonEquilibrium={isNonEquilibrium}
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}

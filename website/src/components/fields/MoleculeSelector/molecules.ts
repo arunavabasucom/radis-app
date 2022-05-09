@@ -49,3 +49,4 @@ export const moleculeOptions = [
   "SO2",
   "SO3",
 ];
+export const moleculeOptionsNonequimolecules = ["CO", "CO2"];
