@@ -48,9 +48,8 @@ const CalcSpectrumPlot_: React.FC<CalcSpectrumPlotProps> = ({
             const moleculeWithSubscripts = addSubscriptsToMolecule(
               molecule || ""
             );
-            return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${
-              mole_fraction as number
-            })`;
+            return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${mole_fraction as number
+              })`;
           })
           .join(", ")}`,
         font: { family: "Roboto", color: "#000" },
@@ -69,9 +68,8 @@ const CalcSpectrumPlot_: React.FC<CalcSpectrumPlotProps> = ({
         yaxis: {
           autorange: true,
           title: {
-            text: `${modeLabel}${
-              data.units.length ? " (" + data.units + ")" : ""
-            }`,
+            text: `${modeLabel}${data.units.length ? " (" + data.units + ")" : ""
+              }`,
           },
           type: "linear",
           fixedrange: false,
