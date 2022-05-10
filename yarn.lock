@@ -1145,10 +1145,12 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+
 "@types/jest@^27.4.1":
   "integrity" "sha512-23iPJADSmicDVrWk+HT58LMJtzLAnB2AgIzplQuq/bSrGaxCrlvRFjGbXmamnnk/mAmCdLStiGqggu28ocUyiw=="
   "resolved" "https://registry.npmjs.org/@types/jest/-/jest-27.4.1.tgz"
   "version" "27.4.1"
+
   dependencies:
     "jest-matcher-utils" "^27.0.0"
     "pretty-format" "^27.0.0"
@@ -1189,6 +1191,7 @@
   "version" "15.0.14"
   dependencies:
     "@types/yargs-parser" "*"
+
 
 "abab@^2.0.3", "abab@^2.0.5":
   "integrity" "sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q=="
@@ -1424,6 +1427,7 @@
   "integrity" "sha512-rs9LTpvrlbsMcenZ3t7TuLDGbHhbnDocrE63Xb2PT++VptR/A8svllK8k1W7hPl77L9QS75GNK5gh+ShkEzsnw=="
   "resolved" "https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.20.0.tgz"
   "version" "2.20.0"
+
   optionalDependencies:
     "fsevents" "2.3.2"
 
