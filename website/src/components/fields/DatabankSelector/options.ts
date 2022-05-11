@@ -1,1 +1,1 @@
-export const optionsDatabank = ["HITRAN", "GEISA"];
+export const Databank = ["HITRAN", "GEISA",];
