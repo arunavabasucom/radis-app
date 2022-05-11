@@ -13,9 +13,8 @@ const Options: React.FC = () => {
           label="Age"
           // onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={"hitran"}>HITRAN</MenuItem>
+          <MenuItem value={"geisa"}>GEISA</MenuItem>
         </Select>
       </FormControl>
     </Box>
