@@ -1,4 +1,4 @@
-name: Linting Check for radis-app
+name: Linting Check for Radis-app
 
 on:
   push:
