@@ -27,4 +27,4 @@ jobs:
         run: yarn install --frozen-lockfile
       # run the script
       - name: Run linters
-        run: cd website && yarn Linting
+        run: cd website && yarn linting
