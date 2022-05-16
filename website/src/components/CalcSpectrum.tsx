@@ -294,7 +294,7 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                 isNonEquilibrium={isNonEquilibrium}
+                isNonEquilibrium={isNonEquilibrium}
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}
