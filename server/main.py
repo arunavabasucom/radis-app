@@ -31,6 +31,7 @@ class Payload(BaseModel):
     path_length: float
     simulate_slit: bool
     mode: str
+    databank:str
 
 
 @app.post("/calculate-spectrum")
@@ -54,7 +55,7 @@ async def calculate_spectrum(payload: Payload):
             path_length=payload.path_length,
             export_lines=False,
             wstep="auto",
-            databank="hitran",
+            databank=payload.databank,
             use_cached=True,
         )
     except radis.misc.warning.EmptyDatabaseError:

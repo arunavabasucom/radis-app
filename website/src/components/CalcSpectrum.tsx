@@ -23,6 +23,7 @@ import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
 import { Mode } from "./fields/Mode";
+import { Databank } from "./fields/databank";
 
 interface Response<T> {
   data?: T;
@@ -36,6 +37,7 @@ const DEFAULT_TEMPERATURE = 300; // K
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
     useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
+
   const [params, setParams] = useState<CalcSpectrumParams>({
     species: [{ molecule: "CO", mole_fraction: 0.1 }],
     min_wavenumber_range: DEFAULT_MIN_WAVENUMBER_RANGE,
@@ -47,6 +49,7 @@ export const CalcSpectrum: React.FC = () => {
     path_length: 1,
     simulate_slit: false,
     mode: "absorbance",
+    databank: "hitran",
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     molecule: [],
@@ -60,6 +63,7 @@ export const CalcSpectrum: React.FC = () => {
     useState<CalcSpectrumPlotData | undefined>(undefined);
   //state
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
+  const [isGeisa, setisGeisa] = useState<boolean>(false);
 
   useEffect(() => {
     // Warm the Lambda
@@ -178,7 +182,12 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       updatedValidationErrors.pressure = undefined;
     }
-
+    if (params.databank == "geisa") {
+      setisGeisa(true);
+    }
+    if (params.databank == "hitran") {
+      setisGeisa(false);
+    }
     if (Number.isNaN(params.path_length)) {
       updatedValidationErrors.path_length = "Path length must be defined";
     } else if (params.path_length < 0) {
@@ -218,7 +227,6 @@ export const CalcSpectrum: React.FC = () => {
       }
     />
   );
-
   const CalcSpectrumButton: React.FC = () => (
     <Button
       id="calc-spectrum-button"
@@ -239,6 +247,9 @@ export const CalcSpectrum: React.FC = () => {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Mode params={params} setParams={setParams} />
+            </Grid>
+            <Grid item xs={12}>
+              <Databank params={params} setParams={setParams} />
             </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
@@ -294,10 +305,11 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                 isNonEquilibrium={isNonEquilibrium}
+                isNonEquilibrium={isNonEquilibrium}
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}
+                isGeisa={isGeisa}
               />
             </Grid>
 
