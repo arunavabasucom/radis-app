@@ -31,7 +31,7 @@ class Payload(BaseModel):
     path_length: float
     simulate_slit: bool
     mode: str
-    databank:str
+    databank: str
 
 
 @app.post("/calculate-spectrum")
