@@ -1,0 +1,92 @@
+from typing import List, Optional
+from fastapi import FastAPI
+from pydantic import BaseModel
+import radis
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+class Species(BaseModel):
+    molecule: str
+    mole_fraction: float
+
+
+class Payload(BaseModel):
+    min_wavenumber_range: float
+    max_wavenumber_range: float
+    species: List[Species]
+    pressure: float
+    tgas: float
+    tvib: Optional[float] = None
+    trot: Optional[float] = None
+    path_length: float
+    simulate_slit: bool
+    mode: str
+
+
+@app.post("/calculate-spectrum")
+async def calculate_spectrum(payload: Payload):
+    print(payload)
+
+    try:
+        spectrum = radis.calc_spectrum(
+            payload.min_wavenumber_range,
+            payload.max_wavenumber_range,
+            molecule=[species.molecule for species in payload.species],
+            mole_fraction={
+                species.molecule: species.mole_fraction for species in payload.species
+            },
+            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
+            isotope={species.molecule: "1,2,3" for species in payload.species},
+            pressure=payload.pressure,
+            Tgas=payload.tgas,
+            Tvib=payload.tvib,
+            Trot=payload.trot,
+            path_length=payload.path_length,
+            export_lines=False,
+            warnings={
+                # Do not raise error if grid too coarse. Discard once we have wstep='auto'. https://github.com/radis/radis/issues/184
+                "AccuracyError": "warn",
+            },
+            use_cached=True,
+        )
+    except radis.misc.warning.EmptyDatabaseError:
+        return {"error": "No line in the specified wavenumber range"}
+    except Exception as exc:
+        return {"error": str(exc)}
+    else:
+        if payload.simulate_slit:
+            spectrum.apply_slit(1.5, "nm")
+
+        wunit = spectrum.get_waveunit()
+        iunit = "default"
+        x, y = spectrum.get(payload.mode, wunit=wunit, Iunit=iunit)
+
+        # Reduce payload size
+        threshold = 5e7
+        if len(spectrum) * 8 * 2 > threshold:
+            print("Reducing the payload size")
+            # Setting return payload size limit of 50 MB
+            # one float is about 8 bytes
+            # we return 2 arrays (w, I)
+            #     (note: we could avoid returning the full w-range, and recompute it on the client
+            #     from the x min, max and step --> less data transfer. TODO )
+            resample = int(len(spectrum) * 8 * 2 // threshold)
+            x, y = x[::resample], y[::resample]
+
+        return {
+            "data": {
+                "x": list(x),
+                "y": list(y),
+                "units": spectrum.units[payload.mode],
+            },
+        }
