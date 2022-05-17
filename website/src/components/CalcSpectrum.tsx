@@ -63,7 +63,7 @@ export const CalcSpectrum: React.FC = () => {
     useState<CalcSpectrumPlotData | undefined>(undefined);
   //state
   const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
-  const [isGeisa, setisGeisa] = useState<boolean>(false);
+  const [useGesia, setUseGesia] = useState<boolean>(false);
 
   useEffect(() => {
     // Warm the Lambda
@@ -183,10 +183,10 @@ export const CalcSpectrum: React.FC = () => {
       updatedValidationErrors.pressure = undefined;
     }
     if (params.databank == "geisa") {
-      setisGeisa(true);
+      setUseGesia(true);
     }
     if (params.databank == "hitran") {
-      setisGeisa(false);
+      setUseGesia(false);
     }
     if (Number.isNaN(params.path_length)) {
       updatedValidationErrors.path_length = "Path length must be defined";
@@ -309,7 +309,7 @@ export const CalcSpectrum: React.FC = () => {
                 params={params}
                 setParams={setParams}
                 validationErrors={validationErrors}
-                isGeisa={isGeisa}
+                isGeisa={useGesia}
               />
             </Grid>
 
