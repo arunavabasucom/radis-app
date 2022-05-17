@@ -25,6 +25,8 @@ jobs:
 
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
-      # run the script
+
       - name: Run linters
-        run: cd website && yarn linting
+        run: cd website && yarn lint
+      - name: type check
+        run: yarn type-check
