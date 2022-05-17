@@ -53,10 +53,8 @@ async def calculate_spectrum(payload: Payload):
             Trot=payload.trot,
             path_length=payload.path_length,
             export_lines=False,
-            warnings={
-                # Do not raise error if grid too coarse. Discard once we have wstep='auto'. https://github.com/radis/radis/issues/184
-                "AccuracyError": "warn",
-            },
+            wstep="auto",
+            databank="hitran",
             use_cached=True,
         )
     except radis.misc.warning.EmptyDatabaseError:
@@ -65,7 +63,7 @@ async def calculate_spectrum(payload: Payload):
         return {"error": str(exc)}
     else:
         if payload.simulate_slit:
-            spectrum.apply_slit(1.5, "nm")
+            spectrum.apply_slit(5, "nm")
 
         wunit = spectrum.get_waveunit()
         iunit = "default"
