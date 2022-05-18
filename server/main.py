@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import radis
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic.typing import Literal
 
 app = FastAPI()
 
