@@ -50,7 +50,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         <TextField
           {...params}
           fullWidth
-          label={isGeisa ? "GEISA" : "HITRAN 2020 Molecule"}
+          label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
           error={validationError !== undefined}
           autoFocus={autofocus}
         />

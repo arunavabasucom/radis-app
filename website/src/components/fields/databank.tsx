@@ -10,7 +10,7 @@ interface DatabankProps {
 
 export const Databank: React.FC<DatabankProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="databank-input">Databank</InputLabel>
+    <InputLabel id="databank-input">Database</InputLabel>
     <Select
       labelId="databank-label"
       id="databank-select"

@@ -23,7 +23,7 @@ import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
 import { Mode } from "./fields/Mode";
-import { Databank } from "./fields/databank";
+import { Databank } from "./fields/Databank";
 
 interface Response<T> {
   data?: T;
@@ -245,11 +245,11 @@ export const CalcSpectrum: React.FC = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Mode params={params} setParams={setParams} />
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={8} md={5} lg={5}>
               <Databank params={params} setParams={setParams} />
+            </Grid>
+            <Grid item xs={12} sm={8} md={5} lg={5}>
+              <Mode params={params} setParams={setParams} />
             </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
@@ -312,10 +312,14 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={useGesia}
               />
             </Grid>
+            {useGesia ? (
+              <Grid item xs={12}></Grid>
+            ) : (
+              <Grid item xs={12}>
+                <UseNonEquilibriumCalculations />
+              </Grid>
+            )}
 
-            <Grid item xs={12}>
-              <UseNonEquilibriumCalculations />
-            </Grid>
             <Grid item xs={12}>
               <SimulateSlit params={params} setParams={setParams} />
             </Grid>

@@ -30,8 +30,8 @@ class Payload(BaseModel):
     trot: Optional[float] = None
     path_length: float
     simulate_slit: bool
-    mode: str
-    databank: Literal["hitran", "gesia"]
+    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit"]
+    databank: Literal["hitran", "geisa"]
 
 
 @app.post("/calculate-spectrum")
