@@ -14,6 +14,7 @@ export interface CalcSpectrumParams {
   path_length: number;
   simulate_slit: boolean;
   mode: "radiance_noslit" | "transmittance_noslit" | "absorbance";
+  database: "hitran" | "geisa";
 }
 
 export interface CalcSpectrumResponseData {

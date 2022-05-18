@@ -12,6 +12,7 @@ export interface SpeciesProps {
   setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
   isNonEquilibrium: boolean;
+  isGeisa: boolean;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
@@ -19,6 +20,7 @@ export const Species: React.FC<SpeciesProps> = ({
   setParams,
   validationErrors,
   isNonEquilibrium,
+  isGeisa,
 }) => {
   return (
     <Grid container spacing={3}>
@@ -44,6 +46,7 @@ export const Species: React.FC<SpeciesProps> = ({
               }}
               autofocus={index !== 0}
               isNonEquilibrium={isNonEquilibrium}
+              isGeisa={isGeisa}
             />
           </Grid>
           <Grid item xs={3}>

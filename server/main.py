@@ -30,7 +30,8 @@ class Payload(BaseModel):
     trot: Optional[float] = None
     path_length: float
     simulate_slit: bool
-    mode: str
+    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit"]
+    database: Literal["hitran", "geisa"]
 
 
 @app.post("/calculate-spectrum")
@@ -54,7 +55,7 @@ async def calculate_spectrum(payload: Payload):
             path_length=payload.path_length,
             export_lines=False,
             wstep="auto",
-            databank="hitran",
+            databank=payload.database,
             use_cached=True,
         )
     except radis.misc.warning.EmptyDatabaseError:

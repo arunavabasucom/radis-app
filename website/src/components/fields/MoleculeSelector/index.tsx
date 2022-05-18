@@ -3,7 +3,11 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { addSubscriptsToMolecule } from "../../../utils";
 import "./index.css";
-import { moleculeOptions, moleculeOptionsNonequimolecules } from "./molecules";
+import {
+  moleculeOptionsEquimolecules,
+  moleculeOptionsNonequimolecules,
+  moleculeOptionsGesia,
+} from "./molecules";
 
 export interface MoleculeSelectorProps {
   molecule: string;
@@ -14,6 +18,7 @@ export interface MoleculeSelectorProps {
   ) => void;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
+  isGeisa: boolean;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -22,6 +27,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   handleChange,
   autofocus = false,
   isNonEquilibrium,
+  isGeisa,
 }) => {
   const [input, setInput] = useState("");
 
@@ -29,19 +35,22 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
     <Autocomplete
       id="molecule-selector"
       className="MoleculeSelector"
-      //itreating the array
       options={
-        isNonEquilibrium
+        isGeisa
+          ? moleculeOptionsGesia.map((value) => addSubscriptsToMolecule(value))
+          : isNonEquilibrium
           ? moleculeOptionsNonequimolecules.map((value) =>
               addSubscriptsToMolecule(value)
             )
-          : moleculeOptions.map((value) => addSubscriptsToMolecule(value))
+          : moleculeOptionsEquimolecules.map((value) =>
+              addSubscriptsToMolecule(value)
+            )
       }
       renderInput={(params) => (
         <TextField
           {...params}
           fullWidth
-          label="HITRAN 2020 Molecule"
+          label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
           error={validationError !== undefined}
           autoFocus={autofocus}
         />
