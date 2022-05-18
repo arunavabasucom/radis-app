@@ -23,7 +23,7 @@ import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
 import { Mode } from "./fields/Mode";
-import { Databank } from "./fields/Databank";
+import { Database } from "./fields/Database";
 
 interface Response<T> {
   data?: T;
@@ -49,7 +49,7 @@ export const CalcSpectrum: React.FC = () => {
     path_length: 1,
     simulate_slit: false,
     mode: "absorbance",
-    databank: "hitran",
+    database: "hitran",
   });
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     molecule: [],
@@ -182,10 +182,10 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       updatedValidationErrors.pressure = undefined;
     }
-    if (params.databank == "geisa") {
+    if (params.database == "geisa") {
       setUseGesia(true);
     }
-    if (params.databank == "hitran") {
+    if (params.database == "hitran") {
       setUseGesia(false);
     }
     if (Number.isNaN(params.path_length)) {
@@ -246,7 +246,7 @@ export const CalcSpectrum: React.FC = () => {
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8} md={5} lg={5}>
-              <Databank params={params} setParams={setParams} />
+              <Database params={params} setParams={setParams} />
             </Grid>
             <Grid item xs={12} sm={8} md={5} lg={5}>
               <Mode params={params} setParams={setParams} />

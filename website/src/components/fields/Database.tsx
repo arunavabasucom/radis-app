@@ -3,23 +3,23 @@ import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import React from "react";
 import { CalcSpectrumParams } from "../../constants";
 
-interface DatabankProps {
+interface DatabaseProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
 }
 
-export const Databank: React.FC<DatabankProps> = ({ params, setParams }) => (
+export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="databank-input">Database</InputLabel>
+    <InputLabel id="database-input">Database</InputLabel>
     <Select
-      labelId="databank-label"
-      id="databank-select"
-      value={params.databank}
-      label="databank"
+      labelId="database-label"
+      id="database-select"
+      value={params.database}
+      label="database"
       onChange={(event) =>
         setParams({
           ...params,
-          databank: event.target.value as "hitran" | "geisa",
+          database: event.target.value as "hitran" | "geisa",
         })
       }
     >
