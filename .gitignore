@@ -129,3 +129,4 @@ cdk.out
 !config.js
 !lib/inline-lambda/index.js
 *.d.ts
+!website/radis.d.ts
