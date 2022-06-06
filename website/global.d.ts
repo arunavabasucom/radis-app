@@ -1,8 +1,6 @@
 declare module "*.jpg" {
-  const value: any;
-  export = value;
+  export default "" as string;
 }
 declare module "*.png" {
-  const value: any;
-  export = value;
+  export default "" as string;
 }
