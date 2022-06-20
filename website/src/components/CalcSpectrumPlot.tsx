@@ -1,3 +1,8 @@
+// ============================================================
+//  RADIS-APP ©
+// https://github.com/plotly/react-plotly.js/issues/280
+// ============================================================
+
 import React from "react";
 import Plot from "react-plotly.js";
 import { CalcSpectrumResponseData, palette, Species } from "../constants";
@@ -11,13 +16,13 @@ interface CalcSpectrumPlotProps {
   mode: string;
 }
 
-const CalcSpectrumPlot_: React.FC<CalcSpectrumPlotProps> = ({
+const CalcSpectrumPlot_ = ({
   data,
   species,
   minWavenumberRange,
   maxWavenumberRange,
   mode,
-}) => {
+}: CalcSpectrumPlotProps): JSX.Element => {
   let modeLabel;
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
@@ -29,55 +34,61 @@ const CalcSpectrumPlot_: React.FC<CalcSpectrumPlotProps> = ({
   } else {
     throw new Error("Invalid mode");
   }
+
   return (
-    <Plot
-      className="Plot"
-      data={[
-        {
-          x: data.x,
-          y: data.y,
-          type: "scatter",
-          marker: { color: palette.secondary.main },
-        },
-      ]}
-      layout={{
-        width: 800,
-        height: 600,
-        title: `Spectrum for ${species
-          .map(({ molecule, mole_fraction }) => {
-            const moleculeWithSubscripts = addSubscriptsToMolecule(
-              molecule || ""
-            );
-            return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${
-              mole_fraction as number
-            })`;
-          })
-          .join(", ")}`,
-        font: { family: "Roboto", color: "#000" },
-        xaxis: {
-          range: [minWavenumberRange, maxWavenumberRange],
-          title: { text: "Wavenumber (cm⁻¹)" },
-          rangeslider: {
-            // TODO: Update typing in DefinitelyTyped
-            // @ts-ignore
-            autorange: true,
-            // @ts-ignore
-            yaxis: { rangemode: "auto" },
-          },
-          type: "linear",
-        },
-        yaxis: {
-          autorange: true,
-          title: {
-            text: `${modeLabel}${
-              data.units.length ? " (" + data.units + ")" : ""
-            }`,
-          },
-          type: "linear",
-          fixedrange: false,
-        },
-      }}
-    />
+    <>
+      {
+        // @ts-ignore
+        <Plot
+          className="Plot"
+          data={[
+            {
+              x: data.x,
+              y: data.y,
+              type: "scatter",
+              marker: { color: palette.secondary.main },
+            },
+          ]}
+          layout={{
+            width: 800,
+            height: 600,
+            title: `Spectrum for ${species
+              .map(({ molecule, mole_fraction }) => {
+                const moleculeWithSubscripts = addSubscriptsToMolecule(
+                  molecule || ""
+                );
+                return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${
+                  mole_fraction as number
+                })`;
+              })
+              .join(", ")}`,
+            font: { family: "Roboto", color: "#000" },
+            xaxis: {
+              range: [minWavenumberRange, maxWavenumberRange],
+              title: { text: "Wavenumber (cm⁻¹)" },
+              rangeslider: {
+                // TODO: Update typing in DefinitelyTyped
+                // @ts-ignore
+                autorange: true,
+                // @ts-ignore
+                yaxis: { rangemode: "auto" },
+              },
+              type: "linear",
+            },
+            yaxis: {
+              autorange: true,
+              title: {
+                text: `${modeLabel}${
+                  data.units.length ? " (" + data.units + ")" : ""
+                }`,
+              },
+              type: "linear",
+              fixedrange: false,
+            },
+          }}
+        />
+      }
+    </>
   );
 };
 
