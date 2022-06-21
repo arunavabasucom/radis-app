@@ -62,6 +62,7 @@ async def calculate_spectrum(payload: Payload):
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
+        print("Error", exc)
         return {"error": str(exc)}
     else:
         if payload.simulate_slit:
