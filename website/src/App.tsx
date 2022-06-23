@@ -1,7 +1,8 @@
 import React from "react";
+import Box from "@mui/material/Box";
+
 import {
   AppBar,
-  Box,
   Container,
   IconButton,
   Popover,
@@ -124,7 +125,7 @@ function App(): React.ReactElement {
       <ThemeProvider theme={theme}>
         <Header />
         <Container maxWidth="lg">
-          <Box m={4}>
+          <Box sx={{ m: 2 }}>
             <CalcSpectrum />
           </Box>
         </Container>
