@@ -15,6 +15,9 @@ import {
 } from "../constants";
 import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
 
+//      =================================================================================
+//                             compnents imports
+//      ==================================================================================
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
 import { TGas } from "./fields/TGas";

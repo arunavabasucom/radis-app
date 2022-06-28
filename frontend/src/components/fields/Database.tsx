@@ -1,6 +1,15 @@
-//for selecting databank
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+//importing react
 import React from "react";
+// =================================================================================
+//                             MUI^5 module imports
+// ==================================================================================
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+// =================================================================================
+//                            component imports
+// ==================================================================================
 import { CalcSpectrumParams } from "../../constants";
 
 interface DatabaseProps {

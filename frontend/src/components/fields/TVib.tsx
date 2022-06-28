@@ -1,24 +1,29 @@
-import { InputAdornment, TextField } from "@material-ui/core";
+// importing react
 import React from "react";
+// =================================================================================
+//                             MUI^5 module imports
+// ==================================================================================
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
-interface TRotProps {
+interface TVibProps {
   params: CalcSpectrumParams;
   setParams: (params: CalcSpectrumParams) => void;
   validationErrors: ValidationErrors;
 }
 
-export const TRot: React.FC<TRotProps> = ({
+export const TVib: React.FC<TVibProps> = ({
   params,
   setParams,
   validationErrors,
 }) => (
   <TextField
     fullWidth
-    id="trot-input"
-    error={validationErrors.trot !== undefined}
-    helperText={validationErrors.trot}
-    value={params.trot}
+    id="tvib-input"
+    error={validationErrors.tvib !== undefined}
+    helperText={validationErrors.tvib}
+    value={params.tvib}
     type="number"
     inputProps={{
       step: "any",
@@ -26,7 +31,7 @@ export const TRot: React.FC<TRotProps> = ({
     onChange={(e) =>
       setParams({
         ...params,
-        trot: e.target.value ? parseFloat(e.target.value) : null,
+        tvib: e.target.value ? parseFloat(e.target.value) : null,
       })
     }
     InputProps={{
@@ -38,6 +43,6 @@ export const TRot: React.FC<TRotProps> = ({
         event.preventDefault();
       }
     }}
-    label="Trot"
+    label="Tvib"
   />
 );
