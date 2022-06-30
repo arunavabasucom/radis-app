@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc && cd website && yarn build",
     "cdk": "cdk",
-    "postinstall": "cd website && yarn install && cd ../lib/inline-lambda && yarn install"
+    "postinstall": "cd frontend && yarn install && cd ../lib/inline-lambda && yarn install"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.109.0",
