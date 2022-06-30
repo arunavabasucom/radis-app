@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// =================================================================================
-//                             MUI^5 module imports
-// ==================================================================================
 import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -46,7 +43,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
 
   const handleSliderChange = (
     // eslint-disable-next-line @typescript-eslint/ban-types
-    _event: React.ChangeEvent<{}>,
+    _event: Event,
     value: number | number[]
   ) => {
     value = value as [number, number];

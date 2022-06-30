@@ -1,4 +1,4 @@
 !.env
 !src/components/config.js
 build/
-!radis.d.ts
+!src/radis.d.ts

@@ -1,7 +1,5 @@
 import React from "react";
-// =================================================================================
-//                             MUI^5 module imports
-// ==================================================================================
+
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 

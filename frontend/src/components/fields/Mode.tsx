@@ -1,7 +1,5 @@
 import React from "react";
-// =================================================================================
-//                             MUI^5 module imports
-// ==================================================================================
+
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
