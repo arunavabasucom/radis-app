@@ -247,7 +247,7 @@ export const CalcSpectrum: React.FC = () => {
             <Grid item xs={12} sm={8} md={5} lg={5}>
               <Database params={params} setParams={setParams} />
             </Grid>
-            <Grid item xs={12} sm={8} md={5} lg={5}>
+            <Grid item xs={12} sm={8} md={5} lg={6}>
               <Mode params={params} setParams={setParams} />
             </Grid>
             <Grid item xs={12}>
