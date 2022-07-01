@@ -65,7 +65,10 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       onInputChange={(_, newInput) =>
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
-      renderOption={(molecule) => addSubscriptsToMolecule(molecule as string)}
+      renderOption={(props, molecule) => {
+        console.log(molecule);
+        return <li {...props}>{addSubscriptsToMolecule(molecule)}</li>;
+      }}
       onChange={handleChange}
     />
   );

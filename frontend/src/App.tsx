@@ -122,7 +122,7 @@ function App(): React.ReactElement {
       <ThemeProvider theme={theme}>
         <Header />
         <Container maxWidth="lg">
-          <Box sx={{ m: 2 }}>
+          <Box sx={{ m: 6 }}>
             <CalcSpectrum />
           </Box>
         </Container>
