@@ -53,6 +53,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       }
       renderInput={(params) => (
         <TextField
+          variant="standard"
           {...params}
           fullWidth
           label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
@@ -66,7 +67,6 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
       renderOption={(props, molecule) => {
-        console.log(molecule);
         return <li {...props}>{addSubscriptsToMolecule(molecule)}</li>;
       }}
       onChange={handleChange}

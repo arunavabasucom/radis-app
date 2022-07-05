@@ -14,8 +14,11 @@ interface ModeProps {
 
 export const Mode: React.FC<ModeProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="mode-select-label">Mode</InputLabel>
+    <InputLabel variant="standard" id="mode-select-label">
+      Mode
+    </InputLabel>
     <Select
+      variant="standard"
       labelId="mode-select-label"
       id="mode-select"
       value={params.mode}

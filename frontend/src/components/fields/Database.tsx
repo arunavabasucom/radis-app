@@ -14,12 +14,15 @@ interface DatabaseProps {
 
 export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="database-input">Database</InputLabel>
+    <InputLabel variant="standard" id="database-input">
+      Database
+    </InputLabel>
     <Select
+      variant="standard"
       labelId="database-label"
       id="database-select"
       value={params.database}
-      label="database"
+      label="Database"
       onChange={(event) =>
         setParams({
           ...params,

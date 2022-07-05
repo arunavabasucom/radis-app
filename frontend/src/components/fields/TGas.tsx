@@ -17,6 +17,7 @@ export const TGas: React.FC<TGasProps> = ({
   validationErrors,
 }) => (
   <TextField
+    variant="standard"
     fullWidth
     id="tgas-input"
     error={validationErrors.tgas !== undefined}

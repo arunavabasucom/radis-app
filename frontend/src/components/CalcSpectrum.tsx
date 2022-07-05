@@ -259,7 +259,7 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={4}>
               <TGas
                 params={params}
                 setParams={setParams}
@@ -294,7 +294,7 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item sm={8} lg={4}>
+            <Grid item sm={8} lg={3}>
               <PathLength
                 params={params}
                 setParams={setParams}

@@ -55,6 +55,7 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={4}>
             <TextField
+              variant="standard"
               fullWidth
               id="mole-fraction-input"
               label="Mole Fraction"
