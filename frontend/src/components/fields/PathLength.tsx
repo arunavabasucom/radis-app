@@ -1,5 +1,8 @@
-import { TextField, InputAdornment } from "@material-ui/core";
 import React from "react";
+
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
 interface PathLengthProps {
@@ -14,6 +17,7 @@ export const PathLength: React.FC<PathLengthProps> = ({
   validationErrors,
 }) => (
   <TextField
+    variant="standard"
     fullWidth
     id="path-length-input"
     error={validationErrors.path_length !== undefined}

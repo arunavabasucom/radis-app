@@ -1,6 +1,10 @@
-//for selecting databank
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import React from "react";
+
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import { CalcSpectrumParams } from "../../constants";
 
 interface DatabaseProps {
@@ -10,12 +14,15 @@ interface DatabaseProps {
 
 export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="database-input">Database</InputLabel>
+    <InputLabel variant="standard" id="database-input">
+      Database
+    </InputLabel>
     <Select
+      variant="standard"
       labelId="database-label"
       id="database-select"
       value={params.database}
-      label="database"
+      label="Database"
       onChange={(event) =>
         setParams({
           ...params,

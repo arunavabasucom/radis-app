@@ -1,5 +1,8 @@
-import { InputAdornment, TextField } from "@material-ui/core";
 import React from "react";
+
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
 interface TRotProps {

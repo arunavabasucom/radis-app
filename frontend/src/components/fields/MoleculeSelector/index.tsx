@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { TextField } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+
+//@ts-ignore
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+
 import { addSubscriptsToMolecule } from "../../../utils";
+
 import "./index.css";
+
 import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
@@ -13,7 +18,7 @@ export interface MoleculeSelectorProps {
   molecule: string;
   validationError?: string;
   handleChange: (
-    _: React.ChangeEvent<Record<string, string>>,
+    event: React.SyntheticEvent<Element, Event>,
     value: string | null
   ) => void;
   autofocus?: boolean;
@@ -48,6 +53,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       }
       renderInput={(params) => (
         <TextField
+          variant="standard"
           {...params}
           fullWidth
           label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
@@ -60,7 +66,9 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       onInputChange={(_, newInput) =>
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()))
       }
-      renderOption={(molecule) => addSubscriptsToMolecule(molecule)}
+      renderOption={(props, molecule) => {
+        return <li {...props}>{addSubscriptsToMolecule(molecule)}</li>;
+      }}
       onChange={handleChange}
     />
   );

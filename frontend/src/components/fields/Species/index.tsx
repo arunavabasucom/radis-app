@@ -1,10 +1,14 @@
-import { IconButton, Grid, TextField } from "@material-ui/core";
 import React from "react";
-import AddIcon from "@material-ui/icons/Add";
-import CloseIcon from "@material-ui/icons/Close";
+import "./index.css";
+
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+
 import { CalcSpectrumParams, ValidationErrors } from "../../../constants";
 import { MoleculeSelector } from "../MoleculeSelector";
-import "./index.css";
 import { removeSubscriptsFromMolecule } from "../../../utils";
 
 export interface SpeciesProps {
@@ -26,12 +30,12 @@ export const Species: React.FC<SpeciesProps> = ({
     <Grid container spacing={3}>
       {params.species.map((species, index) => (
         <>
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <MoleculeSelector
               molecule={params.species[index].molecule || ""}
               validationError={validationErrors.molecule[index]}
               handleChange={(
-                _: React.ChangeEvent<Record<string, string>>,
+                _: React.SyntheticEvent<Element, Event>,
                 value: string | null
               ) => {
                 const newSpecies = [...params.species];
@@ -49,8 +53,9 @@ export const Species: React.FC<SpeciesProps> = ({
               isGeisa={isGeisa}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
+              variant="standard"
               fullWidth
               id="mole-fraction-input"
               label="Mole Fraction"

@@ -1,22 +1,19 @@
 import React from "react";
-import Box from "@mui/material/Box";
 
-import {
-  AppBar,
-  Container,
-  IconButton,
-  Popover,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
-import InfoIcon from "@material-ui/icons/Info";
-import { GitHub } from "@material-ui/icons";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import InfoIcon from "@mui/icons-material/Info";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { createMuiTheme, ThemeProvider } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
+
 import "fontsource-roboto";
+
 import { CalcSpectrum } from "./components/CalcSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
@@ -25,14 +22,14 @@ const theme = createMuiTheme({
   palette,
 });
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
   title: {
     flexGrow: 1,
   },
-}));
+});
 
 const InfoPopover = () => {
   const [anchorEl, setAnchorEl] =
@@ -104,7 +101,7 @@ const Header: React.FC = () => {
             RADIS app
           </Typography>
           <IconButton>
-            <GitHub
+            <GitHubIcon
               style={{ color: "white", fontSize: "28" }}
               onClick={() =>
                 (window.location.href = "https://github.com/suzil/radis-app")
@@ -125,7 +122,7 @@ function App(): React.ReactElement {
       <ThemeProvider theme={theme}>
         <Header />
         <Container maxWidth="lg">
-          <Box sx={{ m: 2 }}>
+          <Box sx={{ m: 6 }}>
             <CalcSpectrum />
           </Box>
         </Container>

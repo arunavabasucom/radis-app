@@ -1,5 +1,8 @@
-import { TextField, InputAdornment } from "@material-ui/core";
 import React from "react";
+
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+
 import { CalcSpectrumParams, ValidationErrors } from "../../constants";
 
 interface PressureProps {
@@ -14,6 +17,7 @@ export const Pressure: React.FC<PressureProps> = ({
   validationErrors,
 }) => (
   <TextField
+    variant="standard"
     fullWidth
     id="pressure-input"
     error={validationErrors.pressure !== undefined}

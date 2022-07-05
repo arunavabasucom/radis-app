@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Button,
-  CircularProgress,
-  Switch,
-  FormControlLabel,
-} from "@material-ui/core";
 import axios from "axios";
+
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
@@ -14,7 +14,6 @@ import {
   ValidationErrors,
 } from "../constants";
 import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
-
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
 import { TGas } from "./fields/TGas";
@@ -248,7 +247,7 @@ export const CalcSpectrum: React.FC = () => {
             <Grid item xs={12} sm={8} md={5} lg={5}>
               <Database params={params} setParams={setParams} />
             </Grid>
-            <Grid item xs={12} sm={8} md={5} lg={5}>
+            <Grid item xs={12} sm={8} md={5} lg={6}>
               <Mode params={params} setParams={setParams} />
             </Grid>
             <Grid item xs={12}>
@@ -270,14 +269,14 @@ export const CalcSpectrum: React.FC = () => {
 
             {isNonEquilibrium ? (
               <>
-                <Grid item sm={8} lg={4}>
+                <Grid item sm={8} lg={3}>
                   <TRot
                     params={params}
                     setParams={setParams}
                     validationErrors={validationErrors}
                   />
                 </Grid>
-                <Grid item sm={8} lg={4}>
+                <Grid item sm={8} lg={3}>
                   <TVib
                     params={params}
                     setParams={setParams}
@@ -287,7 +286,7 @@ export const CalcSpectrum: React.FC = () => {
               </>
             ) : null}
 
-            <Grid item sm={8} lg={4}>
+            <Grid item sm={8} lg={5}>
               <Pressure
                 params={params}
                 setParams={setParams}
@@ -295,7 +294,7 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            <Grid item sm={8} lg={4}>
+            <Grid item sm={8} lg={3}>
               <PathLength
                 params={params}
                 setParams={setParams}

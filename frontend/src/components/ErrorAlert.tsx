@@ -1,6 +1,7 @@
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
+
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 interface ErrorAlertInterface {
   message: string;

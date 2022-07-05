@@ -1,5 +1,10 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import React from "react";
+
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import { CalcSpectrumParams } from "../../constants";
 
 interface ModeProps {
@@ -9,8 +14,11 @@ interface ModeProps {
 
 export const Mode: React.FC<ModeProps> = ({ params, setParams }) => (
   <FormControl fullWidth>
-    <InputLabel id="mode-select-label">Mode</InputLabel>
+    <InputLabel variant="standard" id="mode-select-label">
+      Mode
+    </InputLabel>
     <Select
+      variant="standard"
       labelId="mode-select-label"
       id="mode-select"
       value={params.mode}

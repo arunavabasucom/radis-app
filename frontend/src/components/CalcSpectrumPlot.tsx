@@ -1,10 +1,7 @@
-// ============================================================
-//  RADIS-APP ©
-// https://github.com/plotly/react-plotly.js/issues/280
-// ============================================================
-
 import React from "react";
+
 import Plot from "react-plotly.js";
+
 import { CalcSpectrumResponseData, palette, Species } from "../constants";
 import { addSubscriptsToMolecule } from "../utils";
 
@@ -38,7 +35,6 @@ const CalcSpectrumPlot_ = ({
   return (
     <>
       {
-        // @ts-ignore
         <Plot
           className="Plot"
           data={[
