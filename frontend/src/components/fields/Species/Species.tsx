@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 
 import { CalcSpectrumParams, ValidationErrors } from "../../../constants";
-import { MoleculeSelector } from "../MoleculeSelector";
+import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
 import { removeSubscriptsFromMolecule } from "../../../utils";
 
 export interface SpeciesProps {

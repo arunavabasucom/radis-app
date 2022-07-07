@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
+//react hook from import
+import { useForm } from "react-hook-form";
 import {
   CalcSpectrumParams,
   CalcSpectrumResponseData,
@@ -24,6 +25,8 @@ import { PathLength } from "./fields/PathLength";
 import { Mode } from "./fields/Mode";
 import { Database } from "./fields/Database";
 
+//react hook from
+
 interface Response<T> {
   data?: T;
   error?: string;
@@ -32,6 +35,8 @@ interface Response<T> {
 const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
 const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
 const DEFAULT_TEMPERATURE = 300; // K
+
+//!MAIN COMPONENT
 
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =

@@ -1,6 +1,6 @@
-import { MoleculeSelector } from "./MoleculeSelector";
+import { MoleculeSelector } from "./MoleculeSelector/MoleculeSelector";
 import { SimulateSlit } from "./SimulateSlit";
-import { Species } from "./Species";
+import { Species } from "./Species/Species";
 import { WavenumberRangeSlider } from "./WavenumberRangeSlider";
 
 export { MoleculeSelector, SimulateSlit, Species, WavenumberRangeSlider };
