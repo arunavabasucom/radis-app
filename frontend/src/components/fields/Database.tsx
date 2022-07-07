@@ -12,10 +12,7 @@ interface DatabaseProps {
 }
 
 export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" id="database-input">
