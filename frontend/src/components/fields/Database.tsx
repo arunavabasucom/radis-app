@@ -23,25 +23,28 @@ export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => {
         defaultValue={params.database}
         control={control}
         render={({ field }) => (
-          <>
-            <Select
-              {...field}
-              variant="standard"
-              labelId="database-label"
-              id="database-select"
-              value={params.database}
-              label="Database"
-              onChange={(event) =>
-                setParams({
-                  ...params,
-                  database: event.target.value as "hitran" | "geisa",
-                })
-              }
-            >
-              <MenuItem value={"hitran"}>HITRAN</MenuItem>
-              <MenuItem value={"geisa"}>GEISA</MenuItem>
-            </Select>
-          </>
+          console.log(field),
+          (
+            <>
+              <Select
+                {...field}
+                variant="standard"
+                labelId="database-label"
+                id="database-select"
+                value={params.database}
+                label="Database"
+                onChange={(event) =>
+                  setParams({
+                    ...params,
+                    database: event.target.value as "hitran" | "geisa",
+                  })
+                }
+              >
+                <MenuItem value={"hitran"}>HITRAN</MenuItem>
+                <MenuItem value={"geisa"}>GEISA</MenuItem>
+              </Select>
+            </>
+          )
         )}
       />
     </FormControl>
