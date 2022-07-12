@@ -1,30 +1,23 @@
+//TODO: review (causing to much render for the component tree) => use memo to prevent that
 import React from "react";
-
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-
-import { CalcSpectrumParams } from "../../constants";
-
+import { FormControlLabel, Switch } from "@mui/material";
+import { Control, Controller, FieldValues } from "react-hook-form";
 interface SimulateSlitProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
+  control: Control<FieldValues>;
 }
 
-export const SimulateSlit: React.FC<SimulateSlitProps> = ({
-  params,
-  setParams,
-}) => {
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => {
   return (
-    <FormControlLabel
-      control={
-        <Switch
-          checked={params.simulate_slit}
-          onChange={() =>
-            setParams({ ...params, simulate_slit: !params.simulate_slit })
-          }
+    <Controller
+      name="switch"
+      control={control}
+      defaultValue={false}
+      render={({ field: { onChange, value } }) => (
+        <FormControlLabel
+          control={<Switch checked={value} onChange={onChange} />}
+          label="Simulate an experimental slit"
         />
-      }
-      label="Simulate a 5 nm instrumental slit"
+      )}
     />
   );
 };

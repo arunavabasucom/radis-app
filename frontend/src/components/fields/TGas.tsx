@@ -1,36 +1,32 @@
-import React from "react";
-
+//TODO: review
+import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
-
+import { Control, FieldValues, Controller } from "react-hook-form";
 interface TGasProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  validationErrors: ValidationErrors;
+  control: Control<FieldValues>;
 }
-
-export const TGas: React.FC<TGasProps> = ({
-  params,
-  setParams,
-  validationErrors,
-}) => (
-  <TextField
-    variant="standard"
-    fullWidth
-    id="tgas-input"
-    error={validationErrors.tgas !== undefined}
-    helperText={validationErrors.tgas}
-    value={params.tgas}
-    type="number"
-    inputProps={{
-      step: "any",
-    }}
-    onChange={(e) => setParams({ ...params, tgas: parseFloat(e.target.value) })}
-    InputProps={{
-      endAdornment: <InputAdornment position="end">K</InputAdornment>,
-    }}
-    label="Tgas"
+export const TGas: React.FC<TGasProps> = ({ control }) => (
+  <Controller
+    render={({ field, formState }) => (
+      <TextField
+        {...field}
+        {...formState}
+        id="tgas-input"
+        variant="standard"
+        type="number"
+        label="TGas"
+        onChange={field.onChange}
+        value={field.value}
+        error={!!formState.errors?.textfield}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">K</InputAdornment>,
+        }}
+        helperText={formState.errors?.textfield?.message as ReactNode}
+      />
+    )}
+    name="tgas"
+    control={control}
+    defaultValue={300}
   />
 );

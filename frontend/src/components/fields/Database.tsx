@@ -1,18 +1,22 @@
+//TODO: review
 import React from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { Controller, useFormContext } from "react-hook-form";
-import { CalcSpectrumParams } from "../../constants";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  // useFormContext,
+} from "react-hook-form";
+// import { FormValues } from "../types";
 
 interface DatabaseProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
+  control: Control<FieldValues>;
 }
 
-export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => {
-  const { control } = useFormContext();
+export const Database: React.FC<DatabaseProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" id="database-input">
@@ -20,31 +24,24 @@ export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => {
       </InputLabel>
       <Controller
         name="database"
-        defaultValue={params.database}
+        defaultValue="hitran"
         control={control}
-        render={({ field }) => (
-          console.log(field),
-          (
-            <>
-              <Select
-                {...field}
-                variant="standard"
-                labelId="database-label"
-                id="database-select"
-                value={params.database}
-                label="Database"
-                onChange={(event) =>
-                  setParams({
-                    ...params,
-                    database: event.target.value as "hitran" | "geisa",
-                  })
-                }
-              >
-                <MenuItem value={"hitran"}>HITRAN</MenuItem>
-                <MenuItem value={"geisa"}>GEISA</MenuItem>
-              </Select>
-            </>
-          )
+        render={({ field, formState }) => (
+          <Select
+            {...field}
+            {...formState}
+            variant="standard"
+            labelId="database-label"
+            id="database-select"
+            onChange={field.onChange}
+            value={field.value}
+            // error={formState.errors?.database}
+            label="Select"
+          >
+            <MenuItem value={"hitran"}>HITRAN</MenuItem>
+            <MenuItem value={"geisa"}>GEISA</MenuItem>
+          </Select>
+          // <p>{formState.errors?.select?}<p>
         )}
       />
     </FormControl>

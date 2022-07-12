@@ -1,41 +1,35 @@
-import React from "react";
-
+//TODO: review
+import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
-
-interface PathLengthProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  validationErrors: ValidationErrors;
+import { Control, FieldValues, Controller } from "react-hook-form";
+interface TGasProps {
+  control: Control<FieldValues>;
 }
-
-export const PathLength: React.FC<PathLengthProps> = ({
-  params,
-  setParams,
-  validationErrors,
-}) => (
-  <TextField
-    variant="standard"
-    fullWidth
-    id="path-length-input"
-    error={validationErrors.path_length !== undefined}
-    value={params.path_length}
-    type="number"
-    helperText={validationErrors.path_length}
-    inputProps={{
-      step: "any",
-    }}
-    onChange={(event) =>
-      setParams({
-        ...params,
-        path_length: parseFloat(event.target.value),
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-    }}
-    label="Path length"
+export const TGas: React.FC<TGasProps> = ({ control }) => (
+  <Controller
+    render={({ field, formState }) => (
+      <TextField
+        {...field}
+        {...formState}
+        id="path-length-input"
+        variant="standard"
+        type="number"
+        label="Path Length"
+        onChange={field.onChange}
+        value={field.value}
+        error={!!formState.errors?.textfield}
+        helperText={formState.errors?.textfield?.message as ReactNode}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+        }}
+        inputProps={{
+          step: "any",
+        }}
+      />
+    )}
+    name="pathLength"
+    control={control}
+    defaultValue={1}
   />
 );

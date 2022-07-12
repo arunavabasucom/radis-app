@@ -1,41 +1,35 @@
-import React from "react";
-
+//TODO: review
+import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
-
-interface PressureProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  validationErrors: ValidationErrors;
+import { Control, FieldValues, Controller } from "react-hook-form";
+interface TGasProps {
+  control: Control<FieldValues>;
 }
-
-export const Pressure: React.FC<PressureProps> = ({
-  params,
-  setParams,
-  validationErrors,
-}) => (
-  <TextField
-    variant="standard"
-    fullWidth
-    id="pressure-input"
-    error={validationErrors.pressure !== undefined}
-    value={params.pressure}
-    type="number"
-    helperText={validationErrors.pressure}
-    onChange={(event) =>
-      setParams({
-        ...params,
-        pressure: parseFloat(event.target.value),
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">bar</InputAdornment>,
-    }}
-    inputProps={{
-      step: "any",
-    }}
-    label="Pressure"
+export const TGas: React.FC<TGasProps> = ({ control }) => (
+  <Controller
+    render={({ field, formState }) => (
+      <TextField
+        {...field}
+        {...formState}
+        id="pressure-input"
+        variant="standard"
+        type="number"
+        label="Pressure"
+        onChange={field.onChange}
+        value={field.value}
+        error={!!formState.errors?.textfield}
+        helperText={formState.errors?.textfield?.message as ReactNode}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">bar</InputAdornment>,
+        }}
+        inputProps={{
+          step: "any",
+        }}
+      />
+    )}
+    name="pressure"
+    control={control}
+    defaultValue={1.01325}
   />
 );

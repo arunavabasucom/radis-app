@@ -1,46 +1,37 @@
-import React from "react";
-
+//TODO: review
+import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-
-import { CalcSpectrumParams, ValidationErrors } from "../../constants";
-
+import { Control, FieldValues, Controller } from "react-hook-form";
 interface TVibProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  validationErrors: ValidationErrors;
+  control: Control<FieldValues>;
 }
-
-export const TVib: React.FC<TVibProps> = ({
-  params,
-  setParams,
-  validationErrors,
-}) => (
-  <TextField
-    fullWidth
-    id="tvib-input"
-    error={validationErrors.tvib !== undefined}
-    helperText={validationErrors.tvib}
-    value={params.tvib}
-    type="number"
-    inputProps={{
-      step: "any",
-    }}
-    onChange={(e) =>
-      setParams({
-        ...params,
-        tvib: e.target.value ? parseFloat(e.target.value) : null,
-      })
-    }
-    InputProps={{
-      endAdornment: <InputAdornment position="end">K</InputAdornment>,
-    }}
-    //keystroke set to positive
-    onKeyPress={(event) => {
-      if (event?.key === "-" || event?.key === "+") {
-        event.preventDefault();
-      }
-    }}
-    label="Tvib"
+export const TVib: React.FC<TVibProps> = ({ control }) => (
+  <Controller
+    render={({ field, formState }) => (
+      <TextField
+        {...field}
+        {...formState}
+        id="tvib-input"
+        variant="standard"
+        type="number"
+        label="TVib"
+        onChange={field.onChange}
+        value={field.value}
+        error={!!formState.errors?.textfield}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">K</InputAdornment>,
+        }}
+        helperText={formState.errors?.textfield?.message as ReactNode}
+        onKeyPress={(event) => {
+          if (event?.key === "-" || event?.key === "+") {
+            event.preventDefault();
+          }
+        }}
+      />
+    )}
+    name="tvib"
+    control={control}
+    defaultValue={300}
   />
 );
