@@ -1,9 +1,10 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { Database } from "./fields/Database";
+// import { Database } from "./fields/Database";
 // import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
+import { Species } from "./fields";
 export const CalcSpectrum: React.FC = () => {
   const methods = useForm({});
   const { reset } = methods;
@@ -20,7 +21,12 @@ export const CalcSpectrum: React.FC = () => {
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8} md={5} lg={5}>
-              <Database control={methods.control}></Database>
+              {/* <Database control={methods.control}></Database> */}
+              <Species
+                isNonEquilibrium={true}
+                control={methods.control}
+                isGeisa={true}
+              />
             </Grid>
             <Grid item xs={12} sm={8} md={5} lg={6}>
               {/* <Mode params={params} setParams={setParams} /> */}
@@ -74,13 +80,11 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              {/* <Species
-              isNonEquilibrium={isNonEquilibrium}
-              params={params}
-              setParams={setParams}
-              validationErrors={validationErrors}
-              isGeisa={useGesia}
-            /> */}
+              <Species
+                isNonEquilibrium={true}
+                control={methods.control}
+                isGeisa={true}
+              />
             </Grid>
             {/* {useGesia ? (
             <Grid item xs={12}></Grid>

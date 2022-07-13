@@ -1,81 +1,77 @@
 import React from "react";
 import "./index.css";
-
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-
-import { CalcSpectrumParams, ValidationErrors } from "../../../constants";
+import {
+  Controller,
+  Control,
+  FieldValues,
+  useFieldArray,
+} from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
-import { removeSubscriptsFromMolecule } from "../../../utils";
 
 export interface SpeciesProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
-  validationErrors: ValidationErrors;
+  validationErrors?: string;
+  control: Control<FieldValues>;
   isNonEquilibrium: boolean;
   isGeisa: boolean;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
-  params,
-  setParams,
-  validationErrors,
+  control,
+  // validationErrors,
   isNonEquilibrium,
   isGeisa,
 }) => {
+  const { fields, append, remove } = useFieldArray<FieldValues>({
+    control,
+    name: "species",
+  });
   return (
     <Grid container spacing={3}>
-      {params.species.map((species, index) => (
-        <>
-          <Grid item xs={6}>
-            <MoleculeSelector
-              molecule={params.species[index].molecule || ""}
-              validationError={validationErrors.molecule[index]}
-              handleChange={(
-                _: React.SyntheticEvent<Element, Event>,
-                value: string | null
-              ) => {
-                const newSpecies = [...params.species];
-                newSpecies[index] = {
-                  ...newSpecies[index],
-                  molecule: value ? removeSubscriptsFromMolecule(value) : "",
-                };
-                setParams({
-                  ...params,
-                  species: newSpecies,
-                });
-              }}
-              autofocus={index !== 0}
-              isNonEquilibrium={isNonEquilibrium}
-              isGeisa={isGeisa}
+      {fields.map((field, index) => (
+        <React.Fragment key={field.id}>
+          <Grid item xs={7}>
+            <Controller
+              name={`species.${index}.molecule` as any}
+              control={control}
+              defaultValue={0.1}
+              rules={{ required: "Molecule is required" }}
+              render={({ field }) => (
+                <MoleculeSelector
+                  // validationError=""
+                  control={control}
+                  value={field.value}
+                  onChange={field.onChange}
+                  autofocus={index !== 0}
+                  isNonEquilibrium={isNonEquilibrium}
+                  isGeisa={isGeisa}
+                />
+              )}
             />
           </Grid>
-          <Grid item xs={4}>
-            <TextField
-              variant="standard"
-              fullWidth
-              id="mole-fraction-input"
-              label="Mole Fraction"
-              error={validationErrors.mole_fraction[index] !== undefined}
-              value={species.mole_fraction}
-              type="number"
-              inputProps={{
-                step: "any",
-              }}
-              onChange={(event) => {
-                const newSpecies = [...params.species];
-                newSpecies[index] = {
-                  ...newSpecies[index],
-                  mole_fraction: parseFloat(event.target.value),
-                };
-                setParams({
-                  ...params,
-                  species: newSpecies,
-                });
-              }}
+          <Grid item xs={3}>
+            <Controller
+              name={`species.${index}.mole_fraction` as any}
+              control={control}
+              // defaultValue={field.mole_fraction as any}
+              rules={{ required: "Mole fraction is required" }}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  fullWidth
+                  id="mole-fraction-input"
+                  label="Mole Fraction"
+                  // error={validationErrors.mole_fraction[index] !== undefined}
+                  value={value}
+                  type="number"
+                  onChange={(e) => {
+                    onChange(parseFloat(e.target.value));
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={2}>
@@ -83,13 +79,7 @@ export const Species: React.FC<SpeciesProps> = ({
               <IconButton
                 color="primary"
                 onClick={() =>
-                  setParams({
-                    ...params,
-                    species: [
-                      ...params.species,
-                      { molecule: undefined, mole_fraction: undefined },
-                    ],
-                  })
+                  append({ molecule: undefined, mole_fraction: undefined })
                 }
               >
                 <AddIcon />
@@ -97,21 +87,16 @@ export const Species: React.FC<SpeciesProps> = ({
             ) : (
               <IconButton
                 color="primary"
-                disabled={params.species.length === 1}
+                disabled={fields.length === 1}
                 onClick={() => {
-                  const newSpecies = [...params.species];
-                  newSpecies.splice(index, 1);
-                  setParams({
-                    ...params,
-                    species: newSpecies,
-                  });
+                  remove(index);
                 }}
               >
                 <CloseIcon />
               </IconButton>
             )}
-          </Grid>
-        </>
+          </Grid>{" "}
+        </React.Fragment>
       ))}
     </Grid>
   );
