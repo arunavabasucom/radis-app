@@ -9,7 +9,7 @@ interface DatabaseProps {
   control: Control<FieldValues>;
 }
 
-export const Database: React.FC<DatabaseProps> = ({ control }) => {
+export const Mode: React.FC<DatabaseProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" id="mode-select-label">

@@ -6,7 +6,7 @@ import { Control, FieldValues, Controller } from "react-hook-form";
 interface TGasProps {
   control: Control<FieldValues>;
 }
-export const TGas: React.FC<TGasProps> = ({ control }) => (
+export const Pressure: React.FC<TGasProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
       <TextField

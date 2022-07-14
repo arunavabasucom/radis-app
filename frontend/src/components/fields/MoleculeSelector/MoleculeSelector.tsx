@@ -26,7 +26,6 @@ export interface MoleculeSelectorProps {
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   validationError,
   onChange,
-
   value,
   autofocus = false,
   isNonEquilibrium,

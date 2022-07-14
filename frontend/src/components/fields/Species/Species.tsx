@@ -36,7 +36,7 @@ export const Species: React.FC<SpeciesProps> = ({
         <React.Fragment key={field.id}>
           <Grid item xs={7}>
             <Controller
-              name={`species.${index}.molecule` as any}
+              name={`species.${index}.molecule` as string}
               control={control}
               defaultValue={0.1}
               rules={{ required: "Molecule is required" }}
@@ -55,9 +55,9 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={3}>
             <Controller
-              name={`species.${index}.mole_fraction` as any}
+              name={`species.${index}.mole_fraction` as string}
               control={control}
-              // defaultValue={field.mole_fraction as any}
+              defaultValue={0.1}
               rules={{ required: "Mole fraction is required" }}
               render={({ field: { onChange, value } }) => (
                 <TextField
@@ -95,7 +95,7 @@ export const Species: React.FC<SpeciesProps> = ({
                 <CloseIcon />
               </IconButton>
             )}
-          </Grid>{" "}
+          </Grid>
         </React.Fragment>
       ))}
     </Grid>
