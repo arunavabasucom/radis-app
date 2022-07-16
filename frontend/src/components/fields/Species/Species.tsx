@@ -38,7 +38,6 @@ export const Species: React.FC<SpeciesProps> = ({
             <Controller
               name={`species.${index}.molecule` as string}
               control={control}
-              defaultValue={0.1}
               rules={{ required: "Molecule is required" }}
               render={({ field }) => (
                 <MoleculeSelector
@@ -57,7 +56,6 @@ export const Species: React.FC<SpeciesProps> = ({
             <Controller
               name={`species.${index}.mole_fraction` as string}
               control={control}
-              defaultValue={0.1}
               rules={{ required: "Mole fraction is required" }}
               render={({ field: { onChange, value } }) => (
                 <TextField
@@ -78,9 +76,7 @@ export const Species: React.FC<SpeciesProps> = ({
             {index === 0 ? (
               <IconButton
                 color="primary"
-                onClick={() =>
-                  append({ molecule: undefined, mole_fraction: undefined })
-                }
+                onClick={() => append({ molecule: "CO", mole_fraction: 0.1 })}
               >
                 <AddIcon />
               </IconButton>

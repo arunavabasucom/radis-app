@@ -52,7 +52,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
         <TextField
           {...params}
           fullWidth
-          label="HITRAN 2016 Molecule"
+          label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
           error={validationError !== undefined}
           autoFocus={autofocus}
         />
@@ -62,7 +62,9 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       onInputChange={(_, newInput) => {
         setInput(addSubscriptsToMolecule(newInput.toUpperCase()));
       }}
-      renderOption={(value) => addSubscriptsToMolecule(value.toString())}
+      renderOption={(props, value) => {
+        return <li {...props}>{addSubscriptsToMolecule(value)}</li>;
+      }}
       onChange={(
         _: React.SyntheticEvent<Element, Event>,
         value: string | null

@@ -13,7 +13,9 @@ import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 export const CalcSpectrum: React.FC = () => {
   // const[]
-  const methods = useForm({});
+  const methods = useForm<FieldValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] } as any,
+  });
   const { reset } = methods;
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     reset();
