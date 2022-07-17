@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { FormValues } from "./types";
 import { Database } from "./fields/Database";
 import { Mode } from "./fields/Mode";
@@ -12,17 +14,53 @@ import { PathLength } from "./fields/PathLength";
 import { Species } from "./fields/Species/Species";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
+import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
 export const CalcSpectrum: React.FC = () => {
-  // const[]
+  //============================================================================//
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | undefined>(undefined);
+  const [calcSpectrumButtonDisabled, setCalcSpectrumButtonDisabled] =
+    useState<boolean>(false);
+  // const [plotData, setPlotData] = useState<FormValues | undefined>(undefined);
+  //state
+  const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
+  const [useGesia, setUseGesia] = useState<boolean>(false);
+  setUseGesia(false);
+  setCalcSpectrumButtonDisabled(false);
+  //============================================================================//
   const methods = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] } as any,
   });
-  const { reset } = methods;
+  const { reset, setValue } = methods;
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     reset();
     console.log("submit button clicked");
     console.log(data);
   };
+  //============================================================================//
+  const UseNonEquilibriumCalculations = () => (
+    <FormControlLabel
+      label="Use non-equilibrium calculations"
+      control={
+        <Switch
+          checked={isNonEquilibrium}
+          onChange={(e) => {
+            setIsNonEquilibrium(e.target.checked);
+            if (e.target.checked) {
+              setValue("tvib", 300);
+              setValue("trot", 300);
+            } else {
+              //@ts-ignore
+              setValue("tvib", null);
+              //@ts-ignore
+              setValue("trot", null);
+            }
+          }}
+        />
+      }
+    />
+  );
+  //============================================================================//
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)}>
       {/* <div>{render}</div> */}
@@ -70,25 +108,27 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                isNonEquilibrium={true}
+                isNonEquilibrium={isNonEquilibrium}
                 control={methods.control}
-                isGeisa={true}
+                isGeisa={useGesia}
               />
             </Grid>
-            {/* {useGesia ? (
-              <Grid item xs={12}></Grid>
-            ) : (
-              <Grid item xs={12}>
-                <UseNonEquilibriumCalculations />
-              </Grid>
-            )} */}
+            {/* {useGesia ? ( */}
+            <Grid item xs={12}></Grid>
+            {/* ) : ( */}
+            <Grid item xs={12}>
+              <UseNonEquilibriumCalculations />
+            </Grid>
+            {/* )} */}
 
             <Grid item xs={12}>
               <SimulateSlit control={methods.control} />
             </Grid>
 
             <Grid item xs={12}>
-              {/* <CalcSpectrumButton /> */}
+              <CalcSpectrumButton
+                calcSpectrumButtonDisabled={calcSpectrumButtonDisabled}
+              />
             </Grid>
           </Grid>
         </Grid>
