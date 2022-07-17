@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Switch from "@mui/material/Switch";
@@ -17,17 +17,18 @@ import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
 export const CalcSpectrum: React.FC = () => {
   //============================================================================//
-  // const [loading, setLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string | undefined>(undefined);
-  const [calcSpectrumButtonDisabled, setCalcSpectrumButtonDisabled] =
-    useState<boolean>(false);
-  // const [plotData, setPlotData] = useState<FormValues | undefined>(undefined);
-  //state
-  const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
-  const [useGesia, setUseGesia] = useState<boolean>(false);
-  setUseGesia(false);
-  setCalcSpectrumButtonDisabled(false);
-  //============================================================================//
+  // // const [loading, setLoading] = useState<boolean>(false);
+  // // const [error, setError] = useState<string | undefined>(undefined);
+  // const [calcSpectrumButtonDisabled, setCalcSpectrumButtonDisabled] =
+  //   useState<boolean>(false);
+  // // const [plotData, setPlotData] = useState<FormValues | undefined>(undefined);
+  // //state
+  const [isNonEquilibrium, setIsNonEquilibrium] =
+    React.useState<boolean>(false);
+  // const [useGesia, setUseGesia] = useState<boolean>(false);
+  // setUseGesia(false);
+  // setCalcSpectrumButtonDisabled(false);
+  // //============================================================================//
   const methods = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] } as any,
   });
@@ -43,7 +44,7 @@ export const CalcSpectrum: React.FC = () => {
       label="Use non-equilibrium calculations"
       control={
         <Switch
-          checked={isNonEquilibrium}
+          checked={false}
           onChange={(e) => {
             setIsNonEquilibrium(e.target.checked);
             if (e.target.checked) {
@@ -87,16 +88,16 @@ export const CalcSpectrum: React.FC = () => {
               <TGas control={methods.control} />
             </Grid>
 
-            {/* {isNonEquilibrium ? ( */}
-            <>
-              <Grid item sm={8} lg={3}>
-                <TRot control={methods.control} />
-              </Grid>
-              <Grid item sm={8} lg={3}>
-                <TVib control={methods.control} />
-              </Grid>
-            </>
-            {/* ) : null} */}
+            {isNonEquilibrium ? (
+              <>
+                <Grid item sm={8} lg={3}>
+                  <TRot control={methods.control} />
+                </Grid>
+                <Grid item sm={8} lg={3}>
+                  <TVib control={methods.control} />
+                </Grid>
+              </>
+            ) : null}
 
             <Grid item sm={8} lg={5}>
               <Pressure control={methods.control} />
@@ -108,9 +109,9 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                isNonEquilibrium={isNonEquilibrium}
+                isNonEquilibrium={false}
                 control={methods.control}
-                isGeisa={useGesia}
+                isGeisa={false}
               />
             </Grid>
             {/* {useGesia ? ( */}
@@ -126,9 +127,7 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <CalcSpectrumButton
-                calcSpectrumButtonDisabled={calcSpectrumButtonDisabled}
-              />
+              <CalcSpectrumButton calcSpectrumButtonDisabled={false} />
             </Grid>
           </Grid>
         </Grid>
