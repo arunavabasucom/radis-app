@@ -1,22 +1,4 @@
-export interface Species {
-  molecule?: string;
-  mole_fraction?: number;
-}
-
-export interface CalcSpectrumParams {
-  species: Species[];
-  min_wavenumber_range: number;
-  max_wavenumber_range: number;
-  tgas: number;
-  tvib: number | null;
-  trot: number | null;
-  pressure: number;
-  path_length: number;
-  simulate_slit: boolean;
-  mode: "radiance_noslit" | "transmittance_noslit" | "absorbance";
-  database: "hitran" | "geisa";
-}
-
+import { Species } from "./components/types";
 export interface CalcSpectrumResponseData {
   x: number[];
   y: number[];
@@ -50,7 +32,7 @@ export interface ValidationErrors {
 
 export interface CalcSpectrumPlotData {
   species: Species[];
-  minWavenumber: number;
-  maxWavenumber: number;
+  min_wavenumber_range: number;
+  max_wavenumber_range: number;
   mode: string;
 }
