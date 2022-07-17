@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Control, FieldValues } from "react-hook-form";
+import { Control } from "react-hook-form";
 import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
 } from "../../../utils";
 import "./index.css";
+import { FormValues } from "../../types";
 import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
@@ -17,7 +18,7 @@ export interface MoleculeSelectorProps {
   validationError?: string;
   onChange: (...event: string[]) => void;
   value: string;
-  control: Control<FieldValues>;
+  control: Control<FormValues>;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
   isGeisa: boolean;

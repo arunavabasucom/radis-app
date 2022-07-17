@@ -7,13 +7,13 @@ import Select from "@mui/material/Select";
 import {
   Control,
   Controller,
-  FieldValues,
+
   // useFormContext,
 } from "react-hook-form";
-// import { FormValues } from "../types";
+import { FormValues } from "../types";
 
 interface DatabaseProps {
-  control: Control<FieldValues>;
+  control: Control<FormValues>;
 }
 
 export const Database: React.FC<DatabaseProps> = ({ control }) => {

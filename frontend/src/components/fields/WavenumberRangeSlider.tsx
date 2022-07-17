@@ -3,20 +3,15 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  UseFormSetValue,
-} from "react-hook-form";
-// import { FormValues } from "../types";
+import { Control, Controller, UseFormSetValue } from "react-hook-form";
 import Grid from "@mui/material/Grid";
+import { FormValues } from "../types";
 // import { makeStyles } from "@mui/material/styles";
 interface WavelengthRangeSliderProps {
   minRange: number;
   maxRange: number;
-  control: Control<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
+  control: Control<FormValues>;
+  setValue: UseFormSetValue<FormValues>;
 }
 // const useStyles = makeStyles({
 //   input: {
@@ -60,8 +55,8 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
     id: string,
     onChange: (...event: any[]) => void,
     value:
-      | FieldValues["min_wavenumber_range"]
-      | FieldValues["max_wavenumber_range"]
+      | FormValues["min_wavenumber_range"]
+      | FormValues["max_wavenumber_range"]
   ) => (
     <Input
       fullWidth

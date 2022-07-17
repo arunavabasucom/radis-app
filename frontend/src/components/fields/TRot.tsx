@@ -2,9 +2,10 @@
 import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import { Control, FieldValues, Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "../types";
 interface TRotProps {
-  control: Control<FieldValues>;
+  control: Control<FormValues>;
 }
 export const TRot: React.FC<TRotProps> = ({ control }) => (
   <Controller
@@ -18,11 +19,11 @@ export const TRot: React.FC<TRotProps> = ({ control }) => (
         label="TRot"
         onChange={field.onChange}
         value={field.value}
-        error={!!formState.errors?.textfield}
+        error={!!formState.errors?.trot}
         InputProps={{
           endAdornment: <InputAdornment position="end">K</InputAdornment>,
         }}
-        helperText={formState.errors?.textfield?.message as ReactNode}
+        helperText={formState.errors?.trot?.message as ReactNode}
         onKeyPress={(event) => {
           if (event?.key === "-" || event?.key === "+") {
             event.preventDefault();

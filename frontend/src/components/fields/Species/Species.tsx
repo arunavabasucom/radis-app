@@ -5,17 +5,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import {
-  Controller,
-  Control,
-  FieldValues,
-  useFieldArray,
-} from "react-hook-form";
+import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
-
+import { FormValues } from "../../types";
 export interface SpeciesProps {
   validationErrors?: string;
-  control: Control<FieldValues>;
+  control: Control<FormValues>;
   isNonEquilibrium: boolean;
   isGeisa: boolean;
 }
@@ -26,7 +21,7 @@ export const Species: React.FC<SpeciesProps> = ({
   isNonEquilibrium,
   isGeisa,
 }) => {
-  const { fields, append, remove } = useFieldArray<FieldValues>({
+  const { fields, append, remove } = useFieldArray<FormValues>({
     control,
     name: "species",
   });
@@ -36,7 +31,7 @@ export const Species: React.FC<SpeciesProps> = ({
         <React.Fragment key={field.id}>
           <Grid item xs={7}>
             <Controller
-              name={`species.${index}.molecule` as string}
+              name={`species.${index}.molecule` as any}
               control={control}
               rules={{ required: "Molecule is required" }}
               render={({ field }) => (
@@ -54,7 +49,7 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={3}>
             <Controller
-              name={`species.${index}.mole_fraction` as string}
+              name={`species.${index}.mole_fraction` as any}
               control={control}
               rules={{ required: "Mole fraction is required" }}
               render={({ field: { onChange, value } }) => (

@@ -3,10 +3,10 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { Control, Controller, FieldValues } from "react-hook-form";
-
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "../types";
 interface DatabaseProps {
-  control: Control<FieldValues>;
+  control: Control<FormValues>;
 }
 
 export const Mode: React.FC<DatabaseProps> = ({ control }) => {

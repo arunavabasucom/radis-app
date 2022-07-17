@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormValues } from "./types";
 import { Database } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
@@ -13,11 +14,11 @@ import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 export const CalcSpectrum: React.FC = () => {
   // const[]
-  const methods = useForm<FieldValues>({
+  const methods = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] } as any,
   });
   const { reset } = methods;
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     reset();
     console.log("submit button clicked");
     console.log(data);
