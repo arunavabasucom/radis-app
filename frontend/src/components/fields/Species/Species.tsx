@@ -29,7 +29,7 @@ export const Species: React.FC<SpeciesProps> = ({
     <Grid container spacing={3}>
       {fields.map((field, index) => (
         <React.Fragment key={field.id}>
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <Controller
               name={`species.${index}.molecule` as any}
               control={control}
@@ -47,13 +47,14 @@ export const Species: React.FC<SpeciesProps> = ({
               )}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Controller
               name={`species.${index}.mole_fraction` as any}
               control={control}
               rules={{ required: "Mole fraction is required" }}
               render={({ field: { onChange, value } }) => (
                 <TextField
+                  variant="standard"
                   fullWidth
                   id="mole-fraction-input"
                   label="Mole Fraction"

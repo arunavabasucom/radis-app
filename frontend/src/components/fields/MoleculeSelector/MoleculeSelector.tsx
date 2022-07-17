@@ -52,6 +52,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          variant="standard"
           fullWidth
           label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
           error={validationError !== undefined}

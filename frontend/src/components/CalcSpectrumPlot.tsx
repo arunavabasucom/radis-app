@@ -1,25 +1,25 @@
 import React from "react";
-
 import Plot from "react-plotly.js";
-
-import { CalcSpectrumResponseData, palette, Species } from "../constants";
 import { addSubscriptsToMolecule } from "../utils";
+import { CalcSpectrumResponseData, palette } from "../constants";
+import { Species } from "./types";
 
-interface CalcSpectrumPlotProps {
+export interface CalcSpectrumPlotdata {
   data: CalcSpectrumResponseData;
   species: Species[];
-  minWavenumberRange: number;
-  maxWavenumberRange: number;
+  min_wavenumber_range: number;
+  max_wavenumber_range: number;
   mode: string;
 }
 
 const CalcSpectrumPlot_ = ({
   data,
   species,
-  minWavenumberRange,
-  maxWavenumberRange,
+  min_wavenumber_range,
+  max_wavenumber_range,
+
   mode,
-}: CalcSpectrumPlotProps): JSX.Element => {
+}: CalcSpectrumPlotdata): JSX.Element => {
   let modeLabel;
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
@@ -60,7 +60,7 @@ const CalcSpectrumPlot_ = ({
               .join(", ")}`,
             font: { family: "Roboto", color: "#000" },
             xaxis: {
-              range: [minWavenumberRange, maxWavenumberRange],
+              range: [min_wavenumber_range, max_wavenumber_range],
               title: { text: "Wavenumber (cm⁻¹)" },
               rangeslider: {
                 // TODO: Update typing in DefinitelyTyped
