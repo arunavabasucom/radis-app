@@ -58,6 +58,9 @@ export const Species: React.FC<SpeciesProps> = ({
                   id="mole-fraction-input"
                   label="Mole Fraction"
                   error={!!formState.errors?.species?.[index]?.mole_fraction}
+                  helperText={
+                    formState.errors?.species?.[index]?.mole_fraction?.message
+                  }
                   value={value}
                   type="number"
                   onChange={(e) => {
