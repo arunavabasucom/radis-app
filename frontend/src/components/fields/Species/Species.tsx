@@ -1,5 +1,4 @@
 import React from "react";
-import "./index.css";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
