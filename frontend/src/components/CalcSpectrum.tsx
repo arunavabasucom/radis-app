@@ -54,17 +54,6 @@ export const CalcSpectrum: React.FC = () => {
       .typeError("Tgas must be defined")
       .max(9000, "Tgas must be between 1K and 9000K")
       .min(1, "Tgas must be between 1K and 9000K"),
-    // trot: yup
-    //   .number()
-    //   .required("TRot must be defined")
-    //   .typeError("TRot must be defined")
-    //   .min(0, "TRot must be positive"),
-    // tvib: yup
-    //   .number()
-    //   .required("TVib must be defined")
-    //   .typeError("TVib must be defined")
-    //   .min(0, "TVib must be positive"),
-
     trot: yup
       .number()
       .typeError("TRot must be defined")
@@ -95,6 +84,18 @@ export const CalcSpectrum: React.FC = () => {
       .number()
       .required("Max wavenumber range must be defined")
       .typeError("Max wavenumber range must be defined"),
+    species: yup.array().of(
+      yup.object().shape({
+        molecule: yup
+          .string()
+          .required("Molecule must be defined")
+          .typeError("Molecule must be defined"),
+        mole_fraction: yup
+          .number()
+          .required("Mole fraction must be defined")
+          .typeError("Mole fraction must be defined"),
+      })
+    ),
   });
   const { control, handleSubmit, setValue, watch, formState } =
     useForm<FormValues>({
@@ -236,7 +237,7 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <CalcSpectrumButton control={control} />
+              <CalcSpectrumButton />
             </Grid>
           </Grid>
         </Grid>
