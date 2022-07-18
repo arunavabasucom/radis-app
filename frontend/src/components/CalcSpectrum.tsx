@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import Grid from "@mui/material/Grid";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -36,7 +36,8 @@ export const CalcSpectrum: React.FC = () => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
 
-  const validationSchema = yup.object().shape({
+  const Schema = yup.object().shape({
+    useNonEqi: yup.boolean(),
     path_length: yup
       .number()
       .required("Path length must be defined")
@@ -49,20 +50,43 @@ export const CalcSpectrum: React.FC = () => {
       .min(1, "Pressure cannot be negative"),
     tgas: yup
       .number()
-      .required("Database must be defined")
-      .typeError("Database must be defined")
+      .required("Tgas must be defined")
+      .typeError("Tgas must be defined")
       .max(9000, "Tgas must be between 1K and 9000K")
       .min(1, "Tgas must be between 1K and 9000K"),
+    // trot: yup
+    //   .number()
+    //   .required("TRot must be defined")
+    //   .typeError("TRot must be defined")
+    //   .min(0, "TRot must be positive"),
+    // tvib: yup
+    //   .number()
+    //   .required("TVib must be defined")
+    //   .typeError("TVib must be defined")
+    //   .min(0, "TVib must be positive"),
+
     trot: yup
       .number()
-      .required("TRot must be defined")
       .typeError("TRot must be defined")
-      .min(0, "TRot must be positive"),
+      .when("useNonEqi", {
+        is: true,
+        then: yup
+          .number()
+          .required("Trot must be defined")
+          .typeError("TRot must be defined")
+          .min(0, "TRot must be positive"),
+      }),
     tvib: yup
       .number()
-      .required("TVib must be defined")
-      .typeError("TVib must be defined")
-      .min(0, "TVib must be positive"),
+      .typeError("TRot must be defined")
+      .when("useNonEqi", {
+        is: true,
+        then: yup
+          .number()
+          .required("TVib must be defined")
+          .typeError("TVib must be defined")
+          .min(0, "TVib must be positive"),
+      }),
     min_wavenumber_range: yup
       .number()
       .required("Min wavenumber range must be defined")
@@ -72,12 +96,13 @@ export const CalcSpectrum: React.FC = () => {
       .required("Max wavenumber range must be defined")
       .typeError("Max wavenumber range must be defined"),
   });
-  const methods = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
-    resolver: yupResolver(validationSchema),
-  });
-  const { setValue, watch } = methods;
+  const { control, handleSubmit, setValue, watch, formState } =
+    useForm<FormValues>({
+      defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+      resolver: yupResolver(Schema),
+    });
 
+  console.log(formState?.errors);
   const handleBadResponse = (message: string) => {
     setCalcSpectrumResponse(undefined);
     setError(message);
@@ -121,75 +146,82 @@ export const CalcSpectrum: React.FC = () => {
   }, [databaseWatch]);
 
   const UseNonEquilibriumCalculations = () => (
-    <FormControlLabel
-      label="Use non-equilibrium calculations"
-      control={
-        <Switch
-          checked={isNonEquilibrium}
-          onChange={(e) => {
-            setIsNonEquilibrium(e.target.checked);
-            if (e.target.checked) {
-              setValue("tvib", 300);
-              setValue("trot", 300);
-            } else {
-              setValue("tvib", undefined);
-              setValue("trot", undefined);
-            }
-          }}
+    <Controller
+      // @ts-ignore
+      name="useNonEqi"
+      control={control}
+      render={() => (
+        <FormControlLabel
+          label="Use non-equilibrium calculations"
+          control={
+            <Switch
+              checked={isNonEquilibrium}
+              onChange={(e) => {
+                setIsNonEquilibrium(e.target.checked);
+                if (e.target.checked) {
+                  setValue("tvib", 300);
+                  setValue("trot", 300);
+                } else {
+                  setValue("tvib", undefined);
+                  setValue("trot", undefined);
+                }
+              }}
+            />
+          }
         />
-      }
+      )}
     />
   );
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {/* <div>{render}</div> */}
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8} md={5} lg={5}>
-              <Database control={methods.control}></Database>
+              <Database control={control}></Database>
             </Grid>
             <Grid item xs={12} sm={8} md={5} lg={6}>
-              <Mode control={methods.control} />
+              <Mode control={control} />
             </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={500}
                 maxRange={10000}
-                control={methods.control}
-                setValue={methods.setValue}
+                control={control}
+                setValue={setValue}
               />
             </Grid>
 
             <Grid item sm={8} lg={4}>
-              <TGas control={methods.control} />
+              <TGas control={control} />
             </Grid>
 
             {isNonEquilibrium ? (
               <>
                 <Grid item sm={8} lg={3}>
-                  <TRot control={methods.control} />
+                  <TRot control={control} />
                 </Grid>
                 <Grid item sm={8} lg={3}>
-                  <TVib control={methods.control} />
+                  <TVib control={control} />
                 </Grid>
               </>
             ) : null}
 
             <Grid item sm={8} lg={5}>
-              <Pressure control={methods.control} />
+              <Pressure control={control} />
             </Grid>
 
             <Grid item sm={8} lg={3}>
-              <PathLength control={methods.control} />
+              <PathLength control={control} />
             </Grid>
 
             <Grid item xs={12}>
               <Species
                 isNonEquilibrium={false}
-                control={methods.control}
+                control={control}
                 isGeisa={false}
               />
             </Grid>
@@ -200,11 +232,11 @@ export const CalcSpectrum: React.FC = () => {
             )}
 
             <Grid item xs={12}>
-              <SimulateSlit control={methods.control} />
+              <SimulateSlit control={control} />
             </Grid>
 
             <Grid item xs={12}>
-              <CalcSpectrumButton control={methods.control} />
+              <CalcSpectrumButton control={control} />
             </Grid>
           </Grid>
         </Grid>
