@@ -6,6 +6,17 @@ import { FormValues } from "../types";
 type calSpecButtomProps = {
   control: Control<FormValues>;
 };
+// export const CalcSpectrumButton: React.FC<calSpecButtomProps> = () => (
+//   <Button
+//     id="calc-spectrum-button"
+//     disabled={false}
+//     variant="contained"
+//     color="primary"
+//     type="submit"
+//   >
+//     Calculate spectrum
+//   </Button>
+// );
 
 export const CalcSpectrumButton: React.FC<calSpecButtomProps> = ({
   control,
@@ -15,16 +26,19 @@ export const CalcSpectrumButton: React.FC<calSpecButtomProps> = ({
     name="calspectrum_button"
     defaultValue=""
     control={control}
-    render={({ formState: { isDirty } }) => (
-      <Button
-        id="calc-spectrum-button"
-        disabled={!isDirty}
-        variant="contained"
-        color="primary"
-        type="submit"
-      >
-        Calculate spectrum
-      </Button>
+    render={({ formState }) => (
+      console.log(formState),
+      (
+        <Button
+          id="calc-spectrum-button"
+          disabled={!formState.isValid}
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
+          Calculate spectrum
+        </Button>
+      )
     )}
   />
 );

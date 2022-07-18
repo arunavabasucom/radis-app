@@ -33,7 +33,6 @@ export const Species: React.FC<SpeciesProps> = ({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               name={`species.${index}.molecule` as any}
               control={control}
-              rules={{ required: "Molecule is required" }}
               render={({ field, formState }) => (
                 <MoleculeSelector
                   validationError={formState.errors?.species?.[index]?.molecule}
@@ -52,14 +51,13 @@ export const Species: React.FC<SpeciesProps> = ({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               name={`species.${index}.mole_fraction` as any}
               control={control}
-              rules={{ required: "Mole fraction is required" }}
               render={({ field: { onChange, value }, formState }) => (
                 <TextField
                   variant="standard"
                   fullWidth
                   id="mole-fraction-input"
                   label="Mole Fraction"
-                  error={!formState.errors?.species?.[index]?.mole_fraction}
+                  error={!!formState.errors?.species?.[index]?.mole_fraction}
                   value={value}
                   type="number"
                   onChange={(e) => {

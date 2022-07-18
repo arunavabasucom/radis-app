@@ -27,7 +27,8 @@
     "react-plotly.js": "^2.5.1",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.5",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "PORT=5000 react-scripts start",
