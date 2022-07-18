@@ -1,41 +1,37 @@
-//TODO: in progress
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
-import Input from "@material-ui/core/Input";
+import Typography from "@mui/material/Typography";
+import Slider from "@mui/material/Slider";
+import Input from "@mui/material/Input";
 import { Control, Controller, UseFormSetValue } from "react-hook-form";
 import Grid from "@mui/material/Grid";
+import { makeStyles } from "@mui/styles";
 import { FormValues } from "../types";
-// import { makeStyles } from "@mui/material/styles";
+
 interface WavelengthRangeSliderProps {
   minRange: number;
   maxRange: number;
   control: Control<FormValues>;
   setValue: UseFormSetValue<FormValues>;
 }
-// const useStyles = makeStyles({
-//   input: {
-//     width: 52,
-//   },
-// });
+const useStyles = makeStyles({
+  input: {
+    width: 52,
+  },
+});
 export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   minRange,
   maxRange,
   control,
   setValue,
 }) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   const [lowerRange, setLowerRange] = React.useState<number | "">(1900);
   const [upperRange, setUpperRange] = React.useState<number | "">(2300);
   React.useEffect(() => {
     setValue("min_wavenumber_range", lowerRange === "" ? minRange : lowerRange);
     setValue("max_wavenumber_range", upperRange === "" ? maxRange : upperRange);
   }, [lowerRange, upperRange]);
-  const handleSliderChange = (
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    _event: React.ChangeEvent<{}>,
-    value: number | number[]
-  ) => {
+  const handleSliderChange = (_event: Event, value: number | number[]) => {
     value = value as [number, number];
     setLowerRange(value[0]);
     setUpperRange(value[1]);
@@ -53,6 +49,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   };
   const rangeInput = (
     id: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange: (...event: any[]) => void,
     value:
       | FormValues["min_wavenumber_range"]
@@ -61,7 +58,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
     <Input
       fullWidth
       id={id}
-      // className={classes.input}
+      className={classes.input}
       value={value}
       margin="dense"
       onChange={(e) =>

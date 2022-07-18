@@ -31,12 +31,13 @@ export const Species: React.FC<SpeciesProps> = ({
         <React.Fragment key={field.id}>
           <Grid item xs={6}>
             <Controller
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               name={`species.${index}.molecule` as any}
               control={control}
               rules={{ required: "Molecule is required" }}
-              render={({ field }) => (
+              render={({ field, formState }) => (
                 <MoleculeSelector
-                  // validationError=""
+                  validationError={formState.errors?.species?.[index]?.molecule}
                   control={control}
                   value={field.value}
                   onChange={field.onChange}
@@ -49,16 +50,17 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={4}>
             <Controller
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               name={`species.${index}.mole_fraction` as any}
               control={control}
               rules={{ required: "Mole fraction is required" }}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange, value }, formState }) => (
                 <TextField
                   variant="standard"
                   fullWidth
                   id="mole-fraction-input"
                   label="Mole Fraction"
-                  // error={validationErrors.mole_fraction[index] !== undefined}
+                  error={!formState.errors?.species?.[index]?.mole_fraction}
                   value={value}
                   type="number"
                   onChange={(e) => {

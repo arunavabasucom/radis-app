@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Control } from "react-hook-form";
+import { Control, FieldError } from "react-hook-form";
 import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
@@ -15,7 +15,7 @@ import {
 } from "./molecules";
 
 export interface MoleculeSelectorProps {
-  validationError?: string;
+  validationError?: FieldError;
   onChange: (...event: string[]) => void;
   value: string;
   control: Control<FormValues>;

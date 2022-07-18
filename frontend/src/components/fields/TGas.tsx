@@ -1,4 +1,3 @@
-//TODO: review
 import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -24,6 +23,11 @@ export const TGas: React.FC<TGasProps> = ({ control }) => (
           endAdornment: <InputAdornment position="end">K</InputAdornment>,
         }}
         helperText={formState.errors?.tgas?.message as ReactNode}
+        onKeyPress={(event) => {
+          if (event?.key === "-" || event?.key === "+") {
+            event.preventDefault();
+          }
+        }}
       />
     )}
     name="tgas"
