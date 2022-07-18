@@ -1,4 +1,3 @@
-//TODO: in progress
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";

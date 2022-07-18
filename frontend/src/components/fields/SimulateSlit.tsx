@@ -1,4 +1,3 @@
-//TODO: review (causing to much render for the component tree) => use memo to prevent that
 import React from "react";
 import { FormControlLabel, Switch } from "@mui/material";
 import { Control, Controller } from "react-hook-form";

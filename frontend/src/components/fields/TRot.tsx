@@ -1,4 +1,3 @@
-//TODO: review
 import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
