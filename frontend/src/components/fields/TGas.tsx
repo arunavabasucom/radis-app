@@ -24,6 +24,11 @@ export const TGas: React.FC<TGasProps> = ({ control }) => (
           endAdornment: <InputAdornment position="end">K</InputAdornment>,
         }}
         helperText={formState.errors?.tgas?.message as ReactNode}
+        onKeyPress={(event) => {
+          if (event?.key === "-" || event?.key === "+") {
+            event.preventDefault();
+          }
+        }}
       />
     )}
     name="tgas"

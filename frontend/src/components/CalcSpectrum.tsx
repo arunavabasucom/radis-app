@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Grid from "@mui/material/Grid";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -26,32 +27,62 @@ interface Response<T> {
   error?: string;
 }
 export const CalcSpectrum: React.FC = () => {
-  //============================================================================//
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
     useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [calcSpectrumButtonDisabled, setCalcSpectrumButtonDisabled] =
-    useState<boolean>(false);
   const [plotData, setPlotData] =
     useState<CalcSpectrumPlotData | undefined>(undefined);
-
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
-  //eslint -disable-next-line @typescript-eslint/no-unused-vars
   const [useGesia, setUseGesia] = useState(false);
 
-  //============================================================================//
-  const methods = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] } as any,
+  const validationSchema = yup.object().shape({
+    path_length: yup
+      .number()
+      .required("Path length must be defined")
+      .typeError("Path length must be defined")
+      .min(1, "Path length cannot be negative"),
+    pressure: yup
+      .number()
+      .required("Pressure must be defined")
+      .typeError("Pressure must be defined")
+      .min(1, "Pressure cannot be negative"),
+    tgas: yup
+      .number()
+      .required("Database must be defined")
+      .typeError("Database must be defined")
+      .max(9000, "Tgas must be between 1K and 9000K")
+      .min(1, "Tgas must be between 1K and 9000K"),
+    trot: yup
+      .number()
+      .required("TRot must be defined")
+      .typeError("TRot must be defined")
+      .min(0, "TRot must be positive"),
+    tvib: yup
+      .number()
+      .required("TVib must be defined")
+      .typeError("TVib must be defined")
+      .min(0, "TVib must be positive"),
+    min_wavenumber_range: yup
+      .number()
+      .required("Min wavenumber range must be defined")
+      .typeError("Min wavenumber range must be defined"),
+    max_wavenumber_range: yup
+      .number()
+      .required("Max wavenumber range must be defined")
+      .typeError("Max wavenumber range must be defined"),
   });
-  const { reset, setValue, watch } = methods;
+  const methods = useForm<FormValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    resolver: yupResolver(validationSchema),
+  });
+  const { setValue, watch } = methods;
 
   const handleBadResponse = (message: string) => {
     setCalcSpectrumResponse(undefined);
     setError(message);
   };
   const onSubmit = async (data: FormValues): Promise<void> => {
-    // data.preventDefault();
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -82,16 +113,13 @@ export const CalcSpectrum: React.FC = () => {
     });
   };
   const databaseWatch = watch("database");
-  console.log("databaseWatch", databaseWatch);
 
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
-      console.log("true sucessfully");
     }
   }, [databaseWatch]);
 
-  //============================================================================//
   const UseNonEquilibriumCalculations = () => (
     <FormControlLabel
       label="Use non-equilibrium calculations"
@@ -104,10 +132,8 @@ export const CalcSpectrum: React.FC = () => {
               setValue("tvib", 300);
               setValue("trot", 300);
             } else {
-              //@ts-ignore
-              setValue("tvib", null);
-              //@ts-ignore
-              setValue("trot", null);
+              setValue("tvib", undefined);
+              setValue("trot", undefined);
             }
           }}
         />
@@ -115,7 +141,6 @@ export const CalcSpectrum: React.FC = () => {
     />
   );
 
-  //============================================================================//
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)}>
       {/* <div>{render}</div> */}
@@ -179,9 +204,7 @@ export const CalcSpectrum: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <CalcSpectrumButton
-                calcSpectrumButtonDisabled={calcSpectrumButtonDisabled}
-              />
+              <CalcSpectrumButton control={methods.control} />
             </Grid>
           </Grid>
         </Grid>

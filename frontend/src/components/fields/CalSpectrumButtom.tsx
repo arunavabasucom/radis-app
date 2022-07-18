@@ -1,20 +1,30 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "../types";
 
 type calSpecButtomProps = {
-  calcSpectrumButtonDisabled: boolean;
+  control: Control<FormValues>;
 };
 
 export const CalcSpectrumButton: React.FC<calSpecButtomProps> = ({
-  calcSpectrumButtonDisabled,
+  control,
 }) => (
-  <Button
-    id="calc-spectrum-button"
-    disabled={calcSpectrumButtonDisabled}
-    variant="contained"
-    color="primary"
-    type="submit"
-  >
-    Calculate spectrum
-  </Button>
+  <Controller
+    //@ts-ignore
+    name="calspectrum_button"
+    defaultValue=""
+    control={control}
+    render={({ formState: { isDirty } }) => (
+      <Button
+        id="calc-spectrum-button"
+        disabled={!isDirty}
+        variant="contained"
+        color="primary"
+        type="submit"
+      >
+        Calculate spectrum
+      </Button>
+    )}
+  />
 );
