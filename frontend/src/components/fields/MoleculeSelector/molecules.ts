@@ -1,4 +1,3 @@
-//equilibrium molecules hitran database
 export const moleculeOptionsEquimolecules = [
   "C2H2",
   "C2H4",
@@ -51,10 +50,8 @@ export const moleculeOptionsEquimolecules = [
   "SO3",
 ];
 
-//equilibrium molecules hitran database
 export const moleculeOptionsNonequimolecules = ["CO", "CO2"];
 
-//geisa molecules
 export const moleculeOptionsGesia = [
   "CO2",
   "CO",
