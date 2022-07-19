@@ -30,9 +30,12 @@ class Payload(BaseModel):
     tvib: Optional[float] = None
     trot: Optional[float] = None
     path_length: float
-    simulate_slit: bool
+    simulate_slit: Optional[int] = None
     mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit"]
     database: Literal["hitran", "geisa"]
+
+
+simulate_slit_value = bool(simulate_slit)  # checking that simulate_slit has any value or nor
 
 
 @app.post("/calculate-spectrum")
@@ -59,14 +62,17 @@ async def calculate_spectrum(payload: Payload):
             databank=payload.database,
             use_cached=True,
         )
+        if simulate_slit_value == True:
+            spectrum.apply_slit(payload.simulate_slit, "nm")
+        else:
+            pass
+
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
         print("Error", exc)
         return {"error": str(exc)}
     else:
-        if payload.simulate_slit:
-            spectrum.apply_slit(5, "nm")
 
         wunit = spectrum.get_waveunit()
         iunit = "default"
