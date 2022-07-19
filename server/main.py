@@ -4,7 +4,8 @@ from pydantic import BaseModel
 import radis
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic.typing import Literal
-
+# for high resolution
+radis.config["GRIDPOINTS_PER_LINEWIDTH_WARN_THRESHOLD"] = 7
 app = FastAPI()
 
 app.add_middleware(
