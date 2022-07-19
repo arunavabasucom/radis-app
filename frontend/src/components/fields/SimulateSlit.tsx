@@ -22,7 +22,7 @@ export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
         InputProps={{
           endAdornment: <InputAdornment position="end">nm</InputAdornment>,
         }}
-        helperText={formState.errors?.simulate_slit?.message as ReactNode}
+        helperText={formState.errors?.simulate_slit?.message}
         onKeyPress={(event) => {
           if (event?.key === "-" || event?.key === "+") {
             event.preventDefault();
