@@ -62,8 +62,6 @@ async def calculate_spectrum(payload: Payload):
         )
         if simulate_slit is not None:
             spectrum.apply_slit(payload.simulate_slit, "nm")
-        else:
-            pass
 
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
