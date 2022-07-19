@@ -3,12 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import {
-  Control,
-  Controller,
-
-  // useFormContext,
-} from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 
 interface DatabaseProps {
@@ -34,13 +29,11 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
             id="database-select"
             onChange={field.onChange}
             value={field.value}
-            // error={formState.errors?.database}
             label="Select"
           >
             <MenuItem value={"hitran"}>HITRAN</MenuItem>
             <MenuItem value={"geisa"}>GEISA</MenuItem>
           </Select>
-          // <p>{formState.errors?.select?}<p>
         )}
       />
     </FormControl>

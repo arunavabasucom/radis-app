@@ -28,7 +28,6 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
             id="mode-select"
             onChange={field.onChange}
             value={field.value}
-            // error={formState.errors?.database}
             label="Select"
           >
             <MenuItem value={"absorbance"}>Absorbance</MenuItem>

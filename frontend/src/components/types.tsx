@@ -1,4 +1,4 @@
-// response type from the form
+
 
 export type Species = {
   molecule: string;
