@@ -35,9 +35,6 @@ class Payload(BaseModel):
     database: Literal["hitran", "geisa"]
 
 
-simulate_slit_value = bool(simulate_slit)  # checking that simulate_slit has any value or nor
-
-
 @app.post("/calculate-spectrum")
 async def calculate_spectrum(payload: Payload):
     print(payload)
@@ -62,7 +59,7 @@ async def calculate_spectrum(payload: Payload):
             databank=payload.database,
             use_cached=True,
         )
-        if simulate_slit_value == True:
+        if simulate_slit is not None:
             spectrum.apply_slit(payload.simulate_slit, "nm")
         else:
             pass
