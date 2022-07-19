@@ -96,6 +96,11 @@ export const CalcSpectrum: React.FC = () => {
           .typeError("Mole fraction must be defined"),
       })
     ),
+    simulate_slit: yup
+      .number()
+      .typeError("Simulate slit must be defined")
+      .min(0)
+      .max(30),
   });
   const { control, handleSubmit, setValue, watch, formState } =
     useForm<FormValues>({
