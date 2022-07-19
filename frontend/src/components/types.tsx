@@ -1,5 +1,3 @@
-
-
 export type Species = {
   molecule: string;
   mole_fraction: number;
