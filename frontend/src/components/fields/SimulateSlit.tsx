@@ -3,10 +3,10 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
-interface TGasProps {
+interface SimulateSlitProps {
   control: Control<FormValues>;
 }
-export const TGas: React.FC<TGasProps> = ({ control }) => (
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
       <TextField
@@ -18,7 +18,7 @@ export const TGas: React.FC<TGasProps> = ({ control }) => (
         label="Simulate Slit"
         onChange={field.onChange}
         value={field.value}
-        error={!!formState.errors?.tgas}
+        error={!!formState.errors?.simulate_slit}
         InputProps={{
           endAdornment: <InputAdornment position="end">nm</InputAdornment>,
         }}

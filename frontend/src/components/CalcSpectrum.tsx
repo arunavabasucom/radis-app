@@ -227,15 +227,14 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={false}
               />
             </Grid>
+            <Grid item xs={12}>
+              <SimulateSlit control={control} />
+            </Grid>
             {useGesia ? null : (
               <Grid item xs={12}>
                 <UseNonEquilibriumCalculations />
               </Grid>
             )}
-
-            <Grid item xs={12}>
-              <SimulateSlit control={control} />
-            </Grid>
 
             <Grid item xs={12}>
               <CalcSpectrumButton />
