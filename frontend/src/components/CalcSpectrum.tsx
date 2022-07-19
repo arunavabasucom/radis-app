@@ -178,7 +178,6 @@ export const CalcSpectrum: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* <div>{render}</div> */}
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8} md={5} lg={4}>
