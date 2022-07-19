@@ -8,7 +8,6 @@ import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
 import { FormValues } from "../../types";
 export interface SpeciesProps {
-  validationErrors?: string;
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
   isGeisa: boolean;
@@ -16,7 +15,6 @@ export interface SpeciesProps {
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
-  // validationErrors,
   isNonEquilibrium,
   isGeisa,
 }) => {
@@ -30,8 +28,7 @@ export const Species: React.FC<SpeciesProps> = ({
         <React.Fragment key={field.id}>
           <Grid item xs={6}>
             <Controller
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              name={`species.${index}.molecule` as any}
+              name={`species.${index}.molecule` as const}
               control={control}
               render={({ field, formState }) => (
                 <MoleculeSelector
@@ -48,8 +45,7 @@ export const Species: React.FC<SpeciesProps> = ({
           </Grid>
           <Grid item xs={4}>
             <Controller
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              name={`species.${index}.mole_fraction` as any}
+              name={`species.${index}.mole_fraction` as const}
               control={control}
               render={({ field: { onChange, value }, formState }) => (
                 <TextField
