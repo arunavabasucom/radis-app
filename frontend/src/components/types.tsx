@@ -6,6 +6,7 @@ export type Species = {
 };
 export type FormValues = {
   mode: string;
+  useNonEqi: boolean;
   database: string;
   species: Species[];
   min_wavenumber_range: number;

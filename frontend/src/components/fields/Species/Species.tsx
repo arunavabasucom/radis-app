@@ -74,7 +74,9 @@ export const Species: React.FC<SpeciesProps> = ({
             {index === 0 ? (
               <IconButton
                 color="primary"
-                onClick={() => append({ molecule: "CO", mole_fraction: 0.1 })}
+                onClick={() =>
+                  append({ molecule: undefined, mole_fraction: undefined })
+                }
               >
                 <AddIcon />
               </IconButton>

@@ -109,6 +109,7 @@ export const CalcSpectrum: React.FC = () => {
     setError(message);
   };
   const onSubmit = async (data: FormValues): Promise<void> => {
+    console.log(data);
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -143,12 +144,13 @@ export const CalcSpectrum: React.FC = () => {
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
+    } else {
+      setUseGesia(false);
     }
   }, [databaseWatch]);
 
   const UseNonEquilibriumCalculations = () => (
     <Controller
-      // @ts-ignore
       name="useNonEqi"
       control={control}
       render={() => (
