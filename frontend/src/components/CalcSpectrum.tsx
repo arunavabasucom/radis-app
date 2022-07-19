@@ -1,111 +1,127 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Controller, useForm } from "react-hook-form";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
-import {
-  CalcSpectrumParams,
-  CalcSpectrumResponseData,
-  CalcSpectrumPlotData,
-  ValidationErrors,
-} from "../constants";
-import { WavenumberRangeSlider, SimulateSlit, Species } from "./fields";
-import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
-import { ErrorAlert } from "./ErrorAlert";
+import CircularProgress from "@mui/material/CircularProgress";
+import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
+import { FormValues } from "./types";
+import { Database } from "./fields/Database";
+import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
-import { Mode } from "./fields/Mode";
-import { Database } from "./fields/Database";
-
+import { Species } from "./fields/Species/Species";
+import { SimulateSlit } from "./fields/SimulateSlit";
+import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
+import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
+import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
+import { ErrorAlert } from "./ErrorAlert";
 interface Response<T> {
   data?: T;
   error?: string;
 }
-
-const DEFAULT_MIN_WAVENUMBER_RANGE = 1900;
-const DEFAULT_MAX_WAVENUMBER_RANGE = 2300;
-const DEFAULT_TEMPERATURE = 300; // K
-
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
     useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
-
-  const [params, setParams] = useState<CalcSpectrumParams>({
-    species: [{ molecule: "CO", mole_fraction: 0.1 }],
-    min_wavenumber_range: DEFAULT_MIN_WAVENUMBER_RANGE,
-    max_wavenumber_range: DEFAULT_MAX_WAVENUMBER_RANGE,
-    tgas: DEFAULT_TEMPERATURE,
-    tvib: null,
-    trot: null,
-    pressure: 1.01325,
-    path_length: 1,
-    simulate_slit: false,
-    mode: "absorbance",
-    database: "hitran",
-  });
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
-    molecule: [],
-    mole_fraction: [],
-  });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [calcSpectrumButtonDisabled, setCalcSpectrumButtonDisabled] =
-    useState<boolean>(false);
   const [plotData, setPlotData] =
     useState<CalcSpectrumPlotData | undefined>(undefined);
-  //state
-  const [isNonEquilibrium, setIsNonEquilibrium] = useState<boolean>(false);
-  const [useGesia, setUseGesia] = useState<boolean>(false);
+  const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
+  const [useGesia, setUseGesia] = useState(false);
 
-  useEffect(() => {
-    // Warm the Lambda
-    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      await axios.post(module.apiEndpoint + `calculate-spectrum`, {
-        prewarm: true,
-      });
+  const Schema = yup.object().shape({
+    useNonEqi: yup.boolean(),
+    path_length: yup
+      .number()
+      .required("Path length must be defined")
+      .typeError("Path length must be defined")
+      .min(1, "Path length cannot be negative"),
+    pressure: yup
+      .number()
+      .required("Pressure must be defined")
+      .typeError("Pressure must be defined")
+      .min(1, "Pressure cannot be negative"),
+    tgas: yup
+      .number()
+      .required("Tgas must be defined")
+      .typeError("Tgas must be defined")
+      .max(9000, "Tgas must be between 1K and 9000K")
+      .min(1, "Tgas must be between 1K and 9000K"),
+    trot: yup
+      .number()
+      .typeError("TRot must be defined")
+      .when("useNonEqi", {
+        is: true,
+        then: yup
+          .number()
+          .required("Trot must be defined")
+          .typeError("TRot must be defined")
+          .min(0, "TRot must be positive"),
+      }),
+    tvib: yup
+      .number()
+      .typeError("TRot must be defined")
+      .when("useNonEqi", {
+        is: true,
+        then: yup
+          .number()
+          .required("TVib must be defined")
+          .typeError("TVib must be defined")
+          .min(0, "TVib must be positive"),
+      }),
+    min_wavenumber_range: yup
+      .number()
+      .required("Min wavenumber range must be defined")
+      .typeError("Min wavenumber range must be defined"),
+    max_wavenumber_range: yup
+      .number()
+      .required("Max wavenumber range must be defined")
+      .typeError("Max wavenumber range must be defined"),
+    species: yup.array().of(
+      yup.object().shape({
+        molecule: yup
+          .string()
+          .required("Molecule must be defined")
+          .typeError("Molecule must be defined"),
+        mole_fraction: yup
+          .number()
+          .required("Mole fraction must be defined")
+          .typeError("Mole fraction must be defined"),
+      })
+    ),
+  });
+  const { control, handleSubmit, setValue, watch, formState } =
+    useForm<FormValues>({
+      defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+      resolver: yupResolver(Schema),
     });
-  }, []);
 
-  useEffect(() => {
-    validate(params);
-  }, [params]);
-
-  useEffect(() => {
-    if (hasValidationErrors(validationErrors)) {
-      setCalcSpectrumButtonDisabled(true);
-    } else {
-      setCalcSpectrumButtonDisabled(false);
-    }
-  }, [validationErrors]);
-
+  console.log(formState?.errors);
   const handleBadResponse = (message: string) => {
-    // Clear any existing data
     setCalcSpectrumResponse(undefined);
     setError(message);
   };
-
-  const onSubmitHandler = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
+  const onSubmit = async (data: FormValues): Promise<void> => {
+    console.log(data);
     setLoading(true);
     setError(undefined);
     setPlotData({
-      species: params.species.map((species) => ({ ...species })),
-      minWavenumber: params.min_wavenumber_range,
-      maxWavenumber: params.max_wavenumber_range,
-      mode: params.mode,
+      max_wavenumber_range: data.max_wavenumber_range,
+      min_wavenumber_range: data.min_wavenumber_range,
+      mode: data.mode,
+      species: data.species,
     });
-
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
       const rawResponse = await axios.post(
         module.apiEndpoint + `calculate-spectrum`,
-        params
+        data
       );
       if (
         rawResponse.data.data === undefined &&
@@ -123,204 +139,102 @@ export const CalcSpectrum: React.FC = () => {
       setLoading(false);
     });
   };
+  const databaseWatch = watch("database");
 
-  const validate = (params: CalcSpectrumParams): void => {
-    const updatedValidationErrors: ValidationErrors = {
-      molecule: [],
-      mole_fraction: [],
-    };
-
-    updatedValidationErrors.trot = undefined;
-    updatedValidationErrors.tvib = undefined;
-    if (isNonEquilibrium) {
-      if (!params.trot) {
-        updatedValidationErrors.trot =
-          "Trot must be defined when running non-equilibrium calculations";
-      }
-      if (!params.tvib) {
-        updatedValidationErrors.tvib =
-          "Tvib must be defined when running non-equilibrium calculations";
-      }
-    }
-
-    updatedValidationErrors.molecule = new Array(params.species.length).fill(
-      undefined
-    );
-    updatedValidationErrors.mole_fraction = new Array(
-      params.species.length
-    ).fill(undefined);
-
-    params.species.forEach((species, index) => {
-      if (!species.molecule) {
-        updatedValidationErrors.molecule[index] = "Molecule must be defined";
-      }
-      if (
-        species.mole_fraction === undefined ||
-        Number.isNaN(species.mole_fraction)
-      ) {
-        updatedValidationErrors.mole_fraction[index] =
-          "Mole fraction must be defined";
-      } else if (species.mole_fraction && species.mole_fraction < 0) {
-        updatedValidationErrors.mole_fraction[index] =
-          "Mole fraction cannot be negative";
-      }
-    });
-
-    if (Number.isNaN(params.tgas)) {
-      updatedValidationErrors.tgas = "Tgas must be defined";
-    } else if (params.tgas < 1 || params.tgas > 9000) {
-      updatedValidationErrors.tgas = "Tgas must be between 1K and 9000K";
-    } else {
-      updatedValidationErrors.tgas = undefined;
-    }
-
-    if (Number.isNaN(params.pressure)) {
-      updatedValidationErrors.pressure = "Pressure must be defined";
-    } else if (params.pressure < 0) {
-      updatedValidationErrors.pressure = "Pressure cannot be negative";
-    } else {
-      updatedValidationErrors.pressure = undefined;
-    }
-    if (params.database == "geisa") {
+  React.useEffect(() => {
+    if (databaseWatch === "geisa") {
       setUseGesia(true);
-    }
-    if (params.database == "hitran") {
+    } else {
       setUseGesia(false);
     }
-    if (Number.isNaN(params.path_length)) {
-      updatedValidationErrors.path_length = "Path length must be defined";
-    } else if (params.path_length < 0) {
-      updatedValidationErrors.path_length = "Path length cannot be negative";
-    } else {
-      updatedValidationErrors.path_length = undefined;
-    }
+  }, [databaseWatch]);
 
-    setValidationErrors({ ...validationErrors, ...updatedValidationErrors });
-  };
-
-  const hasValidationErrors = (validationErrors: ValidationErrors): boolean =>
-    Object.values(validationErrors).some(
-      (error: string | string[] | undefined) =>
-        Array.isArray(error)
-          ? error.some((error: string | undefined) => error)
-          : error
-    );
-
-  //switch
   const UseNonEquilibriumCalculations = () => (
-    <FormControlLabel
-      label="Use non-equilibrium calculations"
-      control={
-        <Switch
-          //non-equ is true here
-          checked={isNonEquilibrium}
-          onChange={(e) => {
-            setIsNonEquilibrium(e.target.checked);
-            if (e.target.checked) {
-              setParams({ ...params, tvib: params.tgas, trot: params.tgas });
-            } else {
-              setParams({ ...params, tvib: null, trot: null });
-            }
-          }}
+    <Controller
+      name="useNonEqi"
+      control={control}
+      render={() => (
+        <FormControlLabel
+          label="Use non-equilibrium calculations"
+          control={
+            <Switch
+              checked={isNonEquilibrium}
+              onChange={(e) => {
+                setIsNonEquilibrium(e.target.checked);
+                if (e.target.checked) {
+                  setValue("tvib", 300);
+                  setValue("trot", 300);
+                } else {
+                  setValue("tvib", undefined);
+                  setValue("trot", undefined);
+                }
+              }}
+            />
+          }
         />
-      }
+      )}
     />
-  );
-  const CalcSpectrumButton: React.FC = () => (
-    <Button
-      id="calc-spectrum-button"
-      disabled={calcSpectrumButtonDisabled}
-      variant="contained"
-      color="primary"
-      type="submit"
-    >
-      Calculate spectrum
-    </Button>
   );
 
   return (
-    <form onSubmit={onSubmitHandler}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8} md={5} lg={5}>
-              <Database params={params} setParams={setParams} />
+              <Database control={control}></Database>
             </Grid>
             <Grid item xs={12} sm={8} md={5} lg={6}>
-              <Mode params={params} setParams={setParams} />
+              <Mode control={control} />
             </Grid>
             <Grid item xs={12}>
               <WavenumberRangeSlider
                 minRange={500}
                 maxRange={10000}
-                params={params}
-                setParams={setParams}
+                control={control}
+                setValue={setValue}
               />
             </Grid>
 
             <Grid item sm={8} lg={4}>
-              <TGas
-                params={params}
-                setParams={setParams}
-                validationErrors={validationErrors}
-              />
+              <TGas control={control} />
             </Grid>
 
             {isNonEquilibrium ? (
               <>
                 <Grid item sm={8} lg={3}>
-                  <TRot
-                    params={params}
-                    setParams={setParams}
-                    validationErrors={validationErrors}
-                  />
+                  <TRot control={control} />
                 </Grid>
                 <Grid item sm={8} lg={3}>
-                  <TVib
-                    params={params}
-                    setParams={setParams}
-                    validationErrors={validationErrors}
-                  />
+                  <TVib control={control} />
                 </Grid>
               </>
             ) : null}
 
             <Grid item sm={8} lg={5}>
-              <Pressure
-                params={params}
-                setParams={setParams}
-                validationErrors={validationErrors}
-              />
+              <Pressure control={control} />
             </Grid>
 
             <Grid item sm={8} lg={3}>
-              <PathLength
-                params={params}
-                setParams={setParams}
-                validationErrors={validationErrors}
-              />
+              <PathLength control={control} />
             </Grid>
 
             <Grid item xs={12}>
               <Species
-                isNonEquilibrium={isNonEquilibrium}
-                params={params}
-                setParams={setParams}
-                validationErrors={validationErrors}
-                isGeisa={useGesia}
+                isNonEquilibrium={false}
+                control={control}
+                isGeisa={false}
               />
             </Grid>
-            {useGesia ? (
-              <Grid item xs={12}></Grid>
-            ) : (
+            {useGesia ? null : (
               <Grid item xs={12}>
                 <UseNonEquilibriumCalculations />
               </Grid>
             )}
 
             <Grid item xs={12}>
-              <SimulateSlit params={params} setParams={setParams} />
+              <SimulateSlit control={control} />
             </Grid>
 
             <Grid item xs={12}>
@@ -346,8 +260,8 @@ export const CalcSpectrum: React.FC = () => {
               <CalcSpectrumPlot
                 data={calcSpectrumResponse.data}
                 species={plotData.species}
-                minWavenumberRange={plotData.minWavenumber}
-                maxWavenumberRange={plotData.maxWavenumber}
+                min_wavenumber_range={plotData.min_wavenumber_range}
+                max_wavenumber_range={plotData.max_wavenumber_range}
                 mode={plotData.mode}
               />
             )

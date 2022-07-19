@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@hookform/resolvers": "^2.9.3",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.57",
@@ -22,10 +23,12 @@
     "plotly.js": "^1.58.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.33.1",
     "react-plotly.js": "^2.5.1",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.5",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "PORT=5000 react-scripts start",

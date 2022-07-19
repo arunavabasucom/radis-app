@@ -1,37 +1,41 @@
 import React from "react";
-
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-
-import { CalcSpectrumParams } from "../../constants";
+import { Control, Controller } from "react-hook-form";
+import { FormValues } from "../types";
 
 interface DatabaseProps {
-  params: CalcSpectrumParams;
-  setParams: (params: CalcSpectrumParams) => void;
+  control: Control<FormValues>;
 }
 
-export const Database: React.FC<DatabaseProps> = ({ params, setParams }) => (
-  <FormControl fullWidth>
-    <InputLabel variant="standard" id="database-input">
-      Database
-    </InputLabel>
-    <Select
-      variant="standard"
-      labelId="database-label"
-      id="database-select"
-      value={params.database}
-      label="Database"
-      onChange={(event) =>
-        setParams({
-          ...params,
-          database: event.target.value as "hitran" | "geisa",
-        })
-      }
-    >
-      <MenuItem value={"hitran"}>HITRAN</MenuItem>
-      <MenuItem value={"geisa"}>GEISA</MenuItem>
-    </Select>
-  </FormControl>
-);
+export const Database: React.FC<DatabaseProps> = ({ control }) => {
+  return (
+    <FormControl fullWidth>
+      <InputLabel variant="standard" id="database-input">
+        Database
+      </InputLabel>
+      <Controller
+        name="database"
+        defaultValue="hitran"
+        control={control}
+        render={({ field, formState }) => (
+          <Select
+            {...field}
+            {...formState}
+            variant="standard"
+            labelId="database-label"
+            id="database-select"
+            onChange={field.onChange}
+            value={field.value}
+            label="Select"
+          >
+            <MenuItem value={"hitran"}>HITRAN</MenuItem>
+            <MenuItem value={"geisa"}>GEISA</MenuItem>
+          </Select>
+        )}
+      />
+    </FormControl>
+  );
+};
