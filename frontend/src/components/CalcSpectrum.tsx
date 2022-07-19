@@ -99,8 +99,8 @@ export const CalcSpectrum: React.FC = () => {
     simulate_slit: yup
       .number()
       .typeError("Simulate slit must be defined")
-      .min(0)
-      .max(30),
+      .min(0, "Simulate slit must be positive")
+      .max(30, "Simulate slit must be less than 30"),
   });
   const { control, handleSubmit, setValue, watch, formState } =
     useForm<FormValues>({
