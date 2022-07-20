@@ -13,7 +13,7 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <InputLabel variant="standard" id="mode-select-label">
-        Database
+        Mode
       </InputLabel>
       <Controller
         name="mode"
