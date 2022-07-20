@@ -158,7 +158,7 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setuseSlitSwitch(true);
     }
-  }, [databaseWatch]);
+  }, [databaseWatch, modeWatch]);
 
   const UseNonEquilibriumCalculations = () => (
     <Controller
@@ -266,9 +266,14 @@ export const CalcSpectrum: React.FC = () => {
                 <SimulateSlit control={control} />
               </Grid>
             ) : null}
-            <Grid item xs={12}>
-              <UseSimulateSlit />
-            </Grid>
+            <>
+              {useSlitSwitch ? (
+                <Grid item xs={12}>
+                  <UseSimulateSlit />
+                </Grid>
+              ) : null}
+            </>
+
             {useGesia ? null : (
               <Grid item xs={12}>
                 <UseNonEquilibriumCalculations />
