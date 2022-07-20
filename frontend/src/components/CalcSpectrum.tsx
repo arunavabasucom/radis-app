@@ -35,7 +35,8 @@ export const CalcSpectrum: React.FC = () => {
     useState<CalcSpectrumPlotData | undefined>(undefined);
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
-
+  const [useSlit, setUseSlit] = useState(false);
+  const [useSlitSwitch, setuseSlitSwitch] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     path_length: yup
@@ -145,12 +146,17 @@ export const CalcSpectrum: React.FC = () => {
     });
   };
   const databaseWatch = watch("database");
-
+  const modeWatch = watch("mode");
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
     } else {
       setUseGesia(false);
+    }
+    if (modeWatch === "absorbance") {
+      setuseSlitSwitch(false);
+    } else {
+      setuseSlitSwitch(true);
     }
   }, [databaseWatch]);
 
@@ -180,7 +186,30 @@ export const CalcSpectrum: React.FC = () => {
       )}
     />
   );
-
+  const UseSimulateSlit = () => (
+    <Controller
+      name="useSimulateSlit"
+      control={control}
+      render={() => (
+        <FormControlLabel
+          label="Apply Simulate Slit"
+          control={
+            <Switch
+              checked={useSlit}
+              onChange={(e) => {
+                setUseSlit(e.target.checked);
+                if (e.target.checked) {
+                  setValue("simulate_slit", 5);
+                } else {
+                  setValue("simulate_slit", undefined);
+                }
+              }}
+            />
+          }
+        />
+      )}
+    />
+  );
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {error ? <ErrorAlert message={error} /> : null}
@@ -232,8 +261,13 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={false}
               />
             </Grid>
+            {useSlit ? (
+              <Grid item xs={12}>
+                <SimulateSlit control={control} />
+              </Grid>
+            ) : null}
             <Grid item xs={12}>
-              <SimulateSlit control={control} />
+              <UseSimulateSlit />
             </Grid>
             {useGesia ? null : (
               <Grid item xs={12}>
