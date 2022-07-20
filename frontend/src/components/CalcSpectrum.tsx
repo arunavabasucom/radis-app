@@ -39,6 +39,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useSlitSwitch, setuseSlitSwitch] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
+    useSlitSwitch: yup.boolean(),
     path_length: yup
       .number()
       .required("Path length must be defined")
@@ -101,7 +102,15 @@ export const CalcSpectrum: React.FC = () => {
       .number()
       .typeError("Simulate slit must be defined")
       .min(0, "Simulate slit must be positive")
-      .max(30, "Simulate slit must be less than 30"),
+      .max(30, "Simulate slit must be less than 30")
+      .when("useSlitSwitch", {
+        is: true,
+        then: yup
+          .number()
+          .typeError("Simulate slit must be defined")
+          .min(0, "Simulate slit must be positive")
+          .max(30, "Simulate slit must be less than 30"),
+      }),
   });
   const { control, handleSubmit, setValue, watch, formState } =
     useForm<FormValues>({
@@ -147,6 +156,7 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
+
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
@@ -157,6 +167,11 @@ export const CalcSpectrum: React.FC = () => {
       setuseSlitSwitch(false);
     } else {
       setuseSlitSwitch(true);
+    }
+    if (modeWatch === "absorbance") {
+      setValue("simulate_slit", undefined);
+    } else {
+      setValue("simulate_slit", 5);
     }
   }, [databaseWatch, modeWatch]);
 
@@ -261,10 +276,12 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={false}
               />
             </Grid>
-            {useSlit ? (
-              <Grid item xs={12}>
-                <SimulateSlit control={control} />
-              </Grid>
+            {useSlitSwitch ? (
+              useSlit ? (
+                <Grid item xs={12}>
+                  <SimulateSlit control={control} />
+                </Grid>
+              ) : null
             ) : null}
             <>
               {useSlitSwitch ? (
