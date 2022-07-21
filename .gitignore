@@ -129,5 +129,4 @@ cdk.out
 !config.js
 !lib/inline-lambda/index.js
 *.d.ts
-# !website/src/radis.d.ts
-# /Users/arunavabasu/Work/Web/GSOC/radis-app/website/radis.d.ts
+# !frontend/src/radis.d.ts

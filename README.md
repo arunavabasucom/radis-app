@@ -25,7 +25,7 @@ $ yarn install
 Start the frontend locally:
 
 ```sh
-$ cd website/ && yarn start
+$ cd frontend/ && yarn start
 ```
 
 Deploy the backend to your AWS account:
