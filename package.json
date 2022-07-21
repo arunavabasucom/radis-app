@@ -5,7 +5,7 @@
     "radis-app": "bin/radis-app.js"
   },
   "scripts": {
-    "build": "tsc && cd frontend && yarn build",
+    "build": "cd frontend && yarn build",
     "cdk": "cdk",
     "postinstall": "cd frontend && yarn install && cd ../lib/inline-lambda && yarn install"
   },
