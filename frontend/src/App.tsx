@@ -1,5 +1,4 @@
 import React from "react";
-
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
@@ -9,14 +8,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InfoIcon from "@mui/icons-material/Info";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { createMuiTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
 import { CalcSpectrum } from "./components/CalcSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette,
 });
 
@@ -30,8 +29,9 @@ const useStyles = makeStyles({
 });
 
 const InfoPopover = () => {
-  const [anchorEl, setAnchorEl] =
-    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

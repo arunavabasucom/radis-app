@@ -1,4 +1,5 @@
 import { Species } from "./components/types";
+
 export interface CalcSpectrumResponseData {
   x: number[];
   y: number[];

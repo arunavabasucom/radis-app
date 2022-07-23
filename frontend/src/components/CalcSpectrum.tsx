@@ -22,17 +22,21 @@ import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
+
 interface Response<T> {
   data?: T;
   error?: string;
 }
+
 export const CalcSpectrum: React.FC = () => {
-  const [calcSpectrumResponse, setCalcSpectrumResponse] =
-    useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
+  const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
+    Response<CalcSpectrumResponseData> | undefined
+  >(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [plotData, setPlotData] =
-    useState<CalcSpectrumPlotData | undefined>(undefined);
+  const [plotData, setPlotData] = useState<CalcSpectrumPlotData | undefined>(
+    undefined
+  );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
 
