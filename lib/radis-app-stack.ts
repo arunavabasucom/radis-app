@@ -30,7 +30,7 @@ export class RadisAppStack extends cdk.Stack {
     );
 
     new s3deploy.BucketDeployment(this, "DeployWebsite", {
-      sources: [s3deploy.Source.asset("./website/build"), configSource],
+      sources: [s3deploy.Source.asset("./frontend/build"), configSource],
       destinationBucket: websiteBucket,
       retainOnDelete: false,
     });

@@ -22,10 +22,12 @@ import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
+
 interface Response<T> {
   data?: T;
   error?: string;
 }
+
 export const CalcSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] =
     useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
