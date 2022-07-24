@@ -31,7 +31,7 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
             label="Select"
           >
             <MenuItem value={"absorbance"}>Absorbance</MenuItem>
-            <MenuItem value={"radiance_noslit "}>Radiance </MenuItem>
+            <MenuItem value={"radiance_noslit"}>Radiance</MenuItem>
             <MenuItem value={"transmittance_noslit"}>Transmittance</MenuItem>
           </Select>
         )}
