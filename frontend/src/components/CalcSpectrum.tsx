@@ -205,7 +205,7 @@ export const CalcSpectrum: React.FC = () => {
   );
   const UseSimulateSlit = () => (
     <Controller
-      name="useSimulateSlit"
+      name="use_simulate_slit"
       control={control}
       render={() => (
         <FormControlLabel
