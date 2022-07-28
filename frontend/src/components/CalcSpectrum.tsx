@@ -209,7 +209,7 @@ export const CalcSpectrum: React.FC = () => {
       control={control}
       render={() => (
         <FormControlLabel
-          label="Apply Simulate Slit"
+          label="Apply Instrumental Slit Function"
           control={
             <Switch
               checked={useSlit}
@@ -278,6 +278,13 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={false}
               />
             </Grid>
+
+            {useSlitSwitch ? (
+              <Grid item xs={12}>
+                <UseSimulateSlit />
+              </Grid>
+            ) : null}
+
             {useSlitSwitch ? (
               useSlit ? (
                 <Grid item xs={12}>
@@ -285,14 +292,6 @@ export const CalcSpectrum: React.FC = () => {
                 </Grid>
               ) : null
             ) : null}
-            <>
-              {useSlitSwitch ? (
-                <Grid item xs={12}>
-                  <UseSimulateSlit />
-                </Grid>
-              ) : null}
-            </>
-
             {useGesia ? null : (
               <Grid item xs={12}>
                 <UseNonEquilibriumCalculations />

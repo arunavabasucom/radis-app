@@ -15,7 +15,7 @@ export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
         id="simulate_slit"
         variant="standard"
         type="number"
-        label="Simulate Slit"
+        label="Slit Size"
         onChange={field.onChange}
         value={field.value}
         error={!!formState.errors?.simulate_slit}
