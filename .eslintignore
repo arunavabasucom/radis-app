@@ -1,2 +1,4 @@
 node_modules/
 dist/
+./frontend/src/App.tsx
+./frontend/src/components/CalcSpectrum.tsx

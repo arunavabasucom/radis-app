@@ -29,10 +29,8 @@ const useStyles = makeStyles({
 });
 
 const InfoPopover = () => {
-  const [anchorEl, setAnchorEl] = React.useState<
-    (EventTarget & HTMLButtonElement) | null
-  >(null);
-
+  const [anchorEl, setAnchorEl] =
+    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -129,4 +127,4 @@ function App(): React.ReactElement {
   );
 }
 
-export default App;
+export default App; //export

@@ -29,21 +29,19 @@ interface Response<T> {
 }
 
 export const CalcSpectrum: React.FC = () => {
-  const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
-    Response<CalcSpectrumResponseData> | undefined
-  >(undefined);
+  const [calcSpectrumResponse, setCalcSpectrumResponse] =
+    useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [plotData, setPlotData] = useState<CalcSpectrumPlotData | undefined>(
-    undefined
-  );
+  const [plotData, setPlotData] =
+    useState<CalcSpectrumPlotData | undefined>(undefined);
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false);
   const [useSlitSwitch, setUseSlitSwitch] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
-    useSlitSwitch: yup.boolean(),
+    useSlitSwitch: yup.boolean(), //bool
     path_length: yup
       .number()
       .required("Path length must be defined")
@@ -155,7 +153,7 @@ export const CalcSpectrum: React.FC = () => {
           setCalcSpectrumResponse(response);
         }
       }
-      setLoading(false);
+      setLoading(false); //setLoading(false) is called after the response is received
     });
   };
   const databaseWatch = watch("database");
