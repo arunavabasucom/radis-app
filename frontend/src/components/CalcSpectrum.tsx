@@ -29,12 +29,14 @@ interface Response<T> {
 }
 
 export const CalcSpectrum: React.FC = () => {
-  const [calcSpectrumResponse, setCalcSpectrumResponse] =
-    useState<Response<CalcSpectrumResponseData> | undefined>(undefined);
+  const [calcSpectrumResponse, setCalcSpectrumResponse] = React.useState<
+    Response<CalcSpectrumResponseData> | undefined
+  >(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [plotData, setPlotData] =
-    useState<CalcSpectrumPlotData | undefined>(undefined);
+  const [plotData, setPlotData] = useState<CalcSpectrumPlotData | undefined>(
+    undefined
+  );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false);
