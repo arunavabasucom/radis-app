@@ -14,5 +14,6 @@ export type FormValues = {
   trot?: number;
   pressure: number;
   path_length: number;
-  simulate_slit: boolean;
+  simulate_slit?: number;
+  use_simulate_slit: boolean;
 };

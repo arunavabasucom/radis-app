@@ -29,7 +29,7 @@ interface Response<T> {
 }
 
 export const CalcSpectrum: React.FC = () => {
-  const [calcSpectrumResponse, setCalcSpectrumResponse] = useState<
+  const [calcSpectrumResponse, setCalcSpectrumResponse] = React.useState<
     Response<CalcSpectrumResponseData> | undefined
   >(undefined);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,9 +39,11 @@ export const CalcSpectrum: React.FC = () => {
   );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
-
+  const [useSlit, setUseSlit] = useState(false);
+  const [useSlitSwitch, setUseSlitSwitch] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
+    useSlitSwitch: yup.boolean(), //bool
     path_length: yup
       .number()
       .required("Path length must be defined")
@@ -100,6 +102,19 @@ export const CalcSpectrum: React.FC = () => {
           .typeError("Mole fraction must be defined"),
       })
     ),
+    simulate_slit: yup
+      .number()
+      .typeError("Simulate slit must be defined")
+      .min(0, "Simulate slit must be positive")
+      .max(30, "Simulate slit must be less than 30")
+      .when("useSlitSwitch", {
+        is: true,
+        then: yup
+          .number()
+          .typeError("Simulate slit must be defined")
+          .min(0, "Simulate slit must be positive")
+          .max(30, "Simulate slit must be less than 30"),
+      }),
   });
   const { control, handleSubmit, setValue, watch, formState } =
     useForm<FormValues>({
@@ -140,10 +155,11 @@ export const CalcSpectrum: React.FC = () => {
           setCalcSpectrumResponse(response);
         }
       }
-      setLoading(false);
+      setLoading(false); //setLoading(false) is called after the response is received
     });
   };
   const databaseWatch = watch("database");
+  const modeWatch = watch("mode");
 
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
@@ -151,7 +167,17 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setUseGesia(false);
     }
-  }, [databaseWatch]);
+    if (modeWatch === "absorbance") {
+      setUseSlitSwitch(false);
+    } else {
+      setUseSlitSwitch(true);
+    }
+    if (modeWatch === "absorbance") {
+      setValue("simulate_slit", undefined);
+    } else {
+      setValue("simulate_slit", 5);
+    }
+  }, [databaseWatch, modeWatch]);
 
   const UseNonEquilibriumCalculations = () => (
     <Controller
@@ -179,7 +205,30 @@ export const CalcSpectrum: React.FC = () => {
       )}
     />
   );
-
+  const UseSimulateSlit = () => (
+    <Controller
+      name="use_simulate_slit"
+      control={control}
+      render={() => (
+        <FormControlLabel
+          label="Apply Instrumental Slit Function"
+          control={
+            <Switch
+              checked={useSlit}
+              onChange={(e) => {
+                setUseSlit(e.target.checked);
+                if (e.target.checked) {
+                  setValue("simulate_slit", 5);
+                } else {
+                  setValue("simulate_slit", undefined);
+                }
+              }}
+            />
+          }
+        />
+      )}
+    />
+  );
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {error ? <ErrorAlert message={error} /> : null}
@@ -231,15 +280,25 @@ export const CalcSpectrum: React.FC = () => {
                 isGeisa={false}
               />
             </Grid>
+
+            {useSlitSwitch ? (
+              <Grid item xs={12}>
+                <UseSimulateSlit />
+              </Grid>
+            ) : null}
+
+            {useSlitSwitch ? (
+              useSlit ? (
+                <Grid item xs={12}>
+                  <SimulateSlit control={control} />
+                </Grid>
+              ) : null
+            ) : null}
             {useGesia ? null : (
               <Grid item xs={12}>
                 <UseNonEquilibriumCalculations />
               </Grid>
             )}
-
-            <Grid item xs={12}>
-              <SimulateSlit control={control} />
-            </Grid>
 
             <Grid item xs={12}>
               <CalcSpectrumButton />

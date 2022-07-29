@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
@@ -29,10 +29,9 @@ const useStyles = makeStyles({
 });
 
 const InfoPopover = () => {
-  const [anchorEl, setAnchorEl] = React.useState<
+  const [anchorEl, setAnchorEl] = useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -129,4 +128,4 @@ function App(): React.ReactElement {
   );
 }
 
-export default App;
+export default App; //export
