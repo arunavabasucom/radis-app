@@ -61,7 +61,7 @@ async def calculate_spectrum(payload: Payload):
             databank=payload.database,
             use_cached=True,
         )
-        if use_simulate_slit is True:
+        if payload.use_simulate_slit is True:
             spectrum.apply_slit(payload.simulate_slit, "nm")
 
     except radis.misc.warning.EmptyDatabaseError:
