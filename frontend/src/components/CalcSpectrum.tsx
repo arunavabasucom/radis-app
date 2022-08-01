@@ -160,9 +160,6 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
-  // @ts-ignore
-  const slit_watch = watch("use_simulate_slit");
-  console.log(slit_watch);
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
