@@ -5,5 +5,4 @@
 import "@testing-library/jest-dom";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-window.URL.createObjectURL = function () {};
+window.URL.createObjectURL = () => "";
