@@ -1,0 +1,54 @@
+# linting check of radis-app
+name: 🌱 CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Cache the dependencies
+        uses: c-hive/gha-yarn-cache@v2
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+      - name: Linting check
+        run: cd frontend && yarn lint
+      - name: Type check
+        run: cd frontend && yarn type-check
+  build:
+    name: 📦 Build and Upload Artifact
+    runs-on: ubuntu-latest
+    if : ${{ success() }}
+    needs: [test]
+    steps :
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Cache the dependencies
+        uses: c-hive/gha-yarn-cache@v2
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build 
+        run: yarn build
+      - name: Artifact upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: Radis App
+          path: ./frontend/build
