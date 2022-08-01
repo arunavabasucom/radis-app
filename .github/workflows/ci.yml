@@ -29,6 +29,8 @@ jobs:
         run: cd frontend && yarn lint
       - name: Type check
         run: cd frontend && yarn type-check
+      - name: Run tests
+        run: cd frontend && yarn test
   build:
     name: 📦 Build and Upload Artifact
     runs-on: ubuntu-latest
