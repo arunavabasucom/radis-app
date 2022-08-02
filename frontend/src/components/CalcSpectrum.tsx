@@ -160,7 +160,6 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
-
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
