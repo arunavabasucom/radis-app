@@ -8,6 +8,13 @@ import { FormValues } from "../types";
 interface DatabaseProps {
   control: Control<FormValues>;
 }
+enum mode {
+  Absorbance = "Absorbance",
+  Radiance = "radiance",
+  Radiance_noslit = "radiance_noslit",
+  Transmittance = "Transmittance",
+  Transmittance_noslit = "Transmittance_noslit",
+}
 
 export const Mode: React.FC<DatabaseProps> = ({ control }) => {
   return (
@@ -30,9 +37,14 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
             value={field.value}
             label="Select"
           >
-            <MenuItem value={"absorbance"}>Absorbance</MenuItem>
-            <MenuItem value={"radiance_noslit"}>Radiance</MenuItem>
-            <MenuItem value={"transmittance_noslit"}>Transmittance</MenuItem>
+            <MenuItem value={mode.Absorbance}>Absorbance</MenuItem>
+
+            <MenuItem value={mode.Radiance || mode.Radiance_noslit}>
+              Radiance
+            </MenuItem>
+            <MenuItem value={mode.Transmittance || mode.Radiance_noslit}>
+              Transmittance
+            </MenuItem>
           </Select>
         )}
       />

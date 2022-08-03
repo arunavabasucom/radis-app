@@ -160,6 +160,8 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
+  // const useSlitWatch = watch("simulate_slit");
+  // console.log(useSlitWatch);
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
@@ -176,7 +178,19 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setValue("simulate_slit", 5);
     }
-  }, [databaseWatch, modeWatch]);
+    if (useSlit == true) {
+      if (modeWatch === "radiance_noslit") {
+        setValue("mode", "radiance");
+      } else {
+        setValue("mode", "radiance_noslit");
+      }
+      if (modeWatch === "transmittance_noslit") {
+        setValue("mode", "transmittance");
+      } else {
+        setValue("mode", "transmittance_noslit");
+      }
+    }
+  }, [databaseWatch, modeWatch, useSlit]);
 
   const UseNonEquilibriumCalculations = () => (
     <Controller
