@@ -128,6 +128,14 @@ export const CalcSpectrum: React.FC = () => {
     setError(message);
   };
   const onSubmit = async (data: FormValues): Promise<void> => {
+    if (useSlit == true) {
+      if (data.mode === "radiance_noslit") {
+        data.mode = "radiance";
+      }
+      if (data.mode === "transmittance_noslit") {
+        data.mode = "transmittance";
+      }
+    }
     console.log(data);
     setLoading(true);
     setError(undefined);
@@ -178,19 +186,19 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setValue("simulate_slit", 5);
     }
-    if (useSlit == true) {
-      if (modeWatch === "radiance_noslit") {
-        setValue("mode", "radiance");
-      } else {
-        setValue("mode", "radiance_noslit");
-      }
-      if (modeWatch === "transmittance_noslit") {
-        setValue("mode", "transmittance");
-      } else {
-        setValue("mode", "transmittance_noslit");
-      }
-    }
-  }, [databaseWatch, modeWatch, useSlit]);
+    // if (useSlit == true) {
+    //   if (modeWatch === "radiance_noslit") {
+    //     setValue("mode", "radiance");
+    //   } else {
+    //     setValue("mode", "radiance_noslit");
+    //   }
+    //   if (modeWatch === "transmittance_noslit") {
+    //     setValue("mode", "transmittance");
+    //   } else {
+    //     setValue("mode", "transmittance_noslit");
+    //   }
+    // }
+  }, [databaseWatch, modeWatch]);
 
   const UseNonEquilibriumCalculations = () => (
     <Controller
