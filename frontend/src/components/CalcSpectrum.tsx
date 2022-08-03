@@ -186,18 +186,6 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setValue("simulate_slit", 5);
     }
-    // if (useSlit == true) {
-    //   if (modeWatch === "radiance_noslit") {
-    //     setValue("mode", "radiance");
-    //   } else {
-    //     setValue("mode", "radiance_noslit");
-    //   }
-    //   if (modeWatch === "transmittance_noslit") {
-    //     setValue("mode", "transmittance");
-    //   } else {
-    //     setValue("mode", "transmittance_noslit");
-    //   }
-    // }
   }, [databaseWatch, modeWatch]);
 
   const UseNonEquilibriumCalculations = () => (
