@@ -116,11 +116,10 @@ export const CalcSpectrum: React.FC = () => {
           .max(30, "Simulate slit must be less than 30"),
       }),
   });
-  const { control, handleSubmit, setValue, watch, formState } =
-    useForm<FormValues>({
-      defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
-      resolver: yupResolver(Schema),
-    });
+  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    resolver: yupResolver(Schema),
+  });
 
   const handleBadResponse = (message: string) => {
     setCalcSpectrumResponse(undefined);
