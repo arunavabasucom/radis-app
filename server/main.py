@@ -129,6 +129,6 @@ async def download(payload: Payload):
         return {"error": str(exc)}
     else:
         file_name = datetime.datetime.now()
-        s.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
+        spectrum.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
         file_path = f'radis{file_name}.spec'
         return FileResponse(file_path, media_type='application/octet-stream', filename=f'{file_name}.txt')
