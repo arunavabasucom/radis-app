@@ -122,7 +122,6 @@ export const CalcSpectrum: React.FC = () => {
       resolver: yupResolver(Schema),
     });
 
-  console.log(formState?.errors);
   const handleBadResponse = (message: string) => {
     setCalcSpectrumResponse(undefined);
     setError(message);
@@ -136,7 +135,7 @@ export const CalcSpectrum: React.FC = () => {
         data.mode = "transmittance";
       }
     }
-    console.log(data);
+
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -168,8 +167,7 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
-  // const useSlitWatch = watch("simulate_slit");
-  // console.log(useSlitWatch);
+
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
