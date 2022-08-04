@@ -24,9 +24,9 @@ const CalcSpectrumPlot_ = ({
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
     data.units = "-ln(I/I0)";
-  } else if (mode === "transmittance_noslit") {
+  } else if (mode.startsWith("transmittance")) {
     modeLabel = "Transmittance";
-  } else if (mode === "radiance_noslit") {
+  } else if (mode.startsWith("radiance")) {
     modeLabel = "Radiance";
   } else {
     throw new Error("Invalid mode");
