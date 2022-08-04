@@ -126,8 +126,11 @@ export const CalcSpectrum: React.FC = () => {
     setError(message);
   };
   const onSubmit = async (data: FormValues): Promise<void> => {
+    // let modeLabel;
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
+        // modeLabel = "Absorbance";
+        // data.units = "-ln(I/I0)";
         data.mode = "radiance";
       }
       if (data.mode === "transmittance_noslit") {
