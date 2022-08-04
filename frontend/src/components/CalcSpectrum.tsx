@@ -116,19 +116,25 @@ export const CalcSpectrum: React.FC = () => {
           .max(30, "Simulate slit must be less than 30"),
       }),
   });
-  const { control, handleSubmit, setValue, watch, formState } =
-    useForm<FormValues>({
-      defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
-      resolver: yupResolver(Schema),
-    });
+  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    resolver: yupResolver(Schema),
+  });
 
-  console.log(formState?.errors);
   const handleBadResponse = (message: string) => {
     setCalcSpectrumResponse(undefined);
     setError(message);
   };
   const onSubmit = async (data: FormValues): Promise<void> => {
-    console.log(data);
+    if (useSlit == true) {
+      if (data.mode === "radiance_noslit") {
+        data.mode = "radiance";
+      }
+      if (data.mode === "transmittance_noslit") {
+        data.mode = "transmittance";
+      }
+    }
+
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -160,6 +166,7 @@ export const CalcSpectrum: React.FC = () => {
   };
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
+
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
