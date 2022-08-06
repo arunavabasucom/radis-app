@@ -34,7 +34,6 @@ class Payload(BaseModel):
     simulate_slit: Optional[int] = None
     mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
     database: Literal["hitran", "geisa"]
-    use_simulate_slit: bool = False
 
 
 @app.post("/calculate-spectrum")
@@ -61,7 +60,8 @@ async def calculate_spectrum(payload: Payload):
             databank=payload.database,
             use_cached=True,
         )
-        if payload.use_simulate_slit is True:
+        if payload.simulate_slit:
+            print("Simulating slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
 
     except radis.misc.warning.EmptyDatabaseError:
