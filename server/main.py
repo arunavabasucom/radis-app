@@ -60,35 +60,34 @@ def calculate_spectrum():
         databank=payload.database,
         use_cached=True,
     )
-def download_spec():
-        file_name = datetime.datetime.now()
-        spectrum.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
-        file_path = f'radis{file_name}.spec'
-        return FileResponse(file_path, media_type='application/octet-stream', filename=f'{file_name}.txt')
 
+
+def download_spec():
+    file_name = datetime.datetime.now()
+    spectrum.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
+    file_path = f'radis{file_name}.spec'
+    return FileResponse(file_path, media_type='application/octet-stream', filename=f'{file_name}.txt')
 
 
 @app.post("/calculate-spectrum")
 async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks):
     print(payload)
-    
     try:
-
         calculate_spectrum()
         if payload.use_simulate_slit is True:
             spectrum.apply_slit(payload.simulate_slit, "nm")
-        background_taks.add_task()
+        # downloading the molecule as a background task so that the retrieving
+        # x and y values are are not effected
+        background_taks.add_task(download_spec())
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
         print("Error", exc)
         return {"error": str(exc)}
     else:
-
         wunit = spectrum.get_waveunit()
         iunit = "default"
         x, y = spectrum.get(payload.mode, wunit=wunit, Iunit=iunit)
-
         # Reduce payload size
         threshold = 5e7
         if len(spectrum) * 8 * 2 > threshold:
@@ -100,27 +99,21 @@ async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks)
             #     from the x min, max and step --> less data transfer. TODO )
             resample = int(len(spectrum) * 8 * 2 // threshold)
             x, y = x[::resample], y[::resample]
-
-        return {
-            "data": {
-                "x": list(x),
-                "y": list(y),
-                "units": spectrum.units[payload.mode],
-            },
-        }
-# =====================================================================#
+            return {
+                "data": {
+                    "x": list(x),
+                    "y": list(y),
+                    "units": spectrum.units[payload.mode],
+                },
+            }
 
 
 @app.get("/download")
 async def download(payload: Payload):
     try:
-        calculate_spectrum()
-        if payload.use_simulate_slit is True:
-            spectrum.apply_slit(payload.simulate_slit, "nm")
+        download_spec()
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
         print("Error", exc)
         return {"error": str(exc)}
-    else:
-        download_spec()
