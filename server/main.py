@@ -1,10 +1,11 @@
-from typing import List, Optional
-from fastapi import FastAPI
-from pydantic import BaseModel
 import radis
+import datetime
+from typing import List, Optional
+from fastapi import BackgroundTasks, FastAPI
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic.typing import Literal
-import datetime
+
 # for high resolution
 radis.config["GRIDPOINTS_PER_LINEWIDTH_WARN_THRESHOLD"] = 7
 app = FastAPI()
@@ -38,33 +39,41 @@ class Payload(BaseModel):
     use_simulate_slit: bool = False
 
 
-@app.post("/calculate-spectrum")
-async def calculate_spectrum(payload: Payload):
-    print(payload)
+def calculate_spectrum():
+    global spectrum
+    spectrum = radis.calc_spectrum(
+        payload.min_wavenumber_range,
+        payload.max_wavenumber_range,
+        molecule=[species.molecule for species in payload.species],
+        mole_fraction={
+            species.molecule: species.mole_fraction for species in payload.species
+        },
+        # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
+        isotope={species.molecule: "1,2,3" for species in payload.species},
+        pressure=payload.pressure,
+        Tgas=payload.tgas,
+        Tvib=payload.tvib,
+        Trot=payload.trot,
+        path_length=payload.path_length,
+        export_lines=False,
+        wstep="auto",
+        databank=payload.database,
+        use_cached=True,
+    )
+# def download_spec():
 
+
+
+@app.post("/calculate-spectrum")
+async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks):
+    print(payload)
+    
     try:
-        spectrum = radis.calc_spectrum(
-            payload.min_wavenumber_range,
-            payload.max_wavenumber_range,
-            molecule=[species.molecule for species in payload.species],
-            mole_fraction={
-                species.molecule: species.mole_fraction for species in payload.species
-            },
-            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
-            isotope={species.molecule: "1,2,3" for species in payload.species},
-            pressure=payload.pressure,
-            Tgas=payload.tgas,
-            Tvib=payload.tvib,
-            Trot=payload.trot,
-            path_length=payload.path_length,
-            export_lines=False,
-            wstep="auto",
-            databank=payload.database,
-            use_cached=True,
-        )
+
+        calculate_spectrum()
         if payload.use_simulate_slit is True:
             spectrum.apply_slit(payload.simulate_slit, "nm")
-
+        background_taks.add_task()
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
@@ -95,33 +104,15 @@ async def calculate_spectrum(payload: Payload):
                 "units": spectrum.units[payload.mode],
             },
         }
+# =====================================================================#
 
 
 @app.get("/download")
 async def download(payload: Payload):
     try:
-        spectrum = radis.calc_spectrum(
-            payload.min_wavenumber_range,
-            payload.max_wavenumber_range,
-            molecule=[species.molecule for species in payload.species],
-            mole_fraction={
-                species.molecule: species.mole_fraction for species in payload.species
-            },
-            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
-            isotope={species.molecule: "1,2,3" for species in payload.species},
-            pressure=payload.pressure,
-            Tgas=payload.tgas,
-            Tvib=payload.tvib,
-            Trot=payload.trot,
-            path_length=payload.path_length,
-            export_lines=False,
-            wstep="auto",
-            databank=payload.database,
-            use_cached=True,
-        )
+        calculate_spectrum()
         if payload.use_simulate_slit is True:
             spectrum.apply_slit(payload.simulate_slit, "nm")
-
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
