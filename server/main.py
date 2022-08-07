@@ -60,7 +60,11 @@ def calculate_spectrum():
         databank=payload.database,
         use_cached=True,
     )
-# def download_spec():
+def download_spec():
+        file_name = datetime.datetime.now()
+        spectrum.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
+        file_path = f'radis{file_name}.spec'
+        return FileResponse(file_path, media_type='application/octet-stream', filename=f'{file_name}.txt')
 
 
 
@@ -119,7 +123,4 @@ async def download(payload: Payload):
         print("Error", exc)
         return {"error": str(exc)}
     else:
-        file_name = datetime.datetime.now()
-        spectrum.store(f'radis{file_name}.spec', compress=True, if_exists_then='replace')
-        file_path = f'radis{file_name}.spec'
-        return FileResponse(file_path, media_type='application/octet-stream', filename=f'{file_name}.txt')
+        download_spec()
