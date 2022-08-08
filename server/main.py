@@ -39,7 +39,7 @@ class Payload(BaseModel):
     use_simulate_slit: bool = False
 
 
-def calculate_spectrum():
+def calculate_spectrum(min_wavenumber_range:str,max_wavenumber_range:str,):
     global spectrum
     spectrum = radis.calc_spectrum(
         payload.min_wavenumber_range,
