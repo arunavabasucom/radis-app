@@ -40,7 +40,7 @@ export const CalcSpectrum: React.FC = () => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false);
-  const [useSlitSwitch, setUseSlitSwitch] = useState(false);
+  const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     useSlitSwitch: yup.boolean(), //bool
@@ -174,9 +174,9 @@ export const CalcSpectrum: React.FC = () => {
       setUseGesia(false);
     }
     if (modeWatch === "absorbance") {
-      setUseSlitSwitch(false);
+      setUseSimulateSlitFunction(false);
     } else {
-      setUseSlitSwitch(true);
+      setUseSimulateSlitFunction(true);
     }
     if (modeWatch === "absorbance") {
       setValue("simulate_slit", undefined);
@@ -287,13 +287,13 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            {useSlitSwitch ? (
+            {useSimulateSlitFunction ? (
               <Grid item xs={12}>
                 <UseSimulateSlit />
               </Grid>
             ) : null}
 
-            {useSlitSwitch ? (
+            {useSimulateSlitFunction ? (
               useSlit ? (
                 <Grid item xs={12}>
                   <SimulateSlit control={control} />
