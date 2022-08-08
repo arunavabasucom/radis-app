@@ -39,11 +39,11 @@ export const CalcSpectrum: React.FC = () => {
   );
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [useGesia, setUseGesia] = useState(false);
-  const [useSlit, setUseSlit] = useState(false);
-  const [useSlitSwitch, setUseSlitSwitch] = useState(false);
+  const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
+  const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
-    useSlitSwitch: yup.boolean(), //bool
+    use_simulate_slit: yup.boolean(),
     path_length: yup
       .number()
       .required("Path length must be defined")
@@ -136,7 +136,9 @@ export const CalcSpectrum: React.FC = () => {
     }
 
     setLoading(true);
+    console.log(data);
     setError(undefined);
+
     setPlotData({
       max_wavenumber_range: data.max_wavenumber_range,
       min_wavenumber_range: data.min_wavenumber_range,
@@ -174,9 +176,9 @@ export const CalcSpectrum: React.FC = () => {
       setUseGesia(false);
     }
     if (modeWatch === "absorbance") {
-      setUseSlitSwitch(false);
+      setUseSimulateSlitFunction(false);
     } else {
-      setUseSlitSwitch(true);
+      setUseSimulateSlitFunction(true);
     }
     if (modeWatch === "absorbance") {
       setValue("simulate_slit", undefined);
@@ -188,16 +190,18 @@ export const CalcSpectrum: React.FC = () => {
   const UseNonEquilibriumCalculations = () => (
     <Controller
       name="useNonEqi"
+      defaultValue={false}
       control={control}
-      render={() => (
+      render={({ field }) => (
         <FormControlLabel
           label="Use non-equilibrium calculations"
           control={
             <Switch
               checked={isNonEquilibrium}
-              onChange={(e) => {
-                setIsNonEquilibrium(e.target.checked);
-                if (e.target.checked) {
+              onChange={(event, value) => {
+                setIsNonEquilibrium(event.target.checked);
+                field.onChange(value);
+                if (event.target.checked) {
                   setValue("tvib", 300);
                   setValue("trot", 300);
                 } else {
@@ -214,16 +218,18 @@ export const CalcSpectrum: React.FC = () => {
   const UseSimulateSlit = () => (
     <Controller
       name="use_simulate_slit"
+      defaultValue={false}
       control={control}
-      render={() => (
+      render={({ field }) => (
         <FormControlLabel
           label="Apply Instrumental Slit Function"
           control={
             <Switch
               checked={useSlit}
-              onChange={(e) => {
-                setUseSlit(e.target.checked);
-                if (e.target.checked) {
+              onChange={(event, value) => {
+                setUseSlit(event.target.checked);
+                field.onChange(value);
+                if (event.target.checked) {
                   setValue("simulate_slit", 5);
                 } else {
                   setValue("simulate_slit", undefined);
@@ -287,13 +293,13 @@ export const CalcSpectrum: React.FC = () => {
               />
             </Grid>
 
-            {useSlitSwitch ? (
+            {useSimulateSlitFunction ? (
               <Grid item xs={12}>
                 <UseSimulateSlit />
               </Grid>
             ) : null}
 
-            {useSlitSwitch ? (
+            {useSimulateSlitFunction ? (
               useSlit ? (
                 <Grid item xs={12}>
                   <SimulateSlit control={control} />
