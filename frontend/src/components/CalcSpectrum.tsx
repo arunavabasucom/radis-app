@@ -20,6 +20,7 @@ import { Species } from "./fields/Species/Species";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
+import { DownloadSpectrum } from "./fields/DownloadButton";
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
 
@@ -166,6 +167,19 @@ export const CalcSpectrum: React.FC = () => {
       setLoading(false); //setLoading(false) is called after the response is received
     });
   };
+  //testing endpoint
+  const apiEndpoint = "http://localhost:5000/";
+  const downloadSpectrum = async (): Promise<> => {
+    const fileResponse = axios
+      .get(`${apiEndpoint}download-spectrum`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
 
@@ -315,6 +329,7 @@ export const CalcSpectrum: React.FC = () => {
             <Grid item xs={12}>
               <CalcSpectrumButton />
             </Grid>
+            <DownloadSpectrum />
           </Grid>
         </Grid>
 

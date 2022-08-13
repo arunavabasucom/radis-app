@@ -40,7 +40,7 @@ class Payload(BaseModel):
 
 
 def calculate_spectrum(payload):
-    global spectrum
+    # global spectrum
     spectrum = radis.calc_spectrum(
         payload.min_wavenumber_range,
         payload.max_wavenumber_range,
@@ -60,7 +60,6 @@ def calculate_spectrum(payload):
         databank=payload.database,
         use_cached=True,
     )
-def download_spec_file():
     file_name_notation = datetime.datetime.now()
     global file_name
     file_name = f'radis{file_name_notation}.spec'
@@ -79,7 +78,7 @@ async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks)
             spectrum.apply_slit(payload.simulate_slit, "nm")
         # downloading the molecule as a background task so that the retrieving
         # x and y values are are not effected
-        background_taks.add_task(download_spec())
+        background_taks.add_task(download_spec_file())
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
