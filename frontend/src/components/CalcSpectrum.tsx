@@ -127,7 +127,10 @@ export const CalcSpectrum: React.FC = () => {
     setCalcSpectrumResponse(undefined);
     setError(message);
   };
-  const onSubmit = async (data: FormValues): Promise<void> => {
+  const onSubmit = async (
+    data: FormValues,
+    endpoint: string
+  ): Promise<void> => {
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
         data.mode = "radiance";
@@ -149,10 +152,7 @@ export const CalcSpectrum: React.FC = () => {
       species: data.species,
     });
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      const rawResponse = await axios.post(
-        module.apiEndpoint + `calculate-spectrum`,
-        data
-      );
+      const rawResponse = await axios.post(module.apiEndpoint + endpoint, data);
       if (
         rawResponse.data.data === undefined &&
         rawResponse.data.error === undefined
@@ -170,38 +170,7 @@ export const CalcSpectrum: React.FC = () => {
       setdownloadbutton(false);
     });
   };
-  //download the .spec file
-  const downloadSpec = async (data: FormValues): Promise<void> => {
-    if (useSlit == true) {
-      if (data.mode === "radiance_noslit") {
-        data.mode = "radiance";
-      }
-      if (data.mode === "transmittance_noslit") {
-        data.mode = "transmittance";
-      }
-    }
-    console.log(data);
-    setError(undefined);
-    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      const rawResponse = await axios.post(
-        module.apiEndpoint + `download-spectrum`,
-        data
-      );
-      if (
-        rawResponse.data.data === undefined &&
-        rawResponse.data.error === undefined
-      ) {
-        handleBadResponse("Bad response from backend!");
-      } else {
-        const response = await rawResponse.data;
-        if (response.error) {
-          handleBadResponse(response.error);
-        } else {
-          setCalcSpectrumResponse(response);
-        }
-      }
-    });
-  };
+
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
 
@@ -232,7 +201,7 @@ export const CalcSpectrum: React.FC = () => {
       color="primary"
       onClick={handleSubmit((data) => {
         console.table(data);
-        downloadSpec(data);
+        onSubmit(data, `download-spectrum`);
       })}
     >
       Download spectrum
@@ -293,7 +262,11 @@ export const CalcSpectrum: React.FC = () => {
     />
   );
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data, `calculate-spectrum`);
+      })}
+    >
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8} md={5} lg={4}>
