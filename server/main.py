@@ -58,6 +58,7 @@ def calculate_spectrum(payload):
             wstep="auto",
             databank=payload.database,
             use_cached=True,
+            local_folder="~/radis_spectra"
         )
     return spectrum
     
@@ -124,7 +125,7 @@ async def cal_spectrum(payload: Payload):
         }
 
 #[Date] _[database] _[molecule]_[temperature]K_[pressure]atm
-@app.get("/download_spectrum")
+@app.post("/download_spectrum")
 async def download_spec(payload: Payload):
     print(payload)
     date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S");
