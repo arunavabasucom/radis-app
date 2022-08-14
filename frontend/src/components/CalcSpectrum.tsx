@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
 import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
 import { FormValues } from "./types";
 import { Database } from "./fields/Database";
@@ -20,7 +21,6 @@ import { Species } from "./fields/Species/Species";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
-import { DownloadSpectrum } from "./fields/DownloadButton";
 import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
 import { ErrorAlert } from "./ErrorAlert";
 
@@ -42,6 +42,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
+  const [downloadbutton, setdownloadbutton] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
@@ -137,6 +138,7 @@ export const CalcSpectrum: React.FC = () => {
     }
 
     setLoading(true);
+    setdownloadbutton(true);
     console.log(data);
     setError(undefined);
 
@@ -164,22 +166,42 @@ export const CalcSpectrum: React.FC = () => {
           setCalcSpectrumResponse(response);
         }
       }
-      setLoading(false); //setLoading(false) is called after the response is received
+      setLoading(false);
+      setdownloadbutton(false);
     });
   };
-  //testing endpoint
-  const apiEndpoint = "http://localhost:5000/";
-  const downloadSpectrum = async (): Promise<> => {
-    const fileResponse = axios
-      .get(`${apiEndpoint}download-spectrum`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //download the .spec file
+  const downloadSpec = async (data: FormValues): Promise<void> => {
+    if (useSlit == true) {
+      if (data.mode === "radiance_noslit") {
+        data.mode = "radiance";
+      }
+      if (data.mode === "transmittance_noslit") {
+        data.mode = "transmittance";
+      }
+    }
+    console.log(data);
+    setError(undefined);
+    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
+      const rawResponse = await axios.post(
+        module.apiEndpoint + `download_spectrum`,
+        data
+      );
+      if (
+        rawResponse.data.data === undefined &&
+        rawResponse.data.error === undefined
+      ) {
+        handleBadResponse("Bad response from backend!");
+      } else {
+        const response = await rawResponse.data;
+        if (response.error) {
+          handleBadResponse(response.error);
+        } else {
+          setCalcSpectrumResponse(response);
+        }
+      }
+    });
   };
-
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
 
@@ -201,6 +223,21 @@ export const CalcSpectrum: React.FC = () => {
     }
   }, [databaseWatch, modeWatch]);
 
+  //download button
+  const DownloadSpectrum: React.FC = () => (
+    <Button
+      id="down-spectrum-button"
+      disabled={downloadbutton}
+      variant="contained"
+      color="primary"
+      onClick={handleSubmit((data) => {
+        console.table(data);
+        downloadSpec(data);
+      })}
+    >
+      Download spectrum
+    </Button>
+  );
   const UseNonEquilibriumCalculations = () => (
     <Controller
       name="useNonEqi"
@@ -329,7 +366,9 @@ export const CalcSpectrum: React.FC = () => {
             <Grid item xs={12}>
               <CalcSpectrumButton />
             </Grid>
-            <DownloadSpectrum />
+            <Grid item xs={12}>
+              <DownloadSpectrum />
+            </Grid>
           </Grid>
         </Grid>
 
