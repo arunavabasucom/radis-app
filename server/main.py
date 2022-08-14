@@ -1,7 +1,7 @@
-import radis
 import datetime
+import radis
 from typing import List, Optional
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic.typing import Literal
@@ -10,6 +10,7 @@ from fastapi.responses import FileResponse
 radis.config["GRIDPOINTS_PER_LINEWIDTH_WARN_THRESHOLD"] = 7
 app = FastAPI()
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,13 +18,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
+@app.get("/")
+def read_root():
+    return {"message": " Hello World"}
 class Species(BaseModel):
     molecule: str
     mole_fraction: float
-
-
 class Payload(BaseModel):
     min_wavenumber_range: float
     max_wavenumber_range: float
@@ -33,61 +33,76 @@ class Payload(BaseModel):
     tvib: Optional[float] = None
     trot: Optional[float] = None
     path_length: float
-    simulate_slit: Optional[int]
-    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
+    simulate_slit: int
+    use_simulate_slit:bool
+    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit"]
     database: Literal["hitran", "geisa"]
-    use_simulate_slit: bool = False
-
 
 def calculate_spectrum(payload):
-    # global spectrum
+    print(payload)
     spectrum = radis.calc_spectrum(
-        payload.min_wavenumber_range,
-        payload.max_wavenumber_range,
-        molecule=[species.molecule for species in payload.species],
-        mole_fraction={
-            species.molecule: species.mole_fraction for species in payload.species
-        },
-        # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
-        isotope={species.molecule: "1,2,3" for species in payload.species},
-        pressure=payload.pressure,
-        Tgas=payload.tgas,
-        Tvib=payload.tvib,
-        Trot=payload.trot,
-        path_length=payload.path_length,
-        export_lines=False,
-        wstep="auto",
-        databank=payload.database,
-        use_cached=True,
-    )
-    file_name_notation = datetime.datetime.now()
-    global file_name
-    file_name = f'radis{file_name_notation}.spec'
-    spectrum.store(file_name, compress=True, if_exists_then='replace')
-    return "spectrum file is created successfully"
-def return_spec_file():
-    return FileResponse(file_name, media_type='application/octet-stream', filename=f'{file_name}.txt')
+            payload.min_wavenumber_range,
+            payload.max_wavenumber_range,
+            molecule=[species.molecule for species in payload.species],
+            mole_fraction={
+                species.molecule: species.mole_fraction for species in payload.species
+            },
+            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
+            isotope={species.molecule: "1,2,3" for species in payload.species},
+            pressure=payload.pressure,
+            Tgas=payload.tgas,
+            Tvib=payload.tvib,
+            Trot=payload.trot,
+            path_length=payload.path_length,
+            export_lines=False,
+            wstep="auto",
+            databank=payload.database,
+            use_cached=True,
+        )
+    return spectrum
+    
+    
 
 
 @app.post("/calculate-spectrum")
-async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks):
+async def cal_spectrum(payload: Payload):
     print(payload)
+
     try:
-        calculate_spectrum(payload)
+        spectrum = radis.calc_spectrum(
+            payload.min_wavenumber_range,
+            payload.max_wavenumber_range,
+            molecule=[species.molecule for species in payload.species],
+            mole_fraction={
+                species.molecule: species.mole_fraction for species in payload.species
+            },
+            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
+            isotope={species.molecule: "1,2,3" for species in payload.species},
+            pressure=payload.pressure,
+            Tgas=payload.tgas,
+            Tvib=payload.tvib,
+            Trot=payload.trot,
+            path_length=payload.path_length,
+            export_lines=False,
+            wstep="auto",
+            databank=payload.database,
+            use_cached=True,
+        )
         if payload.use_simulate_slit is True:
+            print("Applying simulate slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
-        # downloading the molecule as a background task so that the retrieving
-        # x and y values are are not effected
-        background_taks.add_task(download_spec_file())
+
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
         print("Error", exc)
         return {"error": str(exc)}
     else:
+
         wunit = spectrum.get_waveunit()
         iunit = "default"
         x, y = spectrum.get(payload.mode, wunit=wunit, Iunit=iunit)
+
         # Reduce payload size
         threshold = 5e7
         if len(spectrum) * 8 * 2 > threshold:
@@ -99,23 +114,36 @@ async def calculate_spectrum(payload: Payload, background_taks: BackgroundTasks)
             #     from the x min, max and step --> less data transfer. TODO )
             resample = int(len(spectrum) * 8 * 2 // threshold)
             x, y = x[::resample], y[::resample]
-            return {
-                "data": {
-                    "x": list(x),
-                    "y": list(y),
-                    "units": spectrum.units[payload.mode],
-                },
-            }
 
+        return {
+            "data": {
+                "x": list(x),
+                "y": list(y),
+                "units": spectrum.units[payload.mode],
+            },
+        }
 
-@app.get("/download")
-async def download():
+#[Date] _[database] _[molecule]_[temperature]K_[pressure]atm
+@app.get("/download_spectrum")
+async def download_spec(payload: Payload):
+    print(payload)
+    date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S");
+    file_name = f"create_spectrum/{date}_{payload.database}_{payload.tgas}k_{payload.pressure}atm.spec"
+    # file_path=f"create_spectrum/{file_name}"
+    print(f".spec file is created here{file_name}")
+   
     try:
-        return_spec_file()
+        spectrum = calculate_spectrum(payload)
+       
+        if payload.use_simulate_slit is True:
+            print("Applying simulate slit")
+            spectrum.apply_slit(payload.simulate_slit, "nm")
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
     except Exception as exc:
         print("Error", exc)
         return {"error": str(exc)}
     else:
-        return "file returned successfully"
+        spectrum.store(file_name, compress=True, if_exists_then='replace')
+        return FileResponse(file_name, media_type='application/octet-stream', filename=file_name)
+
