@@ -128,7 +128,7 @@ async def cal_spectrum(payload: Payload):
 async def download_spec(payload: Payload):
     print(payload)
     date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S");
-    file_name = f"create_spectrum/{date}_{payload.database}_{payload.tgas}k_{payload.pressure}atm.spec"
+    file_name = f"downloaded_spectrum/{date}_{payload.database}_{payload.tgas}k_{payload.pressure}atm.spec"
     # file_path=f"create_spectrum/{file_name}"
     print(f".spec file is created here{file_name}")
    
