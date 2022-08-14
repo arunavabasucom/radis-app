@@ -125,7 +125,7 @@ async def cal_spectrum(payload: Payload):
         }
 
 #[Date] _[database] _[molecule]_[temperature]K_[pressure]atm
-@app.post("/download_spectrum")
+@app.post("/download-spectrum")
 async def download_spec(payload: Payload):
     print(payload)
     date = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S");

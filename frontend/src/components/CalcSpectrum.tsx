@@ -184,7 +184,7 @@ export const CalcSpectrum: React.FC = () => {
     setError(undefined);
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
       const rawResponse = await axios.post(
-        module.apiEndpoint + `download_spectrum`,
+        module.apiEndpoint + `download-spectrum`,
         data
       );
       if (
