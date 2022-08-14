@@ -18,9 +18,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@app.get("/")
-def read_root():
-    return {"message": " Hello World"}
+
 class Species(BaseModel):
     molecule: str
     mole_fraction: float
@@ -35,7 +33,7 @@ class Payload(BaseModel):
     path_length: float
     simulate_slit: int
     use_simulate_slit:bool
-    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit"]
+    mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
     database: Literal["hitran", "geisa"]
 
 def calculate_spectrum(payload):
@@ -66,7 +64,7 @@ def calculate_spectrum(payload):
 
 
 @app.post("/calculate-spectrum")
-async def cal_spectrum(payload: Payload):
+async def calc_spectrum(payload: Payload):
     print(payload)
 
     try:
