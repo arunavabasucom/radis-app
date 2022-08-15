@@ -42,7 +42,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
-  const [downloadbutton, setdownloadbutton] = useState(false);
+  const [downloadbutton, setDownloadbutton] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
@@ -141,7 +141,7 @@ export const CalcSpectrum: React.FC = () => {
     }
 
     setLoading(true);
-    setdownloadbutton(true);
+    setDownloadbutton(true);
     console.log(data);
     setError(undefined);
 
@@ -167,7 +167,7 @@ export const CalcSpectrum: React.FC = () => {
         }
       }
       setLoading(false);
-      setdownloadbutton(false);
+      setDownloadbutton(false);
     });
   };
 
@@ -263,9 +263,7 @@ export const CalcSpectrum: React.FC = () => {
   );
   return (
     <form
-      onSubmit={handleSubmit((data) => {
-        onSubmit(data, `calculate-spectrum`);
-      })}
+      onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
     >
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={2}>
