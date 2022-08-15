@@ -309,9 +309,9 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                isNonEquilibrium={false}
+                isNonEquilibrium={isNonEquilibrium}
                 control={control}
-                isGeisa={false}
+                isGeisa={useGesia}
               />
             </Grid>
 
