@@ -68,9 +68,17 @@ def calculate_spectrum(payload):
         wstep="auto",
         databank=payload.database,
         use_cached=True,
-        local_folder="~/radis_spectra",
     )
     return spectrum
+
+
+# create the folder in server for better organization
+def make_file():
+    if os.path.exists("DOWNLOADED_SPECFILES"):
+        print(" 😅 Folder already exists ")
+    else:
+        print("✨ creating DOWNLOADED_SPECFILES flolder")
+        os.mkdir("DOWNLOADED_SPECFILES")
 
 
 # delete the file after giving the file response back to the user
@@ -90,25 +98,7 @@ async def calc_spectrum(payload: Payload):
     print(payload)
 
     try:
-        spectrum = radis.calc_spectrum(
-            payload.min_wavenumber_range,
-            payload.max_wavenumber_range,
-            molecule=[species.molecule for species in payload.species],
-            mole_fraction={
-                species.molecule: species.mole_fraction for species in payload.species
-            },
-            # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
-            isotope={species.molecule: "1,2,3" for species in payload.species},
-            pressure=payload.pressure,
-            Tgas=payload.tgas,
-            Tvib=payload.tvib,
-            Trot=payload.trot,
-            path_length=payload.path_length,
-            export_lines=False,
-            wstep="auto",
-            databank=payload.database,
-            use_cached=True,
-        )
+        spectrum = calculate_spectrum(payload)
         if payload.use_simulate_slit is True:
             print("Applying simulate slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
@@ -150,9 +140,10 @@ async def calc_spectrum(payload: Payload):
 async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
 
     try:
+        make_file()
         spectrum = calculate_spectrum(payload)
         file_name = spectrum.get_name()
-        file_path = f"DOWNLOADED_SPECTRUM/{file_name}"
+        file_path = f"DOWNLOADED_SPECFILES/{file_name}"
         if payload.use_simulate_slit is True:
             print(" 🪞 Applying simulate slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
@@ -169,3 +160,5 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
         return FileResponse(
             file_path, media_type="application/octet-stream", filename=file_name
         )
+        
+
