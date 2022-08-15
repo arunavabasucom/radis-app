@@ -48,7 +48,7 @@ class Payload(BaseModel):
 
 # calculating the spectrum return back the spectrum
 def calculate_spectrum(payload):
-    print("👉 Payload : ")
+    print(">> Payload : ")
     print(payload)
     spectrum = radis.calc_spectrum(
         payload.min_wavenumber_range,
@@ -75,9 +75,9 @@ def calculate_spectrum(payload):
 # create the folder in server for better organization
 def make_file():
     if os.path.exists("DOWNLOADED_SPECFILES"):
-        print(" 😅 Folder already exists ")
+        print(" >> Folder already exists ")
     else:
-        print("✨ creating DOWNLOADED_SPECFILES flolder")
+        print(">> creating DOWNLOADED_SPECFILES flolder")
         os.mkdir("DOWNLOADED_SPECFILES")
 
 
@@ -85,11 +85,11 @@ def make_file():
 def delete_spec(file_path: str):
 
     if os.path.exists(file_path):
-        print(" 😎 Removing file......")
+        print(" >> Removing file......")
         os.remove(file_path)
-        print(" 🎉  File removed")
+        print(" >>  File removed")
     else:
-        print(" 🚫 File is not found ")
+        print(" >> File is not found ")
 
 
 # "/calculate-spectrum " --> to calculate the spectrum and return back the x and y coordinates
@@ -145,7 +145,7 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
         file_name = spectrum.get_name()
         file_path = f"DOWNLOADED_SPECFILES/{file_name}"
         if payload.use_simulate_slit is True:
-            print(" 🪞 Applying simulate slit")
+            print(" >> Applying simulate slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
     # returning the error response
     except radis.misc.warning.EmptyDatabaseError:
