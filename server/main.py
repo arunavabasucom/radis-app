@@ -73,11 +73,11 @@ def calculate_spectrum(payload):
 
 
 # create the folder in server for better organization
-def make_file():
+def create_download_directory():
     if os.path.exists("DOWNLOADED_SPECFILES"):
         print(" >> Folder already exists ")
     else:
-        print(">> creating DOWNLOADED_SPECFILES flolder")
+        print(">> creating DOWNLOADED_SPECFILES folder")
         os.mkdir("DOWNLOADED_SPECFILES")
 
 
@@ -140,7 +140,7 @@ async def calc_spectrum(payload: Payload):
 async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
 
     try:
-        make_file()
+        create_download_directory()
         spectrum = calculate_spectrum(payload)
         file_name = spectrum.get_name()
         file_path = f"DOWNLOADED_SPECFILES/{file_name}"

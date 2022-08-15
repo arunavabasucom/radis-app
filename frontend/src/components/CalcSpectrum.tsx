@@ -42,7 +42,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
-  const [downloadbutton, setDownloadbutton] = useState(false);
+  const [downloadButton, setDownloadButton] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
@@ -141,7 +141,7 @@ export const CalcSpectrum: React.FC = () => {
     }
 
     setLoading(true);
-    setDownloadbutton(true);
+    setDownloadButton(true);
     console.log(data);
     setError(undefined);
 
@@ -167,7 +167,7 @@ export const CalcSpectrum: React.FC = () => {
         }
       }
       setLoading(false);
-      setDownloadbutton(false);
+      setDownloadButton(false);
     });
   };
 
@@ -196,7 +196,7 @@ export const CalcSpectrum: React.FC = () => {
   const DownloadSpectrum: React.FC = () => (
     <Button
       id="down-spectrum-button"
-      disabled={downloadbutton}
+      disabled={downloadButton}
       variant="contained"
       color="primary"
       onClick={handleSubmit((data) => {
