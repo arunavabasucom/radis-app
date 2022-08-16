@@ -142,7 +142,8 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
     try:
         create_download_directory()
         spectrum = calculate_spectrum(payload)
-        file_name = spectrum.get_name()
+        file_name_spec= spectrum.get_name()
+        file_name = f"{file_name_spec}.spec"
         file_path = f"DOWNLOADED_SPECFILES/{file_name}"
         if payload.use_simulate_slit is True:
             print(" >> Applying simulate slit")
