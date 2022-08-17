@@ -152,22 +152,53 @@ export const CalcSpectrum: React.FC = () => {
       species: data.species,
     });
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      const rawResponse = await axios.post(module.apiEndpoint + endpoint, data);
-      if (
-        rawResponse.data.data === undefined &&
-        rawResponse.data.error === undefined
-      ) {
-        handleBadResponse("Bad response from backend!");
-      } else {
-        const response = await rawResponse.data;
-        if (response.error) {
-          handleBadResponse(response.error);
+      if (endpoint === "calculate-spectrum") {
+        console.log("calculate-spectrum");
+        const rawResponse = await axios.post(
+          module.apiEndpoint + endpoint,
+          data
+        );
+        if (
+          rawResponse.data.data === undefined &&
+          rawResponse.data.error === undefined
+        ) {
+          handleBadResponse("Bad response from backend!");
         } else {
-          setCalcSpectrumResponse(response);
+          const response = await rawResponse.data;
+          if (response.error) {
+            handleBadResponse(response.error);
+          } else {
+            setCalcSpectrumResponse(response);
+          }
         }
+        setLoading(false);
       }
-      setLoading(false);
-      setDownloadButton(false);
+      if (endpoint === "download-spectrum") {
+        setLoading(false);
+        console.log("Download spectrum");
+        await axios({
+          url: module.apiEndpoint + `download-spectrum`,
+          method: "POST",
+          responseType: "blob",
+          data: data,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "radis.spec");
+            document.body.appendChild(link);
+            link.click();
+          })
+          .catch((error) => {
+            handleBadResponse(error);
+          });
+
+        setDownloadButton(false);
+      }
     });
   };
 
@@ -192,7 +223,6 @@ export const CalcSpectrum: React.FC = () => {
     }
   }, [databaseWatch, modeWatch]);
 
-  //download button
   const DownloadSpectrum: React.FC = () => (
     <Button
       id="down-spectrum-button"
