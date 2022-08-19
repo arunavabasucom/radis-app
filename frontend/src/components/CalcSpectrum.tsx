@@ -124,7 +124,7 @@ export const CalcSpectrum: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { isDirty, submitCount },
+    formState: { isDirty },
   } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
     resolver: yupResolver(Schema),
@@ -278,7 +278,6 @@ export const CalcSpectrum: React.FC = () => {
   }, [
     databaseWatch,
     modeWatch,
-    submitCount,
     isDirty,
     tgasWatch,
     pressureWatch,
