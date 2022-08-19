@@ -1,5 +1,6 @@
-import radis
 import os
+import radis
+import numpy as np
 from typing import List, Optional
 from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
@@ -73,12 +74,16 @@ def calculate_spectrum(payload):
 
 
 # create the folder in server for better organization
+DOWNLOADED_SPECFILES_DIRECTORY = "DOWNLOADED_SPECFILES"
+
+
 def create_download_directory():
-    if os.path.exists("DOWNLOADED_SPECFILES"):
+
+    if os.path.exists(DOWNLOADED_SPECFILES_DIRECTORY):
         print(" >> Folder already exists ")
     else:
         print(">> creating DOWNLOADED_SPECFILES folder")
-        os.mkdir("DOWNLOADED_SPECFILES")
+        os.mkdir(DOWNLOADED_SPECFILES_DIRECTORY)
 
 
 # delete the file after giving the file response back to the user
@@ -112,8 +117,10 @@ async def calc_spectrum(payload: Payload):
 
         wunit = spectrum.get_waveunit()
         iunit = "default"
-        x, y = spectrum.get(payload.mode, wunit=wunit, Iunit=iunit)
-
+        xNan, yNan = spectrum.get(payload.mode, wunit=wunit, Iunit=iunit)
+        # to remove the nan values from x and y
+        x = xNan[~np.isnan(xNan)]
+        y = yNan[~np.isnan(yNan)]
         # Reduce payload size
         threshold = 5e7
         if len(spectrum) * 8 * 2 > threshold:
@@ -142,9 +149,9 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
     try:
         create_download_directory()
         spectrum = calculate_spectrum(payload)
-        file_name_spec= spectrum.get_name()
+        file_name_spec = spectrum.get_name()
         file_name = f"{file_name_spec}.spec"
-        file_path = f"DOWNLOADED_SPECFILES/{file_name}"
+        file_path = f"{DOWNLOADED_SPECFILES_DIRECTORY/file_name}"
         if payload.use_simulate_slit is True:
             print(" >> Applying simulate slit")
             spectrum.apply_slit(payload.simulate_slit, "nm")
@@ -161,5 +168,3 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
         return FileResponse(
             file_path, media_type="application/octet-stream", filename=file_name
         )
-        
-
