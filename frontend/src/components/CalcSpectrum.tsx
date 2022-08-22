@@ -201,7 +201,7 @@ export const CalcSpectrum: React.FC = () => {
         link.href = url;
         link.setAttribute(
           "download",
-          `${data.mode}_${data.min_wavenumber_range}_${data.max_wavenumber_range}.spec`
+          `${data.database}_${data.species[0].molecule}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
         );
         document.body.appendChild(link);
         link.click();
