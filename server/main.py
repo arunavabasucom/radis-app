@@ -33,7 +33,7 @@ class Payload(BaseModel):
     path_length: float
     simulate_slit: Optional[int] = None
     mode: Literal["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
-    database: Literal["hitran", "geisa"]
+    database: Literal["hitran", "geisa","hitemp"]
     use_simulate_slit: bool = False
 
 
