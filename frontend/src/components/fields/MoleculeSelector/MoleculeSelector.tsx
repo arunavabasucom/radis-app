@@ -12,7 +12,7 @@ import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
   moleculeOptionsGesia,
-  moleculeOptionsHitemap,
+  moleculeOptionsHitemp,
 } from "./molecules";
 
 export interface MoleculeSelectorProps {
@@ -43,9 +43,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       className="MoleculeSelector"
       options={
         isHitemp
-          ? moleculeOptionsHitemap.map((value) =>
-              addSubscriptsToMolecule(value)
-            )
+          ? moleculeOptionsHitemp.map((value) => addSubscriptsToMolecule(value))
           : isGeisa
           ? moleculeOptionsGesia.map((value) => addSubscriptsToMolecule(value))
           : isNonEquilibrium
