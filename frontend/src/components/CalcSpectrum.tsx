@@ -141,6 +141,9 @@ export const CalcSpectrum: React.FC = () => {
         data.mode = "transmittance";
       }
     }
+
+    const molecules = data.species.map(({ molecule }) => molecule).join("_");
+    console.log(molecules);
     setDownloadButton(true);
     setLoading(true);
     setError(undefined);
@@ -201,7 +204,7 @@ export const CalcSpectrum: React.FC = () => {
         link.href = url;
         link.setAttribute(
           "download",
-          `${data.database}_${data.species[0].molecule}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
         );
         document.body.appendChild(link);
         link.click();
