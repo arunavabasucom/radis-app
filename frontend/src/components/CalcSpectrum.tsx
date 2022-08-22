@@ -119,13 +119,7 @@ export const CalcSpectrum: React.FC = () => {
           .max(30, "Simulate slit must be less than 30"),
       }),
   });
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { isDirty },
-  } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
     resolver: yupResolver(Schema),
   });
@@ -147,6 +141,7 @@ export const CalcSpectrum: React.FC = () => {
         data.mode = "transmittance";
       }
     }
+    setDownloadButton(true);
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -155,6 +150,7 @@ export const CalcSpectrum: React.FC = () => {
       mode: data.mode,
       species: data.species,
     });
+
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
       if (endpoint === "calculate-spectrum") {
         setProgress(30);
@@ -172,6 +168,7 @@ export const CalcSpectrum: React.FC = () => {
           rawResponse.data.error === undefined
         ) {
           handleBadResponse("Bad response from backend!");
+          setDownloadButton(true);
         } else {
           const response = await rawResponse.data;
           if (response.error) {
@@ -179,12 +176,12 @@ export const CalcSpectrum: React.FC = () => {
             setDownloadButton(true);
           } else {
             setCalcSpectrumResponse(response);
+            setDownloadButton(false);
           }
         }
 
         setProgress(100);
         setLoading(false);
-        setDownloadButton(false);
       }
 
       if (endpoint === "download-spectrum") {
@@ -223,15 +220,6 @@ export const CalcSpectrum: React.FC = () => {
 
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
-  const tgasWatch = watch("tgas");
-  const pressureWatch = watch("pressure");
-  const pathLengthWatch = watch("path_length");
-  const tvibWathch = watch("tvib");
-  const trotWathch = watch("trot");
-  const slitWatch = watch("simulate_slit");
-  const speciesWatch = watch("species");
-  const minWaveRangeWatch = watch("min_wavenumber_range");
-  const maxWaveRangeWatch = watch("max_wavenumber_range");
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
       setUseGesia(true);
@@ -248,58 +236,8 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setValue("simulate_slit", 5);
     }
-    if (isDirty === true) {
-      setDownloadButton(true);
-    }
-    if (tgasWatch !== 300) {
-      setDownloadButton(true);
-    }
-    if (pressureWatch !== 1.01325) {
-      setDownloadButton(true);
-    }
-    if (pathLengthWatch !== 1) {
-      setDownloadButton(true);
-    }
-    if (tvibWathch === 300 || tvibWathch === undefined) {
-      setDownloadButton(true);
-    }
-    if (trotWathch === 300 || trotWathch === undefined) {
-      setDownloadButton(true);
-    }
-    if (slitWatch === 5 && slitWatch === undefined) {
-      setDownloadButton(true);
-    }
-    if (minWaveRangeWatch !== 1900) {
-      setDownloadButton(true);
-    }
-    if (maxWaveRangeWatch !== 2300) {
-      setDownloadButton(true);
-    }
-  }, [
-    databaseWatch,
-    modeWatch,
-    isDirty,
-    tgasWatch,
-    pressureWatch,
-    pathLengthWatch,
-    tvibWathch,
-    trotWathch,
-    slitWatch,
-    minWaveRangeWatch,
-    maxWaveRangeWatch,
-  ]);
-  speciesWatch.map((_, index) => {
-    const moleFractionWatch = watch(`species.${index}.mole_fraction`);
-    const moleculeWatch = watch(`species.${index}.molecule`);
-    React.useEffect(() => {
-      if (moleFractionWatch !== 0.1) {
-        setDownloadButton(true);
-      }
-      if (moleculeWatch !== "CO" || moleculeWatch !== undefined) {
-        setDownloadButton(true);
-      }
-    }, [moleFractionWatch]);
-  });
+  }, [databaseWatch, modeWatch]);
+
   //downloadButton
   const DownloadSpectrum: React.FC = () => (
     <Button
