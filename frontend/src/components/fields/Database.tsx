@@ -33,6 +33,7 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
           >
             <MenuItem value={"hitran"}>HITRAN</MenuItem>
             <MenuItem value={"geisa"}>GEISA</MenuItem>
+            <MenuItem value={"hitemp"}>HITEMP</MenuItem>
           </Select>
         )}
       />

@@ -112,3 +112,13 @@ export const moleculeOptionsGesia = [
   "SO3",
   "RUO4",
 ];
+export const moleculeOptionsHitemap = [
+  "CO2",
+  "CO",
+  "CH4",
+  "H2O",
+  "NO2",
+  "N2O",
+  "NO",
+  "OH",
+];

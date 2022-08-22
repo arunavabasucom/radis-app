@@ -41,6 +41,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useGesia, setUseGesia] = useState(false);
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
+  const [useHitemp, setUseHitemp] = useState(false);
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
@@ -175,6 +176,11 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setUseGesia(false);
     }
+    if (databaseWatch === "hitemp") {
+      setUseHitemp(true);
+    } else {
+      setUseHitemp(false);
+    }
     if (modeWatch === "absorbance") {
       setUseSimulateSlitFunction(false);
     } else {
@@ -287,9 +293,10 @@ export const CalcSpectrum: React.FC = () => {
 
             <Grid item xs={12}>
               <Species
-                isNonEquilibrium={false}
+                isNonEquilibrium={isNonEquilibrium}
                 control={control}
-                isGeisa={false}
+                isGeisa={useGesia}
+                isHitemp={useHitemp}
               />
             </Grid>
 
