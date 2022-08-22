@@ -12,6 +12,7 @@ import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
   moleculeOptionsGesia,
+  moleculeOptionsHitemap,
 } from "./molecules";
 
 export interface MoleculeSelectorProps {
@@ -22,6 +23,7 @@ export interface MoleculeSelectorProps {
   autofocus?: boolean;
   isNonEquilibrium: boolean;
   isGeisa: boolean;
+  isHitemp: boolean;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -31,6 +33,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   autofocus = false,
   isNonEquilibrium,
   isGeisa,
+  isHitemp,
 }) => {
   const [input, setInput] = useState("");
 
@@ -39,7 +42,11 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       id="molecule-selector"
       className="MoleculeSelector"
       options={
-        isGeisa
+        isHitemp
+          ? moleculeOptionsHitemap.map((value) =>
+              addSubscriptsToMolecule(value)
+            )
+          : isGeisa
           ? moleculeOptionsGesia.map((value) => addSubscriptsToMolecule(value))
           : isNonEquilibrium
           ? moleculeOptionsNonequimolecules.map((value) =>
@@ -54,7 +61,13 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           {...params}
           variant="standard"
           fullWidth
-          label={isGeisa ? "GEISA 2020 Molecule" : "HITRAN 2020 Molecule"}
+          label={
+            isHitemp
+              ? "Molecule"
+              : isGeisa
+              ? "GEISA 2020 Molecule"
+              : "HITRAN 2020 Molecule"
+          }
           error={validationError !== undefined}
           autoFocus={autofocus}
         />

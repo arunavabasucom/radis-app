@@ -44,6 +44,7 @@ export const CalcSpectrum: React.FC = () => {
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
 
   const [progress, setProgress] = useState(0); //control the progress bar
+  const [useHitemp, setUseHitemp] = useState<boolean>(false); //hitemp
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
@@ -226,6 +227,11 @@ export const CalcSpectrum: React.FC = () => {
     } else {
       setUseGesia(false);
     }
+    if (databaseWatch === "hitemp") {
+      setUseHitemp(true);
+    } else {
+      setUseHitemp(false);
+    }
     if (modeWatch === "absorbance") {
       setUseSimulateSlitFunction(false);
     } else {
@@ -365,6 +371,7 @@ export const CalcSpectrum: React.FC = () => {
                   isNonEquilibrium={isNonEquilibrium}
                   control={control}
                   isGeisa={useGesia}
+                  isHitemp={useHitemp}
                 />
               </Grid>
 

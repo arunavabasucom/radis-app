@@ -11,12 +11,14 @@ export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
   isGeisa: boolean;
+  isHitemp: boolean;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
   isNonEquilibrium,
   isGeisa,
+  isHitemp,
 }) => {
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
@@ -39,6 +41,7 @@ export const Species: React.FC<SpeciesProps> = ({
                   autofocus={index !== 0}
                   isNonEquilibrium={isNonEquilibrium}
                   isGeisa={isGeisa}
+                  isHitemp={isHitemp}
                 />
               )}
             />
