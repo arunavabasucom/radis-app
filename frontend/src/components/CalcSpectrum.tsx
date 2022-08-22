@@ -143,7 +143,7 @@ export const CalcSpectrum: React.FC = () => {
     }
 
     const molecules = data.species.map(({ molecule }) => molecule).join("_");
-    console.log(molecules);
+
     setDownloadButton(true);
     setLoading(true);
     setError(undefined);
