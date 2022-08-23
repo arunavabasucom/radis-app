@@ -44,7 +44,7 @@ class Payload(BaseModel):
         "transmittance",
         "radiance",
     ]
-    database: Literal["hitran", "geisa"]
+    database: Literal["hitran", "geisa", "hitemp"]
 
 
 # calculating the spectrum return back the spectrum

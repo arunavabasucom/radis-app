@@ -112,3 +112,4 @@ export const moleculeOptionsGesia = [
   "SO3",
   "RUO4",
 ];
+export const moleculeOptionsHitemp = ["CO2", "CO", "H2O", "NO2", "NO", "OH"];
