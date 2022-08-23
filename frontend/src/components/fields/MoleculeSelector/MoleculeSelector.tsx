@@ -59,13 +59,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           {...params}
           variant="standard"
           fullWidth
-          label={
-            isHitemp
-              ? "Molecule"
-              : isGeisa
-              ? "GEISA 2020 Molecule"
-              : "HITRAN 2020 Molecule"
-          }
+          label="Molecule"
           error={validationError !== undefined}
           autoFocus={autofocus}
         />
