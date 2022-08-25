@@ -1,5 +1,6 @@
 import React from "react";
 import Plot from "react-plotly.js";
+import { LayoutAxis } from "plotly.js";
 import { addSubscriptsToMolecule } from "../utils";
 import { CalcSpectrumResponseData, palette } from "../constants";
 import { Species } from "./types";
@@ -31,6 +32,15 @@ const CalcSpectrumPlot_ = ({
   } else {
     throw new Error("Invalid mode");
   }
+  const yaxis: Partial<LayoutAxis> = {
+    title: {
+      text: `${modeLabel}${data.units.length ? " (" + data.units + ")" : ""}`,
+    },
+    type: "linear",
+    autorange: true,
+    fixedrange: false,
+  };
+
   //buttons to switch between log scale and linear scale
   const updatemenus = [
     {
@@ -49,12 +59,8 @@ const CalcSpectrumPlot_ = ({
           args: [
             {
               yaxis: {
+                ...yaxis,
                 type: "linear",
-                title: {
-                  text: `${modeLabel}${
-                    data.units.length ? " (" + data.units + ")" : ""
-                  }`,
-                },
               },
             },
           ],
@@ -65,12 +71,8 @@ const CalcSpectrumPlot_ = ({
           args: [
             {
               yaxis: {
+                ...yaxis,
                 type: "log",
-                title: {
-                  text: `${modeLabel}${
-                    data.units.length ? " (" + data.units + ")" : ""
-                  }`,
-                },
               },
             },
           ],
@@ -118,16 +120,7 @@ const CalcSpectrumPlot_ = ({
               },
               type: "linear",
             },
-            yaxis: {
-              title: {
-                text: `${modeLabel}${
-                  data.units.length ? " (" + data.units + ")" : ""
-                }`,
-              },
-              type: "linear",
-              autorange: true,
-              fixedrange: false,
-            },
+            yaxis,
             updatemenus,
           }}
         />
