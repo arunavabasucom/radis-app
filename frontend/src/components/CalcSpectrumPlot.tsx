@@ -31,7 +31,31 @@ const CalcSpectrumPlot_ = ({
   } else {
     throw new Error("Invalid mode");
   }
-
+  //buttons to switch between log scale and linear scale
+  const updatemenus = [
+    {
+      type: "buttons",
+      x: 0.1,
+      y: 1.1,
+      xanchor: "left",
+      yanchor: "top",
+      pad: { r: 10, t: 10 },
+      direction: "left",
+      showactive: true,
+      buttons: [
+        {
+          label: "Linear Scale",
+          args: [{ yaxis: { type: "linear" } }],
+          method: "relayout",
+        },
+        {
+          label: "Log Scale",
+          args: [{ yaxis: { type: "log" } }],
+          method: "relayout",
+        },
+      ],
+    },
+  ];
   return (
     <>
       {
@@ -81,6 +105,7 @@ const CalcSpectrumPlot_ = ({
               type: "linear",
               fixedrange: false,
             },
+            updatemenus: updatemenus,
           }}
         />
       }
