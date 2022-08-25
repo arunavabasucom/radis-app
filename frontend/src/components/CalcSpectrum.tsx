@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -45,6 +45,14 @@ export const CalcSpectrum: React.FC = () => {
 
   const [progress, setProgress] = useState(0); //control the progress bar
   const [useHitemp, setUseHitemp] = useState<boolean>(false); //hitemp
+
+  useEffect(() => {
+    if (useGesia) {
+      // GESIA does not work for non-equilibrium calculations
+      setIsNonEquilibrium(false);
+    }
+  }, [useGesia]);
+
   const Schema = yup.object().shape({
     useNonEqi: yup.boolean(),
     use_simulate_slit: yup.boolean(),
