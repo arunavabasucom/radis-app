@@ -45,12 +45,35 @@ const CalcSpectrumPlot_ = ({
       buttons: [
         {
           label: "Linear Scale",
-          args: [{ yaxis: { type: "linear" } }],
+          //passing title to every scale
+          args: [
+            {
+              yaxis: {
+                type: "linear",
+                title: {
+                  text: `${modeLabel}${
+                    data.units.length ? " (" + data.units + ")" : ""
+                  }`,
+                },
+              },
+            },
+          ],
           method: "relayout",
         },
         {
           label: "Log Scale",
-          args: [{ yaxis: { type: "log" } }],
+          args: [
+            {
+              yaxis: {
+                type: "log",
+                title: {
+                  text: `${modeLabel}${
+                    data.units.length ? " (" + data.units + ")" : ""
+                  }`,
+                },
+              },
+            },
+          ],
           method: "relayout",
         },
       ],
@@ -96,13 +119,13 @@ const CalcSpectrumPlot_ = ({
               type: "linear",
             },
             yaxis: {
-              autorange: true,
               title: {
                 text: `${modeLabel}${
                   data.units.length ? " (" + data.units + ")" : ""
                 }`,
               },
               type: "linear",
+              autorange: true,
               fixedrange: false,
             },
             updatemenus,
