@@ -35,8 +35,8 @@ const CalcSpectrumPlot_ = ({
   const updatemenus = [
     {
       type: "buttons",
-      x: 0.1,
-      y: 1.1,
+      x: 0,
+      y: -0.3,
       xanchor: "left",
       yanchor: "top",
       pad: { r: 10, t: 10 },
@@ -105,7 +105,7 @@ const CalcSpectrumPlot_ = ({
               type: "linear",
               fixedrange: false,
             },
-            updatemenus: updatemenus,
+            updatemenus,
           }}
         />
       }
