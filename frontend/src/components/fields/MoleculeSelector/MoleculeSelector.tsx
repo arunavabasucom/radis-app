@@ -37,23 +37,22 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
 }) => {
   const [input, setInput] = useState("");
 
+  let moleculeOptions = moleculeOptionsEquimolecules;
+  if (isNonEquilibrium) {
+    moleculeOptions = moleculeOptionsNonequimolecules;
+  } else if (isGeisa) {
+    moleculeOptions = moleculeOptionsGesia;
+  } else if (isHitemp) {
+    moleculeOptions = moleculeOptionsHitemp;
+  }
+
   return (
     <Autocomplete
       id="molecule-selector"
       className="MoleculeSelector"
-      options={
-        isHitemp
-          ? moleculeOptionsHitemp.map((value) => addSubscriptsToMolecule(value))
-          : isGeisa
-          ? moleculeOptionsGesia.map((value) => addSubscriptsToMolecule(value))
-          : isNonEquilibrium
-          ? moleculeOptionsNonequimolecules.map((value) =>
-              addSubscriptsToMolecule(value)
-            )
-          : moleculeOptionsEquimolecules.map((value) =>
-              addSubscriptsToMolecule(value)
-            )
-      }
+      options={moleculeOptions.map((molecule) =>
+        addSubscriptsToMolecule(molecule)
+      )}
       renderInput={(params) => (
         <TextField
           {...params}
