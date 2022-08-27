@@ -21,6 +21,7 @@ import { Database, FormValues } from "./types";
 import { DownloadButton } from "./DownloadButton";
 import { Species } from "./fields/Species/Species";
 import { PressureUn } from "./fields/PressureUnits";
+import { PathLengthUn } from "./fields/PathLengthUnits";
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -249,22 +250,40 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={4}>
               <TRot control={control} />
             </Grid>
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={4}>
               <TVib control={control} />
             </Grid>
           </>
         ) : null}
 
-        <Grid item sm={8} lg={5}>
+        <Grid item sm={8} lg={3}>
           <Pressure control={control} />
         </Grid>
-
-        <Grid item sm={8} lg={3}>
-          <PathLength control={control} />
+        <Grid item sm={3} lg={3}>
+          <PressureUn control={control} />
         </Grid>
+        {isNonEquilibrium ? (
+          <>
+            <Grid item sm={8} lg={3}>
+              <PathLength control={control} />
+            </Grid>
+            <Grid item sm={3} lg={3}>
+              <PathLengthUn control={control} />
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid item sm={8} lg={7}>
+              <PathLength control={control} />
+            </Grid>
+            <Grid item sm={3} lg={3}>
+              <PathLengthUn control={control} />
+            </Grid>
+          </>
+        )}
 
         <Grid item xs={12}>
           <Species
