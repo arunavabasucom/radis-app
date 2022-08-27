@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
@@ -175,35 +175,28 @@ export const Form: React.FunctionComponent<FormProps> = ({
     });
   };
 
-  //equilibrium-switch
-  const UseNonEquilibriumCalculations = () => (
-    <Controller
-      name="useNonEqi"
-      defaultValue={false}
-      control={control}
-      render={({ field }) => (
-        <FormControlLabel
-          label="Use non-equilibrium calculations"
-          control={
-            <Switch
-              checked={isNonEquilibrium}
-              onChange={(event, value) => {
-                setIsNonEquilibrium(event.target.checked);
-                field.onChange(value);
-                if (event.target.checked) {
-                  setValue("tvib", 300);
-                  setValue("trot", 300);
-                } else {
-                  setValue("tvib", undefined);
-                  setValue("trot", undefined);
-                }
-              }}
-            />
-          }
+  useEffect(() => {
+    if (isNonEquilibrium) {
+      setValue("tvib", 300);
+      setValue("trot", 300);
+    } else {
+      setValue("tvib", undefined);
+      setValue("trot", undefined);
+    }
+  }, [setValue, isNonEquilibrium]);
+
+  const UseNonEquilibriumCalculationsSwitch = () => (
+    <FormControlLabel
+      label="Use non-equilibrium calculations"
+      control={
+        <Switch
+          checked={isNonEquilibrium}
+          onChange={(event) => setIsNonEquilibrium(event.target.checked)}
         />
-      )}
+      }
     />
   );
+
   //slit-switch
   const UseSimulateSlit = () => (
     <Controller
@@ -298,7 +291,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         ) : null}
         {showNonEquilibriumSwitch && (
           <Grid item xs={12}>
-            <UseNonEquilibriumCalculations />
+            <UseNonEquilibriumCalculationsSwitch />
           </Grid>
         )}
 

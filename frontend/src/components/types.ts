@@ -11,7 +11,6 @@ export enum Database {
 
 export type FormValues = {
   mode: string;
-  useNonEqi: boolean;
   database: Database;
   species: Species[];
   min_wavenumber_range: number;
