@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import LoadingBar from "react-top-loading-bar";
-import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
+import { PlotData, CalcSpectrumResponseData } from "../constants";
 import { Plot } from "./Plot";
 import { ErrorAlert } from "./ErrorAlert";
 import { Form, Response } from "./Form";
@@ -14,9 +14,7 @@ export const PlotSpectrum: React.FC = () => {
   >(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [plotData, setPlotData] = useState<CalcSpectrumPlotData | undefined>(
-    undefined
-  );
+  const [plotData, setPlotData] = useState<PlotData | undefined>(undefined);
   const [progress, setProgress] = useState(0); //control the progress bar
 
   return (

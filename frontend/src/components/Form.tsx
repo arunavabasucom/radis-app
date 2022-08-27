@@ -5,7 +5,7 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
+import { PlotData, CalcSpectrumResponseData } from "../constants";
 import { formSchema } from "../modules/formSchema";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
@@ -27,9 +27,7 @@ export interface Response<T> {
 }
 
 interface FormProps {
-  setPlotData: React.Dispatch<
-    React.SetStateAction<CalcSpectrumPlotData | undefined>
-  >;
+  setPlotData: React.Dispatch<React.SetStateAction<PlotData | undefined>>;
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setProgress: React.Dispatch<React.SetStateAction<number>>;

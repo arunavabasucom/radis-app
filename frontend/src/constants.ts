@@ -21,7 +21,7 @@ export const palette = {
   },
 };
 
-export interface CalcSpectrumPlotData {
+export interface PlotData {
   species: Species[];
   min_wavenumber_range: number;
   max_wavenumber_range: number;
