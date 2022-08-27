@@ -19,7 +19,7 @@ import { PathLength } from "./fields/PathLength";
 import { Species } from "./fields/Species/Species";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
-import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
+import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { FormValues } from "./types";
 
 interface FormProps {
