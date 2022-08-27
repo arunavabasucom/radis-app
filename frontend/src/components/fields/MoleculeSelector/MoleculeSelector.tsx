@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Control, FieldError } from "react-hook-form";
@@ -7,7 +7,7 @@ import {
   removeSubscriptsFromMolecule,
 } from "../../../utils";
 import "./index.css";
-import { FormValues } from "../../types";
+import { Database, FormValues } from "../../types";
 import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
@@ -22,8 +22,7 @@ export interface MoleculeSelectorProps {
   control: Control<FormValues>;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
-  isGeisa: boolean;
-  isHitemp: boolean;
+  databaseWatch: Database;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -32,19 +31,22 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   value,
   autofocus = false,
   isNonEquilibrium,
-  isGeisa,
-  isHitemp,
+  databaseWatch,
 }) => {
   const [input, setInput] = useState("");
+  const [moleculeOptions, setMoleculeOptions] = useState<string[]>([]);
 
-  let moleculeOptions = moleculeOptionsEquimolecules;
-  if (isNonEquilibrium) {
-    moleculeOptions = moleculeOptionsNonequimolecules;
-  } else if (isGeisa) {
-    moleculeOptions = moleculeOptionsGesia;
-  } else if (isHitemp) {
-    moleculeOptions = moleculeOptionsHitemp;
-  }
+  useEffect(() => {
+    if (isNonEquilibrium) {
+      setMoleculeOptions(moleculeOptionsNonequimolecules);
+    } else if (databaseWatch === Database.GEISA) {
+      setMoleculeOptions(moleculeOptionsGesia);
+    } else if (databaseWatch === Database.HITEMP) {
+      setMoleculeOptions(moleculeOptionsHitemp);
+    } else {
+      setMoleculeOptions(moleculeOptionsEquimolecules);
+    }
+  }, [isNonEquilibrium, databaseWatch]);
 
   return (
     <Autocomplete

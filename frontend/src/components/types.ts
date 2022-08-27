@@ -2,10 +2,16 @@ export type Species = {
   molecule: string;
   mole_fraction: number;
 };
+
+export enum Database {
+  HITRAN = "hitran",
+  GEISA = "geisa",
+  HITEMP = "hitemp",
+}
+
 export type FormValues = {
   mode: string;
-  useNonEqi: boolean;
-  database: string;
+  database: Database;
   species: Species[];
   min_wavenumber_range: number;
   max_wavenumber_range: number;

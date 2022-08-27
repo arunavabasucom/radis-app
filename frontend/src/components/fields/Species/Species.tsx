@@ -6,19 +6,17 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
-import { FormValues } from "../../types";
+import { Database, FormValues } from "../../types";
 export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
-  isGeisa: boolean;
-  isHitemp: boolean;
+  databaseWatch: Database;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
   isNonEquilibrium,
-  isGeisa,
-  isHitemp,
+  databaseWatch,
 }) => {
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
@@ -40,8 +38,7 @@ export const Species: React.FC<SpeciesProps> = ({
                   onChange={field.onChange}
                   autofocus={index !== 0}
                   isNonEquilibrium={isNonEquilibrium}
-                  isGeisa={isGeisa}
-                  isHitemp={isHitemp}
+                  databaseWatch={databaseWatch}
                 />
               )}
             />

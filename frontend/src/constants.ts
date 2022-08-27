@@ -21,17 +21,7 @@ export const palette = {
   },
 };
 
-export interface ValidationErrors {
-  molecule: string[];
-  mole_fraction: string[];
-  tgas?: string;
-  tvib?: string;
-  trot?: string;
-  pressure?: string;
-  path_length?: string;
-}
-
-export interface CalcSpectrumPlotData {
+export interface PlotData {
   species: Species[];
   min_wavenumber_range: number;
   max_wavenumber_range: number;
