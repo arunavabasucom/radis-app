@@ -15,7 +15,7 @@ import { PlotSpectrum } from "./components/PlotSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette,
 });
 

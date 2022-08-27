@@ -1,40 +1,47 @@
 import React from "react";
 import Plotly from "react-plotly.js";
 import { LayoutAxis } from "plotly.js";
+import { PlotSettings, Spectra } from "../constants";
 import { addSubscriptsToMolecule } from "../modules/molecule-subscripts";
-import { CalcSpectrumResponseData, palette } from "../constants";
 import { Species } from "./types";
 
 export interface PlotProps {
-  data: CalcSpectrumResponseData;
-  species: Species[];
-  min_wavenumber_range: number;
-  max_wavenumber_range: number;
-  mode: string;
+  spectrum: Spectra[];
+  plotSettings: PlotSettings;
 }
 
-const Plot_ = ({
-  data,
-  species,
-  min_wavenumber_range,
-  max_wavenumber_range,
+const plotColors = [
+  "#f50057",
+  "#3f51b5",
+  "#00bcd4",
+  "#ffeb3b",
+  "#ff9800",
+  "#9c27b0",
+  "#2196f3",
+  "#009688",
+  "#ff5722",
+  "#795548",
+  "#607d8b",
+  "#e91e63",
+  "#673ab7",
+];
 
-  mode,
-}: PlotProps): JSX.Element => {
-  let modeLabel;
+export const Plot_: React.FC<PlotProps> = ({
+  spectrum,
+  plotSettings: { mode, units },
+}) => {
+  let modeLabel = "";
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
-    data.units = "-ln(I/I0)";
   } else if (mode.startsWith("transmittance")) {
     modeLabel = "Transmittance";
   } else if (mode.startsWith("radiance")) {
     modeLabel = "Radiance";
-  } else {
-    throw new Error("Invalid mode");
   }
+
   const yaxis: Partial<LayoutAxis> = {
     title: {
-      text: `${modeLabel}${data.units.length ? " (" + data.units + ")" : ""}`,
+      text: `${modeLabel}${units.length ? " (" + units + ")" : ""}`,
     },
     type: "linear",
     autorange: true,
@@ -46,7 +53,7 @@ const Plot_ = ({
     {
       type: "buttons",
       x: 0,
-      y: -0.3,
+      y: -0.37,
       xanchor: "left",
       yanchor: "top",
       pad: { r: 10, t: 10 },
@@ -81,51 +88,77 @@ const Plot_ = ({
       ],
     },
   ];
+
+  const formatSpectraName = ({
+    database,
+    tgas,
+    trot,
+    tvib,
+    pressure,
+    species,
+  }: {
+    database: string;
+    tgas: number;
+    trot?: number;
+    tvib?: number;
+    pressure: number;
+    species: Species[];
+  }) => {
+    const speciesFormatted = species
+      .map(
+        ({ molecule, mole_fraction }) =>
+          `${addSubscriptsToMolecule(molecule)} (χ=${mole_fraction})`
+      )
+      .join(", ");
+    let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} bar, Tgas=${tgas} K`;
+    if (trot) {
+      formatted += `, Trot=${trot} K, Tvib=${tvib} K`;
+    }
+    return formatted;
+  };
+
   return (
-    <>
-      {
-        <Plotly
-          className="Plot"
-          data={[
-            {
-              x: data.x,
-              y: data.y,
-              type: "scatter",
-              marker: { color: palette.secondary.main },
-            },
-          ]}
-          layout={{
-            width: 800,
-            height: 600,
-            title: `Spectrum for ${species
-              .map(({ molecule, mole_fraction }) => {
-                const moleculeWithSubscripts = addSubscriptsToMolecule(
-                  molecule || ""
-                );
-                return `${moleculeWithSubscripts} (χ${moleculeWithSubscripts.sub()} = ${
-                  mole_fraction as number
-                })`;
-              })
-              .join(", ")}`,
-            font: { family: "Roboto", color: "#000" },
-            xaxis: {
-              range: [min_wavenumber_range, max_wavenumber_range],
-              title: { text: "Wavenumber (cm⁻¹)" },
-              rangeslider: {
-                // TODO: Update typing in DefinitelyTyped
-                // @ts-ignore
-                autorange: true,
-                // @ts-ignore
-                yaxis: { rangemode: "auto" },
-              },
-              type: "linear",
-            },
-            yaxis,
-            updatemenus,
-          }}
-        />
-      }
-    </>
+    <Plotly
+      className="Plot"
+      data={spectrum.map(
+        ({ x, y, species, database, tgas, trot, tvib, pressure }, index) => ({
+          x,
+          y,
+          type: "scatter",
+          marker: { color: plotColors[index % plotColors.length] },
+          name: formatSpectraName({
+            database,
+            species,
+            tgas,
+            trot,
+            tvib,
+            pressure,
+          }),
+        })
+      )}
+      layout={{
+        width: 800,
+        height: 600,
+        title: "Spectrum",
+        font: { family: "Roboto", color: "#000" },
+        xaxis: {
+          autorange: true,
+          title: { text: "Wavenumber (cm⁻¹)" },
+          rangeslider: {
+            // TODO: Update typing in DefinitelyTyped
+            // @ts-ignore
+            autorange: true,
+            // @ts-ignore
+            yaxis: { rangemode: "auto" },
+          },
+          type: "linear",
+        },
+        yaxis,
+        updatemenus,
+        showlegend: true,
+        legend: { orientation: "h", y: -0.6, x: 0 },
+      }}
+    />
   );
 };
 
