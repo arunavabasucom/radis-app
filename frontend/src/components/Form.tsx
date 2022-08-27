@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
@@ -14,12 +14,12 @@ import { TRot } from "./fields/TRot";
 import { TVib } from "./fields/TVib";
 import { Pressure } from "./fields/Pressure";
 import { PathLength } from "./fields/PathLength";
-import { Species } from "./fields/Species/Species";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { FormValues } from "./types";
 import { DownloadButton } from "./DownloadButton";
+import { Species } from "./fields/Species/Species";
 
 export interface Response<T> {
   data?: T;
@@ -46,18 +46,11 @@ export const Form: React.FunctionComponent<FormProps> = ({
   setCalcSpectrumResponse,
 }) => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
-  const [useGesia, setUseGesia] = useState(false);
-  const [useHitemp, setUseHitemp] = useState<boolean>(false); //hitemp
+  const [showNonEquilibriumSwitch, setShowNonEquilibriumSwitch] =
+    useState(false);
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
-
-  useEffect(() => {
-    if (useGesia) {
-      // GESIA does not work for non-equilibrium calculations
-      setIsNonEquilibrium(false);
-    }
-  }, [useGesia]);
 
   const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
@@ -68,15 +61,12 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const modeWatch = watch("mode");
   React.useEffect(() => {
     if (databaseWatch === "geisa") {
-      setUseGesia(true);
+      setIsNonEquilibrium(false);
+      setShowNonEquilibriumSwitch(false);
     } else {
-      setUseGesia(false);
+      setShowNonEquilibriumSwitch(true);
     }
-    if (databaseWatch === "hitemp") {
-      setUseHitemp(true);
-    } else {
-      setUseHitemp(false);
-    }
+
     if (modeWatch === "absorbance") {
       setUseSimulateSlitFunction(false);
     } else {
@@ -289,8 +279,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           <Species
             isNonEquilibrium={isNonEquilibrium}
             control={control}
-            isGeisa={useGesia}
-            isHitemp={useHitemp}
+            databaseWatch={databaseWatch}
           />
         </Grid>
 
@@ -307,7 +296,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             </Grid>
           ) : null
         ) : null}
-        {useGesia ? null : (
+        {showNonEquilibriumSwitch && (
           <Grid item xs={12}>
             <UseNonEquilibriumCalculations />
           </Grid>

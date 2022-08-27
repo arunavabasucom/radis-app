@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Control, FieldError } from "react-hook-form";
@@ -22,8 +22,7 @@ export interface MoleculeSelectorProps {
   control: Control<FormValues>;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
-  isGeisa: boolean;
-  isHitemp: boolean;
+  databaseWatch: string;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -32,19 +31,22 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   value,
   autofocus = false,
   isNonEquilibrium,
-  isGeisa,
-  isHitemp,
+  databaseWatch,
 }) => {
   const [input, setInput] = useState("");
+  const [moleculeOptions, setMoleculeOptions] = useState<string[]>([]);
 
-  let moleculeOptions = moleculeOptionsEquimolecules;
-  if (isNonEquilibrium) {
-    moleculeOptions = moleculeOptionsNonequimolecules;
-  } else if (isGeisa) {
-    moleculeOptions = moleculeOptionsGesia;
-  } else if (isHitemp) {
-    moleculeOptions = moleculeOptionsHitemp;
-  }
+  useEffect(() => {
+    if (isNonEquilibrium) {
+      setMoleculeOptions(moleculeOptionsNonequimolecules);
+    } else if (databaseWatch === "gesia") {
+      setMoleculeOptions(moleculeOptionsGesia);
+    } else if (databaseWatch === "hitemp") {
+      setMoleculeOptions(moleculeOptionsHitemp);
+    } else {
+      setMoleculeOptions(moleculeOptionsEquimolecules);
+    }
+  }, [isNonEquilibrium, databaseWatch]);
 
   return (
     <Autocomplete

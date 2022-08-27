@@ -10,15 +10,13 @@ import { FormValues } from "../../types";
 export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
-  isGeisa: boolean;
-  isHitemp: boolean;
+  databaseWatch: string;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
   isNonEquilibrium,
-  isGeisa,
-  isHitemp,
+  databaseWatch,
 }) => {
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
@@ -40,8 +38,7 @@ export const Species: React.FC<SpeciesProps> = ({
                   onChange={field.onChange}
                   autofocus={index !== 0}
                   isNonEquilibrium={isNonEquilibrium}
-                  isGeisa={isGeisa}
-                  isHitemp={isHitemp}
+                  databaseWatch={databaseWatch}
                 />
               )}
             />
