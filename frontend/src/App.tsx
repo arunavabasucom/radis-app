@@ -11,7 +11,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
-import { CalcSpectrum } from "./components/CalcSpectrum";
+import { CalcSpectrum } from "./components/PlotSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
 

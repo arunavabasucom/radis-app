@@ -1,11 +1,11 @@
 import React from "react";
-import Plot from "react-plotly.js";
+import Plotly from "react-plotly.js";
 import { LayoutAxis } from "plotly.js";
 import { addSubscriptsToMolecule } from "../utils";
 import { CalcSpectrumResponseData, palette } from "../constants";
 import { Species } from "./types";
 
-export interface CalcSpectrumPlotdata {
+export interface PlotProps {
   data: CalcSpectrumResponseData;
   species: Species[];
   min_wavenumber_range: number;
@@ -13,14 +13,14 @@ export interface CalcSpectrumPlotdata {
   mode: string;
 }
 
-const CalcSpectrumPlot_ = ({
+const Plot_ = ({
   data,
   species,
   min_wavenumber_range,
   max_wavenumber_range,
 
   mode,
-}: CalcSpectrumPlotdata): JSX.Element => {
+}: PlotProps): JSX.Element => {
   let modeLabel;
   if (mode === "absorbance") {
     modeLabel = "Absorbance";
@@ -84,7 +84,7 @@ const CalcSpectrumPlot_ = ({
   return (
     <>
       {
-        <Plot
+        <Plotly
           className="Plot"
           data={[
             {
@@ -129,4 +129,4 @@ const CalcSpectrumPlot_ = ({
   );
 };
 
-export const CalcSpectrumPlot = React.memo(CalcSpectrumPlot_);
+export const Plot = React.memo(Plot_);

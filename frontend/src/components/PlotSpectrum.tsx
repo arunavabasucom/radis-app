@@ -3,27 +3,15 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Grid from "@mui/material/Grid";
-import { Controller, useForm } from "react-hook-form";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
-import Button from "@mui/material/Button";
 import LoadingBar from "react-top-loading-bar";
 import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
 import { FormValues } from "./types";
-import { Database } from "./fields/Database";
-import { Mode } from "./fields/Mode";
-import { TGas } from "./fields/TGas";
-import { TRot } from "./fields/TRot";
-import { TVib } from "./fields/TVib";
-import { Pressure } from "./fields/Pressure";
-import { PathLength } from "./fields/PathLength";
-import { Species } from "./fields/Species/Species";
-import { SimulateSlit } from "./fields/SimulateSlit";
-import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
-import { CalcSpectrumButton } from "./fields/CalSpectrumButtom";
-import { CalcSpectrumPlot } from "./CalcSpectrumPlot";
+import { Plot } from "./Plot";
 import { ErrorAlert } from "./ErrorAlert";
+import { Form } from "./Form";
+
 interface Response<T> {
   data?: T;
   error?: string;
@@ -255,76 +243,6 @@ export const CalcSpectrum: React.FC = () => {
     }
   }, [databaseWatch, modeWatch]);
 
-  //downloadButton
-  const DownloadSpectrum: React.FC = () => (
-    <Button
-      id="down-spectrum-button"
-      disabled={downloadButton}
-      variant="contained"
-      color="primary"
-      onClick={handleSubmit((data) => {
-        onSubmit(data, `download-spectrum`);
-      })}
-    >
-      Download
-    </Button>
-  );
-  //equilibrium-switch
-  const UseNonEquilibriumCalculations = () => (
-    <Controller
-      name="useNonEqi"
-      defaultValue={false}
-      control={control}
-      render={({ field }) => (
-        <FormControlLabel
-          label="Use non-equilibrium calculations"
-          control={
-            <Switch
-              checked={isNonEquilibrium}
-              onChange={(event, value) => {
-                setIsNonEquilibrium(event.target.checked);
-                field.onChange(value);
-                if (event.target.checked) {
-                  setValue("tvib", 300);
-                  setValue("trot", 300);
-                } else {
-                  setValue("tvib", undefined);
-                  setValue("trot", undefined);
-                }
-              }}
-            />
-          }
-        />
-      )}
-    />
-  );
-  //slit-switch
-  const UseSimulateSlit = () => (
-    <Controller
-      name="use_simulate_slit"
-      defaultValue={false}
-      control={control}
-      render={({ field }) => (
-        <FormControlLabel
-          label="Apply Instrumental Slit Function"
-          control={
-            <Switch
-              checked={useSlit}
-              onChange={(event, value) => {
-                setUseSlit(event.target.checked);
-                field.onChange(value);
-                if (event.target.checked) {
-                  setValue("simulate_slit", 5);
-                } else {
-                  setValue("simulate_slit", undefined);
-                }
-              }}
-            />
-          }
-        />
-      )}
-    />
-  );
   return (
     <>
       <LoadingBar
@@ -338,80 +256,20 @@ export const CalcSpectrum: React.FC = () => {
         {error ? <ErrorAlert message={error} /> : null}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={8} md={5} lg={4}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={8} md={5} lg={5}>
-                <Database control={control}></Database>
-              </Grid>
-              <Grid item xs={12} sm={8} md={5} lg={6}>
-                <Mode control={control} />
-              </Grid>
-              <Grid item xs={12}>
-                <WavenumberRangeSlider
-                  minRange={500}
-                  maxRange={10000}
-                  control={control}
-                  setValue={setValue}
-                />
-              </Grid>
-
-              <Grid item sm={8} lg={4}>
-                <TGas control={control} />
-              </Grid>
-
-              {isNonEquilibrium ? (
-                <>
-                  <Grid item sm={8} lg={3}>
-                    <TRot control={control} />
-                  </Grid>
-                  <Grid item sm={8} lg={3}>
-                    <TVib control={control} />
-                  </Grid>
-                </>
-              ) : null}
-
-              <Grid item sm={8} lg={5}>
-                <Pressure control={control} />
-              </Grid>
-
-              <Grid item sm={8} lg={3}>
-                <PathLength control={control} />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Species
-                  isNonEquilibrium={isNonEquilibrium}
-                  control={control}
-                  isGeisa={useGesia}
-                  isHitemp={useHitemp}
-                />
-              </Grid>
-
-              {useSimulateSlitFunction ? (
-                <Grid item xs={12}>
-                  <UseSimulateSlit />
-                </Grid>
-              ) : null}
-
-              {useSimulateSlitFunction ? (
-                useSlit ? (
-                  <Grid item xs={12}>
-                    <SimulateSlit control={control} />
-                  </Grid>
-                ) : null
-              ) : null}
-              {useGesia ? null : (
-                <Grid item xs={12}>
-                  <UseNonEquilibriumCalculations />
-                </Grid>
-              )}
-
-              <Grid item xs={12}>
-                <CalcSpectrumButton />
-              </Grid>
-              <Grid item xs={12}>
-                <DownloadSpectrum />
-              </Grid>
-            </Grid>
+            <Form
+              control={control}
+              setValue={setValue}
+              handleSubmit={handleSubmit}
+              downloadButton={downloadButton}
+              isNonEquilibrium={isNonEquilibrium}
+              setIsNonEquilibrium={setIsNonEquilibrium}
+              useSlit={useSlit}
+              setUseSlit={setUseSlit}
+              useSimulateSlitFunction={useSimulateSlitFunction}
+              useGesia={useGesia}
+              useHitemp={useHitemp}
+              onSubmit={onSubmit}
+            />
           </Grid>
 
           <Grid item xs={12} sm={5} md={7} lg={8}>
@@ -428,7 +286,7 @@ export const CalcSpectrum: React.FC = () => {
             ) : (
               calcSpectrumResponse?.data &&
               plotData?.species && (
-                <CalcSpectrumPlot
+                <Plot
                   data={calcSpectrumResponse.data}
                   species={plotData.species}
                   min_wavenumber_range={plotData.min_wavenumber_range}
