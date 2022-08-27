@@ -22,4 +22,7 @@ export type FormValues = {
   path_length: number;
   simulate_slit?: number;
   use_simulate_slit: boolean;
+  wavelength_units: string;
+  pressure_units: string;
+  pathLength_units: string;
 };
