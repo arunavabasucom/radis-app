@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
+import { Database as TDatabase, FormValues } from "../types";
 
 interface DatabaseProps {
   control: Control<FormValues>;
@@ -18,7 +18,7 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
       </InputLabel>
       <Controller
         name="database"
-        defaultValue="hitran"
+        defaultValue={TDatabase.HITRAN}
         control={control}
         render={({ field, formState }) => (
           <Select
@@ -31,9 +31,9 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
             value={field.value}
             label="Select"
           >
-            <MenuItem value={"hitran"}>HITRAN</MenuItem>
-            <MenuItem value={"geisa"}>GEISA</MenuItem>
-            <MenuItem value={"hitemp"}>HITEMP</MenuItem>
+            <MenuItem value={TDatabase.HITRAN}>HITRAN</MenuItem>
+            <MenuItem value={TDatabase.GEISA}>GEISA</MenuItem>
+            <MenuItem value={TDatabase.HITEMP}>HITEMP</MenuItem>
           </Select>
         )}
       />

@@ -7,7 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
 import { formSchema } from "../modules/formSchema";
-import { Database } from "./fields/Database";
+import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
 import { TRot } from "./fields/TRot";
@@ -17,7 +17,7 @@ import { PathLength } from "./fields/PathLength";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
-import { FormValues } from "./types";
+import { Database, FormValues } from "./types";
 import { DownloadButton } from "./DownloadButton";
 import { Species } from "./fields/Species/Species";
 
@@ -60,7 +60,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const databaseWatch = watch("database");
   const modeWatch = watch("mode");
   React.useEffect(() => {
-    if (databaseWatch === "geisa") {
+    if (databaseWatch === Database.GEISA) {
       setIsNonEquilibrium(false);
       setShowNonEquilibriumSwitch(false);
     } else {
@@ -238,7 +238,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     >
       <Grid container spacing={3}>
         <Grid item xs={12} sm={8} md={5} lg={5}>
-          <Database control={control}></Database>
+          <DatabaseField control={control}></DatabaseField>
         </Grid>
         <Grid item xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />

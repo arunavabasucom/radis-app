@@ -7,7 +7,7 @@ import {
   removeSubscriptsFromMolecule,
 } from "../../../utils";
 import "./index.css";
-import { FormValues } from "../../types";
+import { Database, FormValues } from "../../types";
 import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
@@ -22,7 +22,7 @@ export interface MoleculeSelectorProps {
   control: Control<FormValues>;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
-  databaseWatch: string;
+  databaseWatch: Database;
 }
 
 export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
@@ -39,9 +39,9 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   useEffect(() => {
     if (isNonEquilibrium) {
       setMoleculeOptions(moleculeOptionsNonequimolecules);
-    } else if (databaseWatch === "gesia") {
+    } else if (databaseWatch === Database.GEISA) {
       setMoleculeOptions(moleculeOptionsGesia);
-    } else if (databaseWatch === "hitemp") {
+    } else if (databaseWatch === Database.HITEMP) {
       setMoleculeOptions(moleculeOptionsHitemp);
     } else {
       setMoleculeOptions(moleculeOptionsEquimolecules);

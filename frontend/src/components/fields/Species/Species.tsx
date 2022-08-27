@@ -6,11 +6,11 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
-import { FormValues } from "../../types";
+import { Database, FormValues } from "../../types";
 export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
-  databaseWatch: string;
+  databaseWatch: Database;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
