@@ -9,15 +9,13 @@ interface ErrorAlertInterface {
 export const ErrorAlert: React.FC<ErrorAlertInterface> = ({ message }) => {
   const [open, setOpen] = useState<boolean>(true);
   return (
-    <>
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={open}
-        onClose={() => setOpen(false)}
-        key={message}
-      >
-        <Alert severity="error">{message}</Alert>
-      </Snackbar>
-    </>
+    <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      open={open}
+      onClose={() => setOpen(false)}
+      key={message}
+    >
+      <Alert severity="error">{message}</Alert>
+    </Snackbar>
   );
 };
