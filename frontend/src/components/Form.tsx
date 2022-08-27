@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { PlotData, CalcSpectrumResponseData } from "../constants";
-import { formSchema } from "../modules/formSchema";
+import { formSchema } from "../modules/form-schema";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";

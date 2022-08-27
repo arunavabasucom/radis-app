@@ -1,7 +1,7 @@
 import React from "react";
 import Plotly from "react-plotly.js";
 import { LayoutAxis } from "plotly.js";
-import { addSubscriptsToMolecule } from "../utils";
+import { addSubscriptsToMolecule } from "../modules/molecule-subscripts";
 import { CalcSpectrumResponseData, palette } from "../constants";
 import { Species } from "./types";
 
