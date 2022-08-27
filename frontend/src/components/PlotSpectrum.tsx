@@ -8,7 +8,7 @@ import { Plot } from "./Plot";
 import { ErrorAlert } from "./ErrorAlert";
 import { Form, Response } from "./Form";
 
-export const CalcSpectrum: React.FC = () => {
+export const PlotSpectrum: React.FC = () => {
   const [calcSpectrumResponse, setCalcSpectrumResponse] = React.useState<
     Response<CalcSpectrumResponseData> | undefined
   >(undefined);

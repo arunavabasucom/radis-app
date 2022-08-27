@@ -11,7 +11,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
-import { CalcSpectrum } from "./components/PlotSpectrum";
+import { PlotSpectrum } from "./components/PlotSpectrum";
 import { palette } from "./constants";
 import logo from "./radis.png";
 
@@ -120,7 +120,7 @@ function App(): React.ReactElement {
         <Header />
         <Container maxWidth="lg">
           <Box sx={{ m: 6 }}>
-            <CalcSpectrum />
+            <PlotSpectrum />
           </Box>
         </Container>
       </ThemeProvider>
