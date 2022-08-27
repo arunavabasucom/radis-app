@@ -5,7 +5,6 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
 import { CalcSpectrumPlotData, CalcSpectrumResponseData } from "../constants";
 import { formSchema } from "../modules/formSchema";
 import { Database } from "./fields/Database";
@@ -20,6 +19,7 @@ import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { FormValues } from "./types";
+import { DownloadButton } from "./DownloadButton";
 
 export interface Response<T> {
   data?: T;
@@ -50,7 +50,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [useHitemp, setUseHitemp] = useState<boolean>(false); //hitemp
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
-  const [downloadButton, setDownloadButton] = useState(true);
+  const [disableDownloadButton, setDisableDownloadButton] = useState(true);
 
   useEffect(() => {
     if (useGesia) {
@@ -108,7 +108,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
     const molecules = data.species.map(({ molecule }) => molecule).join("_");
 
-    setDownloadButton(true);
+    setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
     setPlotData({
@@ -135,15 +135,15 @@ export const Form: React.FunctionComponent<FormProps> = ({
           rawResponse.data.error === undefined
         ) {
           handleBadResponse("Bad response from backend!");
-          setDownloadButton(true);
+          setDisableDownloadButton(true);
         } else {
           const response = await rawResponse.data;
           if (response.error) {
             handleBadResponse(response.error);
-            setDownloadButton(true);
+            setDisableDownloadButton(true);
           } else {
             setCalcSpectrumResponse(response);
-            setDownloadButton(false);
+            setDisableDownloadButton(false);
           }
         }
 
@@ -172,14 +172,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
         );
         document.body.appendChild(link);
         link.click();
-        setDownloadButton(false);
+        setDisableDownloadButton(false);
         const response = await rawResponse.data;
         if (response.error) {
           handleBadResponse(response.error);
         } else {
-          setDownloadButton(false);
+          setDisableDownloadButton(false);
         }
-        setDownloadButton(false);
+        setDisableDownloadButton(false);
         setProgress(100);
       }
     });
@@ -240,20 +240,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
         />
       )}
     />
-  );
-  //downloadButton
-  const DownloadSpectrum: React.FC = () => (
-    <Button
-      id="down-spectrum-button"
-      disabled={downloadButton}
-      variant="contained"
-      color="primary"
-      onClick={handleSubmit((data) => {
-        onSubmit(data, `download-spectrum`);
-      })}
-    >
-      Download
-    </Button>
   );
 
   return (
@@ -331,7 +317,12 @@ export const Form: React.FunctionComponent<FormProps> = ({
           <CalcSpectrumButton />
         </Grid>
         <Grid item xs={12}>
-          <DownloadSpectrum />
+          <DownloadButton
+            disabled={disableDownloadButton}
+            onClick={handleSubmit((data) => {
+              onSubmit(data, `download-spectrum`);
+            })}
+          />
         </Grid>
       </Grid>
     </form>
