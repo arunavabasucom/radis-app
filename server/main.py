@@ -70,7 +70,7 @@ def calculate_spectrum(payload):
         Tgas=payload.tgas,
         Tvib=payload.tvib,
         Trot=payload.trot,
-        path_length=payload.path_length*eval(payload. pathLength_units),
+        path_length=payload.path_length*eval(payload. path_length_units),
         export_lines=False,
         wstep="auto",
         databank=payload.database,

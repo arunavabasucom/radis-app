@@ -162,6 +162,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setLoading(false);
         const rawResponse = await axios({
           url: module.apiEndpoint + `download-spectrum`,
+
           method: "POST",
           responseType: "blob",
           data: data,
