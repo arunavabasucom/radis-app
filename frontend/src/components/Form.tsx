@@ -19,9 +19,9 @@ import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
-import { DownloadButton } from "./DownloadButton";
+import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
-
+import { DownloadTxtButton } from "./DownloadTxtButton";
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -186,6 +186,37 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setDisableDownloadButton(false);
         setProgress(100);
       }
+      if (endpoint === "download-txt") {
+        setProgress(30);
+        setLoading(false);
+        const rawResponse = await axios({
+          url: module.apiEndpoint + `download-txt`,
+          method: "POST",
+          responseType: "blob",
+          data: data,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+        );
+        document.body.appendChild(link);
+        link.click();
+        setDisableDownloadButton(false);
+        const response = await rawResponse.data;
+        if (response.error) {
+          handleBadResponse(response.error);
+        } else {
+          setDisableDownloadButton(false);
+        }
+        setDisableDownloadButton(false);
+        setProgress(100);
+      }
     });
   };
 
@@ -325,10 +356,18 @@ export const Form: React.FunctionComponent<FormProps> = ({
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <DownloadButton
+          <DownloadSpecButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
               onSubmit(data, `download-spectrum`);
+            })}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <DownloadTxtButton
+            disabled={disableDownloadButton}
+            onClick={handleSubmit((data) => {
+              onSubmit(data, `download-txt`);
             })}
           />
         </Grid>
