@@ -20,7 +20,7 @@ export interface PlotSettings {
   units: string;
 }
 
-export interface Spectra {
+export interface Spectrum {
   database: string;
   tgas: number;
   trot?: number;

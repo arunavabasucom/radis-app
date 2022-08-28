@@ -1,12 +1,12 @@
 import React from "react";
 import Plotly from "react-plotly.js";
 import { LayoutAxis } from "plotly.js";
-import { PlotSettings, Spectra } from "../constants";
+import { PlotSettings, Spectrum } from "../constants";
 import { addSubscriptsToMolecule } from "../modules/molecule-subscripts";
 import { Species } from "./types";
 
 export interface PlotProps {
-  spectrum: Spectra[];
+  spectrum: Spectrum[];
   plotSettings: PlotSettings;
 }
 
@@ -89,7 +89,7 @@ export const Plot_: React.FC<PlotProps> = ({
     },
   ];
 
-  const formatSpectraName = ({
+  const formatSpectrumName = ({
     database,
     tgas,
     trot,
@@ -126,7 +126,7 @@ export const Plot_: React.FC<PlotProps> = ({
           y,
           type: "scatter",
           marker: { color: plotColors[index % plotColors.length] },
-          name: formatSpectraName({
+          name: formatSpectrumName({
             database,
             species,
             tgas,
@@ -139,7 +139,7 @@ export const Plot_: React.FC<PlotProps> = ({
       layout={{
         width: 800,
         height: 600,
-        title: "Spectrum",
+        title: "Spectra",
         font: { family: "Roboto", color: "#000" },
         xaxis: {
           autorange: true,

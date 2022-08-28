@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
-import { PlotSettings, Spectra } from "../constants";
+import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
@@ -34,8 +34,8 @@ interface FormProps {
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
-  spectrum: Spectra[];
-  setSpectrum: React.Dispatch<React.SetStateAction<Spectra[]>>;
+  spectrum: Spectrum[];
+  setSpectra: React.Dispatch<React.SetStateAction<Spectrum[]>>;
 }
 
 export const Form: React.FunctionComponent<FormProps> = ({
@@ -44,7 +44,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   setLoading,
   setProgress,
   spectrum,
-  setSpectrum,
+  setSpectra,
 }) => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [showNonEquilibriumSwitch, setShowNonEquilibriumSwitch] =
@@ -87,7 +87,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const onSubmit = async (
     data: FormValues,
     endpoint: string,
-    appendSpectra = false
+    appendSpectrum = false
   ): Promise<void> => {
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
@@ -128,8 +128,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
             handleBadResponse(response.error);
             setDisableDownloadButton(true);
           } else {
-            setSpectrum([
-              ...(appendSpectra ? spectrum : []),
+            setSpectra([
+              ...(appendSpectrum ? spectrum : []),
               {
                 species: data.species.map((s) => ({ ...s })),
                 database: data.database,
