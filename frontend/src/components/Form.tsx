@@ -56,7 +56,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
   const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { dirtyFields },
+  } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
     resolver: yupResolver(formSchema),
   });
@@ -82,6 +88,17 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
     setDisableAddToPlotButton(true);
   }, [modeWatch]);
+  //if spectrum data more than 1 than we disabble the add to plot button if user interact with wavelength unit field
+  const WaveLengthUnitIsDirtyField = dirtyFields.wavelength_units;
+  React.useEffect(() => {
+    if (spectra.length < 1) {
+      if (dirtyFields.wavelength_units === true) {
+        setDisableAddToPlotButton(true);
+      } else {
+        setDisableAddToPlotButton(false);
+      }
+    }
+  }, [WaveLengthUnitIsDirtyField]);
 
   const handleBadResponse = (message: string) => {
     setError(message);
