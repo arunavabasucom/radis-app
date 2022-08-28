@@ -91,7 +91,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   //if spectrum data more than 1 than we disabble the add to plot button if user interact with wavelength unit field
   const WaveLengthUnitIsDirtyField = dirtyFields.wavelength_units;
   React.useEffect(() => {
-    if (spectra.length < 1) {
+    if (spectra.length > 0) {
       if (dirtyFields.wavelength_units === true) {
         setDisableAddToPlotButton(true);
       } else {
