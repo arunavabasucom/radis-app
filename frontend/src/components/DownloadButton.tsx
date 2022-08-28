@@ -11,10 +11,10 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   onClick,
 }) => (
   <Button
+    fullWidth
     id="download-button"
     disabled={disabled}
-    variant="contained"
-    color="primary"
+    variant="outlined"
     onClick={onClick}
   >
     Download

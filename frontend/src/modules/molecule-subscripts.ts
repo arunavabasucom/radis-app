@@ -1,13 +1,13 @@
 const subscripts = "₁₂₃₄₅₆₇₈₉".split("");
 
-const addSubscriptsToMolecule = (molecule: string): string => {
+export const addSubscriptsToMolecule = (molecule: string): string => {
   return molecule
     .split("")
     .map((char) => (/^\d+$/.test(char) ? subscripts[parseInt(char) - 1] : char))
     .join("");
 };
 
-const removeSubscriptsFromMolecule = (molecule: string): string => {
+export const removeSubscriptsFromMolecule = (molecule: string): string => {
   return molecule
     .split("")
     .map((char) =>
@@ -17,5 +17,3 @@ const removeSubscriptsFromMolecule = (molecule: string): string => {
     )
     .join("");
 };
-
-export { addSubscriptsToMolecule, removeSubscriptsFromMolecule };
