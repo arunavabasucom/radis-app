@@ -1,11 +1,5 @@
 import { Species } from "./components/types";
 
-export interface CalcSpectrumResponseData {
-  x: number[];
-  y: number[];
-  units: string;
-}
-
 export const palette = {
   primary: {
     light: "#6573c3",
@@ -17,13 +11,22 @@ export const palette = {
     light: "#f73378",
     main: "#f50057",
     dark: "#ab003c",
-    contrastText: "#000",
+    contrastText: "#fff",
   },
 };
 
-export interface PlotData {
-  species: Species[];
-  min_wavenumber_range: number;
-  max_wavenumber_range: number;
+export interface PlotSettings {
   mode: string;
+  units: string;
+}
+
+export interface Spectrum {
+  database: string;
+  tgas: number;
+  trot?: number;
+  tvib?: number;
+  pressure: number;
+  species: Species[];
+  x: number[];
+  y: number[];
 }

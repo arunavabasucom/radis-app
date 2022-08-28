@@ -5,7 +5,7 @@ import { Control, FieldError } from "react-hook-form";
 import {
   addSubscriptsToMolecule,
   removeSubscriptsFromMolecule,
-} from "../../../utils";
+} from "../../../modules/molecule-subscripts";
 import "./index.css";
 import { Database, FormValues } from "../../types";
 import {

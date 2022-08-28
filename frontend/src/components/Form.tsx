@@ -5,8 +5,9 @@ import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { PlotData, CalcSpectrumResponseData } from "../constants";
-import { formSchema } from "../modules/formSchema";
+import Button from "@mui/material/Button";
+import { PlotSettings, Spectrum } from "../constants";
+import { formSchema } from "../modules/form-schema";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
@@ -28,21 +29,23 @@ export interface Response<T> {
 }
 
 interface FormProps {
-  setPlotData: React.Dispatch<React.SetStateAction<PlotData | undefined>>;
+  setPlotSettings: React.Dispatch<
+    React.SetStateAction<PlotSettings | undefined>
+  >;
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
-  setCalcSpectrumResponse: React.Dispatch<
-    React.SetStateAction<Response<CalcSpectrumResponseData> | undefined>
-  >;
+  spectra: Spectrum[];
+  setSpectra: React.Dispatch<React.SetStateAction<Spectrum[]>>;
 }
 
 export const Form: React.FunctionComponent<FormProps> = ({
-  setPlotData,
+  setPlotSettings,
   setError,
   setLoading,
   setProgress,
-  setCalcSpectrumResponse,
+  spectra,
+  setSpectra,
 }) => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
   const [showNonEquilibriumSwitch, setShowNonEquilibriumSwitch] =
@@ -50,6 +53,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
   const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
+  const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
 
   const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
@@ -57,7 +61,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
   });
 
   const databaseWatch = watch("database");
-  const modeWatch = watch("mode");
   React.useEffect(() => {
     if (databaseWatch === Database.GEISA) {
       setIsNonEquilibrium(false);
@@ -65,26 +68,27 @@ export const Form: React.FunctionComponent<FormProps> = ({
     } else {
       setShowNonEquilibriumSwitch(true);
     }
+  }, [databaseWatch]);
 
+  const modeWatch = watch("mode");
+  React.useEffect(() => {
     if (modeWatch === "absorbance") {
       setUseSimulateSlitFunction(false);
-    } else {
-      setUseSimulateSlitFunction(true);
-    }
-    if (modeWatch === "absorbance") {
       setValue("simulate_slit", undefined);
     } else {
+      setUseSimulateSlitFunction(true);
       setValue("simulate_slit", 5);
     }
-  }, [databaseWatch, modeWatch]);
+    setDisableAddToPlotButton(true);
+  }, [modeWatch]);
 
   const handleBadResponse = (message: string) => {
-    setCalcSpectrumResponse(undefined);
     setError(message);
   };
   const onSubmit = async (
     data: FormValues,
-    endpoint: string
+    endpoint: string,
+    appendSpectrum = false
   ): Promise<void> => {
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
@@ -100,12 +104,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
-    setPlotData({
-      max_wavenumber_range: data.max_wavenumber_range,
-      min_wavenumber_range: data.min_wavenumber_range,
-      mode: data.mode,
-      species: data.species,
-    });
 
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
       if (endpoint === "calculate-spectrum") {
@@ -131,7 +129,25 @@ export const Form: React.FunctionComponent<FormProps> = ({
             handleBadResponse(response.error);
             setDisableDownloadButton(true);
           } else {
-            setCalcSpectrumResponse(response);
+            setSpectra([
+              ...(appendSpectrum ? spectra : []),
+              {
+                species: data.species.map((s) => ({ ...s })),
+                database: data.database,
+                tgas: data.tgas,
+                trot: data.trot,
+                tvib: data.tvib,
+                pressure: data.pressure,
+                ...response.data,
+              },
+            ]);
+            setDisableAddToPlotButton(false);
+            setPlotSettings({
+              mode: data.mode,
+              units: data.mode.startsWith("absorbance")
+                ? "-ln(I/I0)"
+                : response.data.units,
+            });
             setDisableDownloadButton(false);
           }
         }
@@ -311,9 +327,21 @@ export const Form: React.FunctionComponent<FormProps> = ({
             <UseNonEquilibriumCalculationsSwitch />
           </Grid>
         )}
-
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <CalcSpectrumButton />
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            fullWidth
+            color="secondary"
+            variant="contained"
+            disabled={disableAddToPlotButton}
+            onClick={handleSubmit((data) =>
+              onSubmit(data, `calculate-spectrum`, true)
+            )}
+          >
+            Add to plot
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <DownloadButton
