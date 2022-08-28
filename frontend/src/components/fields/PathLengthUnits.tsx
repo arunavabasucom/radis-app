@@ -5,15 +5,15 @@ import Select from "@mui/material/Select";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 
-interface DatabaseProps {
+interface PathLengthUnitsProps {
   control: Control<FormValues>;
 }
 
-export const PathLengthUn: React.FC<DatabaseProps> = ({ control }) => {
+export const PathLengthUnit: React.FC<PathLengthUnitsProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <Controller
-        name="pathLength_units"
+        name="path_length_units"
         defaultValue="u.cm"
         control={control}
         render={({ field, formState }) => (

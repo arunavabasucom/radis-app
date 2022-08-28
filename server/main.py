@@ -50,7 +50,7 @@ class Payload(BaseModel):
     database: Literal["hitran", "geisa", "hitemp"]
     wavelength_units: Literal["1/u.cm", "u.nm"]
     pressure_units: Literal["u.bar", "u.mbar", "u.atm", "u.torr", "u.mTorr", "u.Pa"]
-    pathLength_units: Literal["u.cm", "u.m", "u.km"]
+    path_length_units: Literal["u.cm", "u.m", "u.km"]
 
 
 # calculating the spectrum return back the spectrum

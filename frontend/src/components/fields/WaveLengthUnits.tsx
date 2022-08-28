@@ -10,12 +10,12 @@ interface WaveLengthUnProps {
   control: Control<FormValues>;
 }
 
-export const WaveLengthUn: React.FC<WaveLengthUnProps> = ({ control }) => {
+export const WaveLengthUnit: React.FC<WaveLengthUnProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <Controller
         name="wavelength_units"
-        defaultValue="cm-1"
+        defaultValue="1/u.cm"
         control={control}
         render={({ field, formState }) => (
           <Select
@@ -30,7 +30,7 @@ export const WaveLengthUn: React.FC<WaveLengthUnProps> = ({ control }) => {
             style={{ color: "gray", marginTop: "30px" }}
           >
             <MenuItem value={"1/u.cm"}>cm-1</MenuItem>
-            <MenuItem value={"nm"}>nm</MenuItem>
+            <MenuItem value={"u.nm"}>nm</MenuItem>
           </Select>
         )}
       />

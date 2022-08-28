@@ -21,8 +21,9 @@ import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
 import { DownloadButton } from "./DownloadButton";
 import { Species } from "./fields/Species/Species";
-import { PressureUn } from "./fields/PressureUnits";
-import { PathLengthUn } from "./fields/PathLengthUnits";
+import { PressureUnit } from "./fields/PressureUnits";
+import { PathLengthUnit } from "./fields/PathLengthUnits";
+import { WaveLengthUnit } from "./fields/WaveLengthUnits";
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -100,7 +101,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
 
     const molecules = data.species.map(({ molecule }) => molecule).join("_");
-
+    console.log(data);
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
@@ -251,13 +252,16 @@ export const Form: React.FunctionComponent<FormProps> = ({
         <Grid item xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={9}>
           <WavenumberRangeSlider
             minRange={500}
             maxRange={10000}
             control={control}
             setValue={setValue}
           />
+        </Grid>
+        <Grid item sm={3} lg={3}>
+          <WaveLengthUnit control={control} />
         </Grid>
 
         <Grid item sm={8} lg={4}>
@@ -279,7 +283,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           <Pressure control={control} />
         </Grid>
         <Grid item sm={3} lg={3}>
-          <PressureUn control={control} />
+          <PressureUnit control={control} />
         </Grid>
         {isNonEquilibrium ? (
           <>
@@ -287,7 +291,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
               <PathLength control={control} />
             </Grid>
             <Grid item sm={3} lg={3}>
-              <PathLengthUn control={control} />
+              <PathLengthUnit control={control} />
             </Grid>
           </>
         ) : (
@@ -296,7 +300,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
               <PathLength control={control} />
             </Grid>
             <Grid item sm={3} lg={3}>
-              <PathLengthUn control={control} />
+              <PathLengthUnit control={control} />
             </Grid>
           </>
         )}

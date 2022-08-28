@@ -1,16 +1,15 @@
 import React from "react";
 import FormControl from "@mui/material/FormControl";
-
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 
-interface PressureUnProps {
+interface PressureUnitsProps {
   control: Control<FormValues>;
 }
 
-export const PressureUn: React.FC<PressureUnProps> = ({ control }) => {
+export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
   return (
     <FormControl fullWidth>
       <Controller
