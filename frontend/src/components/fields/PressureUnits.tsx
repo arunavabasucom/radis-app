@@ -30,7 +30,7 @@ export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
           >
             <MenuItem value={"u.bar"}>bar</MenuItem>
             <MenuItem value={"u.mbar"}>mbar</MenuItem>
-            <MenuItem value={"u.atm"}>atm</MenuItem>
+            <MenuItem value={"cds.atm"}>atm</MenuItem>
             <MenuItem value={"u.torr"}>torr</MenuItem>
             <MenuItem value={"u.mtorr"}>mTorr</MenuItem>
             <MenuItem value={"u.Pa"}>Pa</MenuItem>

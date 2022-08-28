@@ -2,6 +2,7 @@ import os
 import radis
 import numpy as np
 import astropy.units as u
+from astropy.units import cds
 from typing import List, Optional
 from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
@@ -49,7 +50,7 @@ class Payload(BaseModel):
     ]
     database: Literal["hitran", "geisa", "hitemp"]
     wavelength_units: Literal["1/u.cm", "u.nm"]
-    pressure_units: Literal["u.bar", "u.mbar", "u.atm", "u.torr", "u.mTorr", "u.Pa"]
+    pressure_units: Literal["u.bar", "u.mbar", "cds.atm", "u.torr", "u.mTorr", "u.Pa"]
     path_length_units: Literal["u.cm", "u.m", "u.km"]
 
 
