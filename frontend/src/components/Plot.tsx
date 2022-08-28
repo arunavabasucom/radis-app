@@ -6,7 +6,7 @@ import { addSubscriptsToMolecule } from "../modules/molecule-subscripts";
 import { Species } from "./types";
 
 export interface PlotProps {
-  spectrum: Spectrum[];
+  spectra: Spectrum[];
   plotSettings: PlotSettings;
 }
 
@@ -27,7 +27,7 @@ const plotColors = [
 ];
 
 export const Plot_: React.FC<PlotProps> = ({
-  spectrum,
+  spectra,
   plotSettings: { mode, units },
 }) => {
   let modeLabel = "";
@@ -120,7 +120,7 @@ export const Plot_: React.FC<PlotProps> = ({
   return (
     <Plotly
       className="Plot"
-      data={spectrum.map(
+      data={spectra.map(
         ({ x, y, species, database, tgas, trot, tvib, pressure }, index) => ({
           x,
           y,
@@ -139,7 +139,7 @@ export const Plot_: React.FC<PlotProps> = ({
       layout={{
         width: 800,
         height: 600,
-        title: "Spectra",
+        title: spectra.length === 1 ? "Spectrum" : "Spectra",
         font: { family: "Roboto", color: "#000" },
         xaxis: {
           autorange: true,

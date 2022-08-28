@@ -34,7 +34,7 @@ interface FormProps {
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
-  spectrum: Spectrum[];
+  spectra: Spectrum[];
   setSpectra: React.Dispatch<React.SetStateAction<Spectrum[]>>;
 }
 
@@ -43,7 +43,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   setError,
   setLoading,
   setProgress,
-  spectrum,
+  spectra,
   setSpectra,
 }) => {
   const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
@@ -129,7 +129,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             setDisableDownloadButton(true);
           } else {
             setSpectra([
-              ...(appendSpectrum ? spectrum : []),
+              ...(appendSpectrum ? spectra : []),
               {
                 species: data.species.map((s) => ({ ...s })),
                 database: data.database,

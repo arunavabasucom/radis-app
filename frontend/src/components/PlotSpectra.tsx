@@ -14,7 +14,7 @@ export const PlotSpectra: React.FC = () => {
     undefined
   );
   const [progress, setProgress] = useState(0); //control the progress bar
-  const [spectrum, setSpectra] = useState<Spectrum[]>([]);
+  const [spectra, setSpectra] = useState<Spectrum[]>([]);
   return (
     <>
       <LoadingBar
@@ -30,7 +30,7 @@ export const PlotSpectra: React.FC = () => {
             setError={setError}
             setLoading={setLoading}
             setProgress={setProgress}
-            spectrum={spectrum}
+            spectra={spectra}
             setSpectra={setSpectra}
           />
         </Grid>
@@ -47,9 +47,9 @@ export const PlotSpectra: React.FC = () => {
               <CircularProgress />
             </div>
           ) : (
-            spectrum.length > 0 &&
+            spectra.length > 0 &&
             plotSettings && (
-              <Plot spectrum={spectrum} plotSettings={plotSettings} />
+              <Plot spectra={spectra} plotSettings={plotSettings} />
             )
           )}
         </Grid>
