@@ -56,7 +56,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
   const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
 
-  const [simulateslitUnit, setSimulateslitUnit] = useState(false);
+  const [simulateSlitUnit, setSimulateSlitUnit] = useState(false);
   const {
     control,
     handleSubmit,
@@ -109,9 +109,9 @@ export const Form: React.FunctionComponent<FormProps> = ({
   console.log(wavelengthUnitWatch);
   React.useEffect(() => {
     if (wavelengthUnitWatch === "u.nm") {
-      setSimulateslitUnit(true);
+      setSimulateSlitUnit(true);
     } else {
-      setSimulateslitUnit(false);
+      setSimulateSlitUnit(false);
     }
   }, [wavelengthUnitWatch, spectra.length]);
   const handleBadResponse = (message: string) => {
@@ -287,7 +287,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
         <Grid item xs={9}>
           <WavenumberRangeSlider
-            isUnitChanged={simulateslitUnit}
+            isUnitChanged={simulateSlitUnit}
             minRange={500}
             maxRange={10000}
             control={control}
@@ -358,7 +358,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           useSlit ? (
             <Grid item xs={12}>
               <SimulateSlit
-                isUnitChabgeable={simulateslitUnit}
+                isUnitChangeable={simulateSlitUnit}
                 control={control}
               />
             </Grid>

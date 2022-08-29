@@ -5,11 +5,11 @@ import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 interface SimulateSlitProps {
   control: Control<FormValues>;
-  isUnitChabgeable: boolean;
+  isUnitChangeable: boolean;
 }
 export const SimulateSlit: React.FC<SimulateSlitProps> = ({
   control,
-  isUnitChabgeable,
+  isUnitChangeable,
 }) => (
   <Controller
     render={({ field, formState }) => (
@@ -24,7 +24,7 @@ export const SimulateSlit: React.FC<SimulateSlitProps> = ({
         value={field.value}
         error={!!formState.errors?.simulate_slit}
         InputProps={{
-          endAdornment: isUnitChabgeable ? (
+          endAdornment: isUnitChangeable ? (
             <InputAdornment position="end">nm</InputAdornment>
           ) : (
             <InputAdornment position="end">cm-1</InputAdornment>
