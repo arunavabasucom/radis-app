@@ -5,8 +5,12 @@ import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 interface SimulateSlitProps {
   control: Control<FormValues>;
+  isUnitChabgeable: boolean;
 }
-export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({
+  control,
+  isUnitChabgeable,
+}) => (
   <Controller
     render={({ field, formState }) => (
       <TextField
@@ -20,7 +24,11 @@ export const SimulateSlit: React.FC<SimulateSlitProps> = ({ control }) => (
         value={field.value}
         error={!!formState.errors?.simulate_slit}
         InputProps={{
-          endAdornment: <InputAdornment position="end">nm</InputAdornment>,
+          endAdornment: isUnitChabgeable ? (
+            <InputAdornment position="end">nm</InputAdornment>
+          ) : (
+            <InputAdornment position="end">cm-1</InputAdornment>
+          ),
         }}
         helperText={formState.errors?.simulate_slit?.message}
         onKeyPress={(event) => {

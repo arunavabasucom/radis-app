@@ -26,6 +26,7 @@ export interface Spectrum {
   trot?: number;
   tvib?: number;
   pressure: number;
+  pressure_units: string;
   species: Species[];
   x: number[];
   y: number[];

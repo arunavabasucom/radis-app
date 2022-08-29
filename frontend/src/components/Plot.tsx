@@ -96,12 +96,14 @@ export const Plot_: React.FC<PlotProps> = ({
     tvib,
     pressure,
     species,
+    pressure_units,
   }: {
     database: string;
     tgas: number;
     trot?: number;
     tvib?: number;
     pressure: number;
+    pressure_units: string;
     species: Species[];
   }) => {
     const speciesFormatted = species
@@ -110,7 +112,7 @@ export const Plot_: React.FC<PlotProps> = ({
           `${addSubscriptsToMolecule(molecule)} (χ=${mole_fraction})`
       )
       .join(", ");
-    let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} bar, Tgas=${tgas} K`;
+    let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} ${pressure_units}, Tgas=${tgas} K`;
     if (trot) {
       formatted += `, Trot=${trot} K, Tvib=${tvib} K`;
     }
@@ -121,7 +123,20 @@ export const Plot_: React.FC<PlotProps> = ({
     <Plotly
       className="Plot"
       data={spectra.map(
-        ({ x, y, species, database, tgas, trot, tvib, pressure }, index) => ({
+        (
+          {
+            x,
+            y,
+            species,
+            database,
+            tgas,
+            trot,
+            tvib,
+            pressure,
+            pressure_units,
+          },
+          index
+        ) => ({
           x,
           y,
           type: "scatter",
@@ -133,6 +148,7 @@ export const Plot_: React.FC<PlotProps> = ({
             trot,
             tvib,
             pressure,
+            pressure_units,
           }),
         })
       )}

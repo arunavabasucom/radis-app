@@ -56,6 +56,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
   const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
 
+  const [simulateslitUnit, setSimulateslitUnit] = useState(false);
   const {
     control,
     handleSubmit,
@@ -88,8 +89,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
     setDisableAddToPlotButton(true);
   }, [modeWatch]);
+
   //if spectrum data more than 1 than we disabble the add to plot button if user interact with wavelength unit field
   const WaveLengthUnitIsDirtyField = dirtyFields.wavelength_units;
+  const wavelengthUnitWatch = watch("wavelength_units");
   React.useEffect(() => {
     if (spectra.length > 0) {
       if (dirtyFields.wavelength_units === true) {
@@ -98,8 +101,19 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setDisableAddToPlotButton(false);
       }
     }
-  }, [WaveLengthUnitIsDirtyField]);
+    if (wavelengthUnitWatch === "1/u.cm") {
+      setDisableDownloadButton(true);
+    }
+  }, [WaveLengthUnitIsDirtyField, spectra.length, wavelengthUnitWatch]);
 
+  console.log(wavelengthUnitWatch);
+  React.useEffect(() => {
+    if (wavelengthUnitWatch === "u.nm") {
+      setSimulateslitUnit(true);
+    } else {
+      setSimulateslitUnit(false);
+    }
+  }, [wavelengthUnitWatch, spectra.length]);
   const handleBadResponse = (message: string) => {
     setError(message);
   };
@@ -156,6 +170,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
                 trot: data.trot,
                 tvib: data.tvib,
                 pressure: data.pressure,
+                pressure_units: data.pressure_units,
                 ...response.data,
               },
             ]);
@@ -272,12 +287,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
         <Grid item xs={9}>
           <WavenumberRangeSlider
+            isUnitChanged={simulateslitUnit}
             minRange={500}
             maxRange={10000}
             control={control}
             setValue={setValue}
           />
         </Grid>
+
         <Grid item sm={3} lg={3}>
           <WaveLengthUnit control={control} />
         </Grid>
@@ -340,7 +357,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
         {useSimulateSlitFunction ? (
           useSlit ? (
             <Grid item xs={12}>
-              <SimulateSlit control={control} />
+              <SimulateSlit
+                isUnitChabgeable={simulateslitUnit}
+                control={control}
+              />
             </Grid>
           ) : null
         ) : null}

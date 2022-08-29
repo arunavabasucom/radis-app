@@ -12,6 +12,7 @@ interface WavelengthRangeSliderProps {
   maxRange: number;
   control: Control<FormValues>;
   setValue: UseFormSetValue<FormValues>;
+  isUnitChanged: boolean;
 }
 const useStyles = makeStyles({
   input: {
@@ -23,6 +24,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   maxRange,
   control,
   setValue,
+  isUnitChanged,
 }) => {
   const classes = useStyles();
   const [lowerRange, setLowerRange] = React.useState<number | "">(1900);
@@ -77,7 +79,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   return (
     <div>
       <Typography id="input-slider" gutterBottom>
-        Wavenumber range (cm⁻¹)
+        {isUnitChanged ? "Wavenumber length (nm)" : " Wavenumber range (cm-1)"}
       </Typography>
       <Grid container spacing={2} alignItems="center">
         <Grid item>
