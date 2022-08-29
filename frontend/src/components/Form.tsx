@@ -155,11 +155,17 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setLoading(false);
       }
 
-      if (endpoint === "download-spectrum") {
+      if (endpoint === "download-spectrum" || endpoint === "download-txt") {
         setProgress(30);
         setLoading(false);
+        let serverFullUrl: string;
+        if (endpoint === "download-spectrum") {
+          serverFullUrl = module.apiEndpoint + `download-spectrum`;
+        } else {
+          serverFullUrl = module.apiEndpoint + `download-txt`;
+        }
         const rawResponse = await axios({
-          url: module.apiEndpoint + `download-spectrum`,
+          url: serverFullUrl,
 
           method: "POST",
           responseType: "blob",
@@ -168,44 +174,23 @@ export const Form: React.FunctionComponent<FormProps> = ({
             "Content-Type": "application/json",
           },
         });
+
         const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute(
-          "download",
-          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
-        );
-        document.body.appendChild(link);
-        link.click();
-        setDisableDownloadButton(false);
-        const response = await rawResponse.data;
-        if (response.error) {
-          handleBadResponse(response.error);
-        } else {
-          setDisableDownloadButton(false);
+        if (endpoint === "download-spectrum") {
+          link.setAttribute(
+            "download",
+            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
+          );
         }
-        setDisableDownloadButton(false);
-        setProgress(100);
-      }
-      if (endpoint === "download-txt") {
-        setProgress(30);
-        setLoading(false);
-        const rawResponse = await axios({
-          url: module.apiEndpoint + `download-txt`,
-          method: "POST",
-          responseType: "blob",
-          data: data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
-        );
+        if (endpoint === "download-txt") {
+          link.setAttribute(
+            "download",
+            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+          );
+        }
+
         document.body.appendChild(link);
         link.click();
         setDisableDownloadButton(false);
