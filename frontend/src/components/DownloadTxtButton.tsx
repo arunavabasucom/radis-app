@@ -1,12 +1,12 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-interface DownloadButtonProps {
+interface DownloadTxtButtonProps {
   disabled: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const DownloadButton: React.FC<DownloadButtonProps> = ({
+export const DownloadTxtButton: React.FC<DownloadTxtButtonProps> = ({
   disabled = false,
   onClick,
 }) => (
@@ -17,6 +17,6 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
     variant="outlined"
     onClick={onClick}
   >
-    Download
+    Download TXT
   </Button>
 );
