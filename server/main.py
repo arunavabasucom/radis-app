@@ -75,15 +75,16 @@ def calculate_spectrum(payload):
 
 # create the folder in server for better organization
 DOWNLOADED_SPECFILES_DIRECTORY = "DOWNLOADED_SPECFILES"
+DOWNLOADED_TXT_DIRECTORY = "DOWNLOADED_TXT"
 
 
-def create_download_directory():
+def create_download_directory(FILE_NAME):
 
-    if os.path.exists(DOWNLOADED_SPECFILES_DIRECTORY):
+    if os.path.exists(FILE_NAME):
         print(" >> Folder already exists ")
     else:
         print(">> creating DOWNLOADED_SPECFILES folder")
-        os.mkdir(DOWNLOADED_SPECFILES_DIRECTORY)
+        os.mkdir(FILE_NAME)
 
 
 # delete the file after giving the file response back to the user
@@ -147,7 +148,7 @@ async def calc_spectrum(payload: Payload):
 async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
 
     try:
-        create_download_directory()
+        create_download_directory(DOWNLOADED_SPECFILES_DIRECTORY)
         spectrum = calculate_spectrum(payload)
         file_name_spec = spectrum.get_name()
         file_name = f"{file_name_spec}.spec"
@@ -163,6 +164,35 @@ async def download_spec(payload: Payload, background_tasks: BackgroundTasks):
         return {"error": str(exc)}
     else:
         spectrum.store(file_path, compress=True, if_exists_then="replace")
+        # running as a background task to delete the .spec file after giving the file response back
+        background_tasks.add_task(delete_spec, file_path)
+        return FileResponse(
+            file_path, media_type="application/octet-stream", filename=file_name
+        )
+
+#to return back the csv response to the frontend
+@app.post("/download-txt")
+async def download_txt(payload: Payload, background_tasks: BackgroundTasks):
+    try:
+        create_download_directory(DOWNLOADED_TXT_DIRECTORY)
+        spectrum = calculate_spectrum(payload)
+        file_name_txt = spectrum.get_name()
+        file_name = f"{file_name_txt}.csv"
+        file_path = f"{DOWNLOADED_TXT_DIRECTORY}/{file_name}"
+        if payload.use_simulate_slit is True:
+            print(" >> Applying simulate slit")
+            spectrum.apply_slit(payload.simulate_slit, "nm")
+    # returning the error response
+    except radis.misc.warning.EmptyDatabaseError:
+        return {"error": "No line in the specified wavenumber range"}
+    except Exception as exc:
+        print("Error", exc)
+        return {"error": str(exc)}
+    else:
+        
+        wunit = spectrum.get_waveunit()
+        iunit = "default"
+        spectrum.savetxt(file_path,payload.mode,wunit=wunit,Iunit=iunit)
         # running as a background task to delete the .spec file after giving the file response back
         background_tasks.add_task(delete_spec, file_path)
         return FileResponse(

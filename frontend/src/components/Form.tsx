@@ -19,9 +19,9 @@ import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
-import { DownloadButton } from "./DownloadButton";
+import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
-
+import { DownloadTxtButton } from "./DownloadTxtButton";
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -155,11 +155,18 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setLoading(false);
       }
 
-      if (endpoint === "download-spectrum") {
+      if (endpoint === "download-spectrum" || endpoint === "download-txt") {
         setProgress(30);
         setLoading(false);
+        let serverFullUrl: string;
+        if (endpoint === "download-spectrum") {
+          serverFullUrl = module.apiEndpoint + `download-spectrum`;
+        } else {
+          serverFullUrl = module.apiEndpoint + `download-txt`;
+        }
         const rawResponse = await axios({
-          url: module.apiEndpoint + `download-spectrum`,
+          url: serverFullUrl,
+
           method: "POST",
           responseType: "blob",
           data: data,
@@ -167,13 +174,23 @@ export const Form: React.FunctionComponent<FormProps> = ({
             "Content-Type": "application/json",
           },
         });
+
         const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute(
-          "download",
-          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
-        );
+        if (endpoint === "download-spectrum") {
+          link.setAttribute(
+            "download",
+            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
+          );
+        }
+        if (endpoint === "download-txt") {
+          link.setAttribute(
+            "download",
+            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+          );
+        }
+
         document.body.appendChild(link);
         link.click();
         setDisableDownloadButton(false);
@@ -325,10 +342,18 @@ export const Form: React.FunctionComponent<FormProps> = ({
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <DownloadButton
+          <DownloadSpecButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
               onSubmit(data, `download-spectrum`);
+            })}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <DownloadTxtButton
+            disabled={disableDownloadButton}
+            onClick={handleSubmit((data) => {
+              onSubmit(data, `download-txt`);
             })}
           />
         </Grid>
