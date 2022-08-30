@@ -109,7 +109,7 @@ export const Plot_: React.FC<PlotProps> = ({
     const speciesFormatted = species
       .map(
         ({ molecule, mole_fraction }) =>
-          `${addSubscriptsToMolecule(molecule)} (χ=${mole_fraction})`
+          `${addSubscriptsToMolecule(molecule)} (X=${mole_fraction})`
       )
       .join(", ");
     let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} ${pressure_units}, Tgas=${tgas} K`;
