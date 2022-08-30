@@ -203,10 +203,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           serverFullUrl = module.apiEndpoint + `download-txt`;
         }
         const rawResponse = await axios({
-
           url: serverFullUrl,
-
-
           method: "POST",
           responseType: "blob",
           data: data,
