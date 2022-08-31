@@ -112,6 +112,11 @@ export const Plot_: React.FC<PlotProps> = ({
           `${addSubscriptsToMolecule(molecule)} (X=${mole_fraction})`
       )
       .join(", ");
+    if (pressure_units === "cds.atm") {
+      pressure_units = "atm";
+    } else {
+      pressure_units = pressure_units.substring(2);
+    }
     let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} ${pressure_units}, Tgas=${tgas} K`;
     if (trot) {
       formatted += `, Trot=${trot} K, Tvib=${tvib} K`;
