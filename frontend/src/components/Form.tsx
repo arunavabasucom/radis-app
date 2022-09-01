@@ -175,6 +175,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
                 tvib: data.tvib,
                 pressure: data.pressure,
                 pressure_units: data.pressure_units,
+                wavelength_units: data.wavelength_units,
                 ...response.data,
               },
             ]);
@@ -307,8 +308,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
         <Grid item xs={9}>
           <WavenumberRangeSlider
             isUnitChanged={simulateSlitUnit}
-            minRange={500}
-            maxRange={10000}
+            minRange={simulateSlitUnit ? 1000 : 500}
+            maxRange={simulateSlitUnit ? 20000 : 10000}
             control={control}
             setValue={setValue}
           />

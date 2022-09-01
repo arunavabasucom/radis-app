@@ -27,6 +27,7 @@ export interface Spectrum {
   tvib?: number;
   pressure: number;
   pressure_units: string;
+  wavelength_units: string;
   species: Species[];
   x: number[];
   y: number[];

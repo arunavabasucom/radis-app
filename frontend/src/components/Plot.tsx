@@ -25,7 +25,7 @@ const plotColors = [
   "#e91e63",
   "#673ab7",
 ];
-
+let waveLabel: string; //plot label for x-axis
 export const Plot_: React.FC<PlotProps> = ({
   spectra,
   plotSettings: { mode, units },
@@ -97,6 +97,7 @@ export const Plot_: React.FC<PlotProps> = ({
     pressure,
     species,
     pressure_units,
+    wavelength_units,
   }: {
     database: string;
     tgas: number;
@@ -104,8 +105,14 @@ export const Plot_: React.FC<PlotProps> = ({
     tvib?: number;
     pressure: number;
     pressure_units: string;
+    wavelength_units: string;
     species: Species[];
   }) => {
+    if (wavelength_units === "u.nm") {
+      waveLabel = "Wavelength range (nm)";
+    } else {
+      waveLabel = "Wavelength range (cm⁻¹)";
+    }
     const speciesFormatted = species
       .map(
         ({ molecule, mole_fraction }) =>
@@ -123,7 +130,6 @@ export const Plot_: React.FC<PlotProps> = ({
     }
     return formatted;
   };
-
   return (
     <Plotly
       className="Plot"
@@ -139,6 +145,7 @@ export const Plot_: React.FC<PlotProps> = ({
             tvib,
             pressure,
             pressure_units,
+            wavelength_units,
           },
           index
         ) => ({
@@ -154,6 +161,7 @@ export const Plot_: React.FC<PlotProps> = ({
             tvib,
             pressure,
             pressure_units,
+            wavelength_units,
           }),
         })
       )}
@@ -164,7 +172,7 @@ export const Plot_: React.FC<PlotProps> = ({
         font: { family: "Roboto", color: "#000" },
         xaxis: {
           autorange: true,
-          title: { text: "Wavenumber (cm⁻¹)" },
+          title: { text: waveLabel },
           rangeslider: {
             // TODO: Update typing in DefinitelyTyped
             // @ts-ignore
