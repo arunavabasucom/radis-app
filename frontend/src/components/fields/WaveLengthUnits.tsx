@@ -29,7 +29,7 @@ export const WaveLengthUnit: React.FC<WaveLengthUnProps> = ({ control }) => {
             label="Select"
             style={{ color: "gray", marginTop: "30px" }}
           >
-            <MenuItem value={"1/u.cm"}>cm-1</MenuItem>
+            <MenuItem value={"1/u.cm"}>cm⁻¹</MenuItem>
             <MenuItem value={"u.nm"}>nm</MenuItem>
           </Select>
         )}
