@@ -79,7 +79,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   return (
     <div>
       <Typography id="input-slider" gutterBottom>
-        {isUnitChanged ? " Wavelength range(nm)" : " Wavenumber range(cm-1)"}
+        {isUnitChanged ? " Wavelength range (nm)" : " Wavenumber range (cm-1)"}
       </Typography>
       <Grid container spacing={2} alignItems="center">
         <Grid item>
