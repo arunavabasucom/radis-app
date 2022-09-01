@@ -1,2 +1,2 @@
-radis>=0.13
+radis==0.13.1
 fastapi
