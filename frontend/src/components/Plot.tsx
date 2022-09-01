@@ -25,7 +25,7 @@ const plotColors = [
   "#e91e63",
   "#673ab7",
 ];
-
+let waveLabel: string; //plot label for x-axis
 export const Plot_: React.FC<PlotProps> = ({
   spectra,
   plotSettings: { mode, units },
@@ -96,32 +96,59 @@ export const Plot_: React.FC<PlotProps> = ({
     tvib,
     pressure,
     species,
+    pressure_units,
+    wavelength_units,
   }: {
     database: string;
     tgas: number;
     trot?: number;
     tvib?: number;
     pressure: number;
+    pressure_units: string;
+    wavelength_units: string;
     species: Species[];
   }) => {
+    if (wavelength_units === "u.nm") {
+      waveLabel = "Wavelength range (nm)";
+    } else {
+      waveLabel = "Wavelength range (cm⁻¹)";
+    }
     const speciesFormatted = species
       .map(
         ({ molecule, mole_fraction }) =>
           `${addSubscriptsToMolecule(molecule)} (X=${mole_fraction})`
       )
       .join(", ");
-    let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} bar, Tgas=${tgas} K`;
+    if (pressure_units === "cds.atm") {
+      pressure_units = "atm";
+    } else {
+      pressure_units = pressure_units.substring(2);
+    }
+    let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} ${pressure_units}, Tgas=${tgas} K`;
     if (trot) {
       formatted += `, Trot=${trot} K, Tvib=${tvib} K`;
     }
     return formatted;
   };
-
   return (
     <Plotly
       className="Plot"
       data={spectra.map(
-        ({ x, y, species, database, tgas, trot, tvib, pressure }, index) => ({
+        (
+          {
+            x,
+            y,
+            species,
+            database,
+            tgas,
+            trot,
+            tvib,
+            pressure,
+            pressure_units,
+            wavelength_units,
+          },
+          index
+        ) => ({
           x,
           y,
           type: "scatter",
@@ -133,6 +160,8 @@ export const Plot_: React.FC<PlotProps> = ({
             trot,
             tvib,
             pressure,
+            pressure_units,
+            wavelength_units,
           }),
         })
       )}
@@ -143,7 +172,7 @@ export const Plot_: React.FC<PlotProps> = ({
         font: { family: "Roboto", color: "#000" },
         xaxis: {
           autorange: true,
-          title: { text: "Wavenumber (cm⁻¹)" },
+          title: { text: waveLabel },
           rangeslider: {
             // TODO: Update typing in DefinitelyTyped
             // @ts-ignore

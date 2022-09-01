@@ -21,7 +21,13 @@ import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
+
+import { PressureUnit } from "./fields/PressureUnits";
+import { PathLengthUnit } from "./fields/PathLengthUnits";
+import { WaveLengthUnit } from "./fields/WaveLengthUnits";
+
 import { DownloadTxtButton } from "./DownloadTxtButton";
+
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -54,7 +60,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const [disableDownloadButton, setDisableDownloadButton] = useState(true);
   const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const [simulateSlitUnit, setSimulateSlitUnit] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { dirtyFields },
+  } = useForm<FormValues>({
     defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
     resolver: yupResolver(formSchema),
   });
@@ -81,6 +94,30 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableAddToPlotButton(true);
   }, [modeWatch]);
 
+  //if spectrum data more than 1 than we disabble the add to plot button if user interact with wavelength unit field
+  const WaveLengthUnitIsDirtyField = dirtyFields.wavelength_units;
+  const wavelengthUnitWatch = watch("wavelength_units");
+  React.useEffect(() => {
+    if (spectra.length > 0) {
+      if (dirtyFields.wavelength_units === true) {
+        setDisableAddToPlotButton(true);
+      } else {
+        setDisableAddToPlotButton(false);
+      }
+    }
+    if (wavelengthUnitWatch === "1/u.cm") {
+      setDisableDownloadButton(true);
+    }
+  }, [WaveLengthUnitIsDirtyField, spectra.length, wavelengthUnitWatch]);
+
+  console.log(wavelengthUnitWatch);
+  React.useEffect(() => {
+    if (wavelengthUnitWatch === "u.nm") {
+      setSimulateSlitUnit(true);
+    } else {
+      setSimulateSlitUnit(false);
+    }
+  }, [wavelengthUnitWatch, spectra.length]);
   const handleBadResponse = (message: string) => {
     setError(message);
   };
@@ -99,7 +136,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
 
     const molecules = data.species.map(({ molecule }) => molecule).join("_");
-
+    console.log(data);
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
@@ -137,6 +174,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
                 trot: data.trot,
                 tvib: data.tvib,
                 pressure: data.pressure,
+                pressure_units: data.pressure_units,
+                wavelength_units: data.wavelength_units,
                 ...response.data,
               },
             ]);
@@ -166,7 +205,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
         }
         const rawResponse = await axios({
           url: serverFullUrl,
-
           method: "POST",
           responseType: "blob",
           data: data,
@@ -267,13 +305,18 @@ export const Form: React.FunctionComponent<FormProps> = ({
         <Grid item xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={9}>
           <WavenumberRangeSlider
-            minRange={500}
-            maxRange={10000}
+            isUnitChanged={simulateSlitUnit}
+            minRange={simulateSlitUnit ? 1000 : 500}
+            maxRange={simulateSlitUnit ? 20000 : 10000}
             control={control}
             setValue={setValue}
           />
+        </Grid>
+
+        <Grid item sm={3} lg={3}>
+          <WaveLengthUnit control={control} />
         </Grid>
 
         <Grid item sm={8} lg={4}>
@@ -282,22 +325,40 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={4}>
               <TRot control={control} />
             </Grid>
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={4}>
               <TVib control={control} />
             </Grid>
           </>
         ) : null}
 
-        <Grid item sm={8} lg={5}>
+        <Grid item sm={8} lg={3}>
           <Pressure control={control} />
         </Grid>
-
-        <Grid item sm={8} lg={3}>
-          <PathLength control={control} />
+        <Grid item sm={3} lg={3}>
+          <PressureUnit control={control} />
         </Grid>
+        {isNonEquilibrium ? (
+          <>
+            <Grid item sm={8} lg={3}>
+              <PathLength control={control} />
+            </Grid>
+            <Grid item sm={3} lg={3}>
+              <PathLengthUnit control={control} />
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid item sm={8} lg={7}>
+              <PathLength control={control} />
+            </Grid>
+            <Grid item sm={3} lg={3}>
+              <PathLengthUnit control={control} />
+            </Grid>
+          </>
+        )}
 
         <Grid item xs={12}>
           <Species
@@ -316,7 +377,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
         {useSimulateSlitFunction ? (
           useSlit ? (
             <Grid item xs={12}>
-              <SimulateSlit control={control} />
+              <SimulateSlit
+                isUnitChangeable={simulateSlitUnit}
+                control={control}
+              />
             </Grid>
           ) : null
         ) : null}

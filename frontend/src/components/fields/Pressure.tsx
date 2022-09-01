@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
+
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 interface TGasProps {
@@ -20,9 +20,6 @@ export const Pressure: React.FC<TGasProps> = ({ control }) => (
         value={field.value}
         error={!!formState.errors?.pressure}
         helperText={formState.errors?.pressure?.message as ReactNode}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">bar</InputAdornment>,
-        }}
         inputProps={{
           step: "any",
         }}

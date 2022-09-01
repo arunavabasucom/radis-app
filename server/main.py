@@ -1,6 +1,8 @@
 import os
 import radis
 import numpy as np
+import astropy.units as u
+from astropy.units import cds
 from typing import List, Optional
 from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
@@ -21,6 +23,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # structure of the request
+
+
 class Species(BaseModel):
     molecule: str
     mole_fraction: float
@@ -45,6 +49,9 @@ class Payload(BaseModel):
         "radiance",
     ]
     database: Literal["hitran", "geisa", "hitemp"]
+    wavelength_units: Literal["1/u.cm", "u.nm"]
+    pressure_units: Literal["u.bar", "u.mbar", "cds.atm", "u.torr", "u.mTorr", "u.Pa"]
+    path_length_units: Literal["u.cm", "u.m", "u.km"]
 
 
 # calculating the spectrum return back the spectrum
@@ -52,19 +59,19 @@ def calculate_spectrum(payload):
     print(">> Payload : ")
     print(payload)
     spectrum = radis.calc_spectrum(
-        payload.min_wavenumber_range,
-        payload.max_wavenumber_range,
+        payload.min_wavenumber_range * eval(payload.wavelength_units),
+        payload.max_wavenumber_range * eval(payload.wavelength_units),
         molecule=[species.molecule for species in payload.species],
         mole_fraction={
             species.molecule: species.mole_fraction for species in payload.species
         },
         # TODO: Hard-coding "1,2,3" as the isotopologue for the time-being
         isotope={species.molecule: "1,2,3" for species in payload.species},
-        pressure=payload.pressure,
+        pressure=payload.pressure * eval(payload.pressure_units),
         Tgas=payload.tgas,
         Tvib=payload.tvib,
         Trot=payload.trot,
-        path_length=payload.path_length,
+        path_length=payload.path_length * eval(payload. path_length_units),
         export_lines=False,
         wstep="auto",
         databank=payload.database,
@@ -106,8 +113,12 @@ async def calc_spectrum(payload: Payload):
     try:
         spectrum = calculate_spectrum(payload)
         if payload.use_simulate_slit is True:
+            if(payload.wavelength_units=="1/u.cm"):
+                slit_unit="cm-1"
+            else:
+                slit_unit="nm"
             print("Applying simulate slit")
-            spectrum.apply_slit(payload.simulate_slit, "nm")
+            spectrum.apply_slit(payload.simulate_slit, slit_unit)
 
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}
