@@ -30,7 +30,7 @@ describe("testing tvib field ", () => {
     user.click(button);
     const input = screen.queryByTestId("tvib-testid") as HTMLElement;
     fireEvent.input(input, {
-      target: { value: 10 },
+      target: { value: 100 },
     });
     expect(input).toHaveValue(100);
   });

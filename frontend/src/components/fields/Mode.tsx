@@ -23,6 +23,7 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
+            inputProps={{ "data-testid": "mode-testid" }}
             variant="standard"
             labelId="mode-select-label"
             id="mode-select"

@@ -278,6 +278,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           label="Apply Instrumental Slit Function"
           control={
             <Switch
+              data-testid="slit-switch-testid"
               checked={useSlit}
               onChange={(event, value) => {
                 setUseSlit(event.target.checked);
