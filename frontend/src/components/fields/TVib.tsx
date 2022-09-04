@@ -22,6 +22,7 @@ export const TVib: React.FC<TVibProps> = ({ control }) => (
         InputProps={{
           endAdornment: <InputAdornment position="end">K</InputAdornment>,
         }}
+        inputProps={{ "data-testid": "tvib-testid" }}
         helperText={formState.errors?.tvib?.message as ReactNode}
         onKeyPress={(event) => {
           if (event?.key === "-" || event?.key === "+") {

@@ -22,6 +22,7 @@ export const TRot: React.FC<TRotProps> = ({ control }) => (
         InputProps={{
           endAdornment: <InputAdornment position="end">K</InputAdornment>,
         }}
+        inputProps={{ "data-testid": "trot-testid" }}
         helperText={formState.errors?.trot?.message as ReactNode}
         onKeyPress={(event) => {
           if (event?.key === "-" || event?.key === "+") {

@@ -259,6 +259,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
       label="Use non-equilibrium calculations"
       control={
         <Switch
+          data-testid="equilibrium-switch-testid"
           checked={isNonEquilibrium}
           onChange={(event) => setIsNonEquilibrium(event.target.checked)}
         />
