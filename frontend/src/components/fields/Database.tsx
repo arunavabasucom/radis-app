@@ -24,6 +24,7 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
+            inputProps={{ "data-testid": "database-testid" }}
             variant="standard"
             labelId="database-label"
             id="database-select"

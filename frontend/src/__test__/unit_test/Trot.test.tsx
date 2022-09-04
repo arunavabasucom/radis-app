@@ -11,7 +11,7 @@ describe("testing trot field ", () => {
   });
   test("testing trot rendered and visible if non-equilibrium-switch* is checked", () => {
     render(<App />);
-    const button = screen.getByTestId("equilibrium-switch-testid");
+    const button = screen.getByTestId("non-equilibrium-switch-testid");
     user.click(button);
     const input = screen.queryByTestId("trot-testid") as HTMLElement;
     expect(input).toBeVisible();
@@ -19,14 +19,14 @@ describe("testing trot field ", () => {
   });
   test("testing trot rendering with defaultValue if non-equilibrium-switch* is checked", () => {
     render(<App />);
-    const button = screen.getByTestId("equilibrium-switch-testid");
+    const button = screen.getByTestId("non-equilibrium-switch-testid");
     user.click(button);
     const input = screen.queryByTestId("trot-testid") as HTMLElement;
     expect(input).toHaveValue(300);
   });
   test("testing trot rendered with user* given value if non-equilibrium-switch* is checked", () => {
     render(<App />);
-    const button = screen.getByTestId("equilibrium-switch-testid");
+    const button = screen.getByTestId("non-equilibrium-switch-testid");
     user.click(button);
     const input = screen.queryByTestId("trot-testid") as HTMLElement;
     fireEvent.input(input, {
