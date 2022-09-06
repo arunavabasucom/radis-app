@@ -25,11 +25,25 @@ describe("testing: rendering slit switch based on mode ", () => {
   });
 });
 describe("testing: rendering non-equilibrium switch based on database ", () => {
+  test("testing : when database is  HITRAN*  the non-equilibrium switch is in the DOM", () => {
+    render(<App />);
+    const button = screen.getByTestId("non-equilibrium-switch-testid");
+    const dropdown = screen.getByTestId("database-testid");
+    fireEvent.change(dropdown, { target: { value: TDatabase.HITRAN } });
+    expect(button).toBeInTheDocument();
+  });
   test("testing : when database is  GEISA*  the non-equilibrium switch is not in the DOM", () => {
     render(<App />);
     const button = screen.getByTestId("non-equilibrium-switch-testid");
     const dropdown = screen.getByTestId("database-testid");
     fireEvent.change(dropdown, { target: { value: TDatabase.GEISA } });
     expect(button).not.toBeInTheDocument();
+  });
+  test("testing : when database is  HITEMP*  the non-equilibrium switch is in the DOM", () => {
+    render(<App />);
+    const button = screen.getByTestId("non-equilibrium-switch-testid");
+    const dropdown = screen.getByTestId("database-testid");
+    fireEvent.change(dropdown, { target: { value: TDatabase.HITEMP } });
+    expect(button).toBeInTheDocument();
   });
 });
