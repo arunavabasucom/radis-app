@@ -1,5 +1,7 @@
 ## 🌱 Radis App
 
+   [![Production deployment](https://github.com/suzil/radis-app/actions/workflows/cd.yml/badge.svg)](https://github.com/suzil/radis-app/actions/workflows/cd.yml)
+
 **RADIS app** is a web application for [Radis](https://github.com/radis/radis)  high-resolution infrared molecular spectra. Instead of writing code, this project aims to create an intuitive user interface (UI).
 
 It use radis internally to produce this exquisite spectrum, and the updated version and radis algorithm make it incredibly efficient to compute the millions of lines in only a few minutes.
