@@ -105,9 +105,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
         setDisableAddToPlotButton(false);
       }
     }
-    if (wavelengthUnitWatch === "1/u.cm") {
-      setDisableDownloadButton(true);
-    }
   }, [WaveLengthUnitIsDirtyField, spectra.length, wavelengthUnitWatch]);
 
   console.log(wavelengthUnitWatch);
