@@ -10,8 +10,8 @@ on:
       - main
 
 jobs:
-  test:
-    name: 🧪 Test
+  frontend-test:
+    name: 🧪 frontend-test
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +30,17 @@ jobs:
         run: cd frontend && yarn type-check
       - name: Run tests
         run: cd frontend && yarn test
+  backend-test: 
+    name: 🧪 backend-test
+    runs-on: ubuntu-latest
+    steps:
+        - name: Check out Git repository
+          uses: actions/checkout@v3
+        - name: Set up python
+          uses: actions/setup-python@v4
+          with:
+           python-version: '3.10'  
+        - name: Install dependencies
+          run: cd server && pip install -r requirements.txt
+        - name: Run tests
+          run: pytest
