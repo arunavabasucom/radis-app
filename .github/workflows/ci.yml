@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
+          cache: "yarn"
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
       - name: Linting check
@@ -30,23 +30,24 @@ jobs:
         run: cd frontend && yarn type-check
       - name: Run tests
         run: cd frontend && yarn test
-  backend-test: 
+  backend-test:
     name: 🧪 backend-test
     runs-on: ubuntu-latest
     steps:
-        - name: Check out Git repository
-          uses: actions/checkout@v3
-        - name: Set up python
-          uses: actions/setup-python@v4
-          with:
-           python-version: '3.9'
-           cache: 'pip' # caching pip dependencies 
-        - name: Install dependencies
-          run: |
-              cd server
-              python -m pip install --upgrade pip
-              pip install -r requirements.txt
-        - name: Run tests
-          run: |
-              cd server 
-              pytest
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          cache: "pip" # caching pip dependencies
+      - name: Install dependencies
+        run: |
+          cd server
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          cd server
+          pytest
