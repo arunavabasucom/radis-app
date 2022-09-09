@@ -29,7 +29,7 @@ def test_calculate_spectrum():
             "max_wavenumber_range": 2300,
             "pressure": 1.01325,
             "path_length": 11,
-            "use_simulate_slit": true,
+            "use_simulate_slit": "true",
             "simulate_slit": 5,
             "wavelength_units": "1/u.cm",
             "path_length_units": "u.km",
