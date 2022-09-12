@@ -1,2 +1,3 @@
-radis==0.13.1
+radis
 fastapi
+pytest

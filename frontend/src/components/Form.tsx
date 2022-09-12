@@ -256,6 +256,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
       label="Use non-equilibrium calculations"
       control={
         <Switch
+          data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
           onChange={(event) => setIsNonEquilibrium(event.target.checked)}
         />
@@ -274,6 +275,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           label="Apply Instrumental Slit Function"
           control={
             <Switch
+              data-testid="slit-switch-testid"
               checked={useSlit}
               onChange={(event, value) => {
                 setUseSlit(event.target.checked);
