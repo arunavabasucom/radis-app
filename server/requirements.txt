@@ -1,5 +1,6 @@
 radis
 fastapi
 pytest
-asyncio
 httpx
+anyio
+trio
