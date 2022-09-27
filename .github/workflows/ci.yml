@@ -11,7 +11,7 @@ on:
 
 jobs:
   frontend-test:
-    name: 🧪 frontend-test
+    name: 🧪 frontend-ci
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: cd frontend && yarn test
   backend-test:
-    name: 🧪 backend-test
+    name: 🧪 backend-ci
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
