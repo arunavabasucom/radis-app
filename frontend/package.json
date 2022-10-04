@@ -22,7 +22,7 @@
     "react-scripts": "5.0.1",
     "react-top-loading-bar": "2.1.0",
     "typescript": "4.7.4",
-    "web-vitals": "2.1.4",
+    "web-vitals": "3.0.3",
     "yup": "0.32.11"
   },
   "scripts": {
