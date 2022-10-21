@@ -38,10 +38,13 @@ We are also working to support installation using Docker.
 We created this app with the intention of giving both researchers and non-researchers access to the most valuable elements of Radis via a straightforward online application. Our team and contributors are always trying to make the app better. The app has additional features and capabilities in newer versions.
 
 👉 some of main features :                
+
 - Ploting spectra
 <img width="1295" alt="plot" src="https://user-images.githubusercontent.com/73842340/188674106-84ca91d8-a290-4030-826b-5d31eebaeee1.png">
+
 - Exporing spectra
 <img width="1301" alt="download" src="https://user-images.githubusercontent.com/73842340/188674380-92be84f8-9d32-4a7a-bd26-4c507db5f384.png">
+
 -  Overlay spectra
 <img width="1301" alt="download" src="https://user-images.githubusercontent.com/73842340/188674505-c9107b78-79c3-4c76-825f-6c5651320ae5.png">
                  
