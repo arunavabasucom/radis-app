@@ -26,11 +26,12 @@ body:
   - type: dropdown
     id: operating-system
     attributes:
-      label: "💻 Operating system"
+      label: "Browser"
       description: "What browser are you using for radis app?"
       options:
-        - Linux
-        - MacOS
-        - Windows
+        - Safari
+        - Chrome
+        - Edge
+        - Firefox
     validations:
-      required: true
+      required: false
