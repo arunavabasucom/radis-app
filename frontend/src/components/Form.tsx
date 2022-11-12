@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
+import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
 import { Database as DatabaseField } from "./fields/Database";
@@ -21,13 +22,10 @@ import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
-
 import { PressureUnit } from "./fields/PressureUnits";
 import { PathLengthUnit } from "./fields/PathLengthUnits";
 import { WaveLengthUnit } from "./fields/WaveLengthUnits";
-
 import { DownloadTxtButton } from "./DownloadTxtButton";
-
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -140,6 +138,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
     import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
       if (endpoint === "calculate-spectrum") {
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+        ReactGA.event({
+          category: "calculate",
+          action: "click_calculate",
+          label: "calculate_spectrum",
+        });
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
         setProgress(30);
 
         const rawResponse = await axios({
@@ -192,6 +197,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
       }
 
       if (endpoint === "download-spectrum" || endpoint === "download-txt") {
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+        ReactGA.event({
+          category: "file_download",
+          action: "click_download",
+          label: "download_spectrum_file",
+        });
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
         setProgress(30);
         setLoading(false);
         let serverFullUrl: string;
