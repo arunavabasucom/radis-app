@@ -16,10 +16,10 @@ import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
 
-/*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 ReactGA.initialize("GOOGLE_ANALYTICS_TRACKING_ID");
 ReactGA.send(window.location.pathname);
-/*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
 export const theme = createTheme({
   palette,
