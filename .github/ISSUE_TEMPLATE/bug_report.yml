@@ -1,0 +1,37 @@
+name: "Bug Report"
+description: "Create a bug report to help us improve Radis App \U0001F331"
+title: "Bug Report: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out our bug report form !!
+  - type: textarea
+    id: bug
+    validations:
+      required: true
+    attributes:
+      label: "🐛 Describe the bug"
+      description: "Please describe the bug !!"
+      placeholder: "describe ... "
+  - type: textarea
+    id: actual-behavior
+    validations:
+      required: false
+    attributes:
+      label: "💡 Possible solutions"
+      description: "Not obligatory, but suggest an idea for implementing addition or change"
+      placeholder: "It actually ..."
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: "Browser"
+      description: "What browser are you using for radis app?"
+      options:
+        - Safari
+        - Chrome
+        - Edge
+        - Firefox
+    validations:
+      required: false
