@@ -194,6 +194,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
         setProgress(100);
         setLoading(false);
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+        ReactGA.event({
+          category: "calculate",
+          action: "click_calculate_successful",
+          label: "calculate_spectrum_successful",
+        });
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       }
 
       if (endpoint === "download-spectrum" || endpoint === "download-txt") {
@@ -249,6 +256,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
         }
         setDisableDownloadButton(false);
         setProgress(100);
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+        ReactGA.event({
+          category: "file_download",
+          action: "click_download_successful",
+          label: "download_spectrum_file_successful",
+        });
+        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       }
     });
   };
