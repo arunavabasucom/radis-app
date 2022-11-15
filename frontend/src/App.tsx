@@ -17,7 +17,7 @@ import { palette } from "./constants";
 import logo from "./radis.png";
 
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
-ReactGA.initialize("GOOGLE_ANALYTICS_TRACKING_ID");
+ReactGA.initialize("G-V67HS7VB4R");
 ReactGA.send(window.location.pathname);
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
