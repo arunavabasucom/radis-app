@@ -11,9 +11,15 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
+import ReactGA from "react-ga4";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
+
+/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
+ReactGA.initialize("G-V67HS7VB4R");
+ReactGA.send(window.location.pathname);
+/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
 export const theme = createTheme({
   palette,
