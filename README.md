@@ -29,6 +29,15 @@ pip install -r requirements.txt # to install all packages
 uvicorn main: app --reload # to run a local server
 ```
 
+If you are getting a `library not found for -lhdf5` error on MacOS, you can try the following
+
+If you haven't already, install [Homebrew](https://brew.sh/) for MacOS.
+```bash
+brew install hdf5 # install the possibly missing library
+export HDF5_DIR=/opt/homebrew/opt/hdf5  # fix Homebrew directory bug
+```
+After this, you can re-run `pip install -r requirements.txt`.
+
 ### Docker
 
 We are also working to support installation using Docker.
