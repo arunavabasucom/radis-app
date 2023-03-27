@@ -10,10 +10,13 @@ import InfoIcon from "@mui/icons-material/Info";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
+import ToggleButton from "@mui/material/ToggleButton";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness6Icon from "@mui/icons-material/Brightness6";
 import "fontsource-roboto";
 import ReactGA from "react-ga4";
 import { PlotSpectra } from "./components/PlotSpectra";
-import { palette } from "./constants";
+// import { palette } from "./constants";
 import logo from "./radis.png";
 
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
@@ -21,8 +24,29 @@ ReactGA.initialize("G-V67HS7VB4R");
 ReactGA.send(window.location.pathname);
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
-export const theme = createTheme({
-  palette,
+const lightTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#3f51b5",
+    },
+    background: {
+      default: "#f2f2f2",
+    },
+  },
+});
+
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#083c57",
+    },
+    background: {
+      default: "#121212",
+    },
+    text: {
+      primary: "#000",
+    },
+  },
 });
 
 const useStyles = makeStyles({
@@ -91,42 +115,66 @@ const InfoPopover = () => {
   );
 };
 
-const Header: React.FC = () => {
+function Header({ toggleTheme }: { toggleTheme: () => void }) {
   const classes = useStyles();
+
+  const [themeMode] = useState<"light" | "dark">("light");
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar>
+      <Toolbar>
           <Box m={1}>
             <img src={logo} height={50} alt="Radish logo" />
           </Box>
-          <Typography variant="h6" className={classes.title}>
-            RADIS app
-          </Typography>
-          <IconButton>
-            <GitHubIcon
-              style={{ color: "white", fontSize: "28" }}
-              onClick={() =>
-                (window.location.href = "https://github.com/suzil/radis-app")
-              }
-            />
-          </IconButton>
-          <InfoPopover />
-        </Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          RADIS app
+        </Typography>
+        <IconButton
+          size="large"
+          edge="end"
+          color="inherit"
+          aria-label="github"
+          href="https://github.com/radis/radis"
+          target="_blank"
+        >
+          <GitHubIcon />
+        </IconButton>
+        &nbsp;&nbsp;
+        <ToggleButton
+          size="small"
+          value="check"
+          selected={themeMode === "dark"}
+          onChange={toggleTheme}
+          aria-label="Dark mode toggle"
+          
+        >
+          {themeMode === "dark" ? <Brightness6Icon color="warning"/> : <Brightness4Icon color="warning"/>}
+        </ToggleButton>
+        <InfoPopover />
+      </Toolbar>
       </Container>
     </AppBar>
   );
-};
+}
 
 function App(): React.ReactElement {
   const classes = useStyles();
+  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
+
+  const toggleTheme = () => {
+    setThemeMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
+
+  const theme = themeMode === "light" ? lightTheme : darkTheme;
+
   return (
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
-        <Header />
+        <Header toggleTheme={toggleTheme} />
         <Container maxWidth="lg">
           <Box sx={{ m: 6 }}>
-            <PlotSpectra />
+            <PlotSpectra/>
           </Box>
         </Container>
       </ThemeProvider>
