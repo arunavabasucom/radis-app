@@ -24,7 +24,11 @@ ReactGA.initialize("G-V67HS7VB4R");
 ReactGA.send(window.location.pathname);
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({
+  toggleColorMode: () => {
+    console.warn("toggleColorMode has no implementation");
+  },
+});
 
 export const theme = createTheme({
   palette,
@@ -118,9 +122,17 @@ const Header: React.FC = () => {
               }
             />
           </IconButton>
-      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-      </IconButton>
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
           <InfoPopover />
         </Toolbar>
       </Container>
@@ -134,7 +146,7 @@ function App(): React.ReactElement {
   return (
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
-      <CssBaseline />
+        <CssBaseline />
         <Header />
         <Container maxWidth="lg">
           <Box sx={{ m: 6 }}>
@@ -146,17 +158,17 @@ function App(): React.ReactElement {
   );
 }
 
-// export default App; 
+// export default App;
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  const [mode, setMode] = React.useState<"light" | "dark">("light");
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
   const theme = React.useMemo(
@@ -166,7 +178,7 @@ export default function ToggleColorMode() {
           mode,
         },
       }),
-    [mode],
+    [mode]
   );
 
   return (
