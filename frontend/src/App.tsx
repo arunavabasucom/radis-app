@@ -8,10 +8,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InfoIcon from "@mui/icons-material/Info";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
 import ReactGA from "react-ga4";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import CssBaseline from "@mui/material/CssBaseline";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
@@ -20,6 +23,12 @@ import logo from "./radis.png";
 ReactGA.initialize("G-V67HS7VB4R");
 ReactGA.send(window.location.pathname);
 /*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
+
+const ColorModeContext = React.createContext({
+  toggleColorMode: () => {
+    console.warn("toggleColorMode has no implementation");
+  },
+});
 
 export const theme = createTheme({
   palette,
@@ -93,6 +102,8 @@ const InfoPopover = () => {
 
 const Header: React.FC = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -111,6 +122,17 @@ const Header: React.FC = () => {
               }
             />
           </IconButton>
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
           <InfoPopover />
         </Toolbar>
       </Container>
@@ -120,9 +142,11 @@ const Header: React.FC = () => {
 
 function App(): React.ReactElement {
   const classes = useStyles();
+  const theme = useTheme();
   return (
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Header />
         <Container maxWidth="lg">
           <Box sx={{ m: 6 }}>
@@ -134,4 +158,34 @@ function App(): React.ReactElement {
   );
 }
 
-export default App; //export
+// export default App;
+
+export default function ToggleColorMode() {
+  const [mode, setMode] = React.useState<"light" | "dark">("light");
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}
