@@ -125,7 +125,7 @@ cdk.out
 # AWS SAM
 .aws-sam/
 
-*.js
+
 !config.js
 !lib/inline-lambda/index.js
 *.d.ts

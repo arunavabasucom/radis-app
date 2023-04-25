@@ -1,21 +1,24 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/errors",
-    "plugin:import/typescript",
-    "plugin:import/warnings",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended",
-    "prettier"
-  ],
+  "extends": ["next/core-web-vitals","eslint:recommended",
+  "plugin:@typescript-eslint/eslint-recommended",
+  "plugin:@typescript-eslint/recommended",
+  "plugin:import/errors",
+  "plugin:import/typescript",
+  "plugin:import/warnings",
+  "plugin:prettier/recommended",
+  "plugin:react/recommended",
+  "prettier"],
+  "plugins": ["testing-library","@typescript-eslint", "import"],
   "overrides": [
+    // Only uses Testing Library lint rules in test files
     {
-      "files": ["**/*.tsx"],
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "extends": ["plugin:testing-library/react"],
       "rules": {
         "react/prop-types": "off",
         "@typescript-eslint/ban-ts-comment": "off"
