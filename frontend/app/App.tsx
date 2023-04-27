@@ -115,12 +115,13 @@ const Header: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             RADIS app
           </Typography>
-          <IconButton
-            onClick={() =>
-              (window.location.href = "https://github.com/suzil/radis-app")
-            }
-          >
-            <GitHubIcon style={{ color: "white", fontSize: "28" }} />
+          <IconButton>
+            <GitHubIcon
+              style={{ color: "white", fontSize: "28" }}
+              onClick={() =>
+                (window.location.href = "https://github.com/suzil/radis-app")
+              }
+            />
           </IconButton>
           <IconButton
             sx={{ ml: 1 }}
