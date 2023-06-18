@@ -126,6 +126,7 @@ cdk.out
 .aws-sam/
 
 *.js
+!vite.config.js
 !config.js
 !lib/inline-lambda/index.js
 *.d.ts
