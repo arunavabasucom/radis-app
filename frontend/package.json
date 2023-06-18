@@ -33,7 +33,7 @@
     "serve": "vite preview",
     "start-react": "react-scripts start",
     "build-react": "react-scripts build",
-    "test-react": "react-scripts test",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext js,ts,tsx,jsx"
