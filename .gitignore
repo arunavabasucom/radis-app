@@ -131,3 +131,5 @@ cdk.out
 !lib/inline-lambda/index.js
 *.d.ts
 # !frontend/src/radis.d.ts
+frontend/coverage
+frontend/html
