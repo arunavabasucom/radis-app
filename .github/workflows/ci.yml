@@ -35,6 +35,8 @@ jobs:
       - name: "Report Coverage"
         if: always() # Also generate the report if tests are failing
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          vite-config-path: './frontend/vite.config.ts'
   backend-test:
     name: 🧪 backend-ci
     runs-on: ubuntu-latest

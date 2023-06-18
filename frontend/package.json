@@ -34,8 +34,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "test-ui": "vitest --ui",
-    "coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext js,ts,tsx,jsx"
   },
