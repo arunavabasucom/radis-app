@@ -37,7 +37,7 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           vite-config-path: './frontend/vite.config.ts'
-          json-summary-path: './frontend/__tests__/coverage/coverage-final.json'
+          json-summary-path: './frontend/src/__tests__/coverage/coverage-final.json'
   backend-test:
     name: 🧪 backend-ci
     runs-on: ubuntu-latest
