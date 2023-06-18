@@ -28,12 +28,16 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start-react": "react-scripts start",
+    "build-react": "react-scripts build",
+    "test-react": "react-scripts test",
     "eject": "react-scripts eject",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext js,ts,tsx,jsx"
+    
   },
   "eslintConfig": {
     "extends": [
