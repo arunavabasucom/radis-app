@@ -29,7 +29,7 @@ jobs:
       - name: Type check
         run: cd frontend && yarn type-check
       - name: Run tests
-        run: cd frontend && yarn test && yarn coverage
+        run: cd frontend && yarn test && yarn test:coverage
       - name: ✅ Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.0
       - name: "Report Coverage"
