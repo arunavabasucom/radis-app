@@ -28,16 +28,12 @@ jobs:
         run: cd frontend && yarn lint
       - name: Type check
         run: cd frontend && yarn type-check
-      - name: Run tests
+      - name: Run tests and coverage
         run: cd frontend && yarn test && yarn test:coverage
       - name: ✅ Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.0
-      - name: "Report Coverage"
-        if: always() # Also generate the report if tests are failing
-        uses: davelosert/vitest-coverage-report-action@v2
         with:
-          vite-config-path: './frontend/vite.config.ts'
-          json-summary-path: './frontend/src/__tests__/coverage/coverage-final.json'
+          flags: frontend
   backend-test:
     name: 🧪 backend-ci
     runs-on: ubuntu-latest
