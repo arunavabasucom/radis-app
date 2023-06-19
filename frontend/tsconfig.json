@@ -23,7 +23,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
-    "allowImportingTsExtensions" : true,
     "types": ["vitest/globals"]
 
   },
