@@ -20,3 +20,5 @@ flag_management:
         - type: project
           target: 80%
           threshold: 1%
+github_checks:
+  annotations:true
