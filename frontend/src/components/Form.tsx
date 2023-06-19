@@ -136,7 +136,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setLoading(true);
     setError(undefined);
 
-    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
+    import("./config.ts").then(async (module) => {
       if (endpoint === "calculate-spectrum") {
         /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
         ReactGA.event({
