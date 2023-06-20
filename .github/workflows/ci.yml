@@ -28,8 +28,12 @@ jobs:
         run: cd frontend && yarn lint
       - name: Type check
         run: cd frontend && yarn type-check
-      - name: Run tests
-        run: cd frontend && yarn test
+      - name: Run tests and coverage
+        run: cd frontend && yarn test && yarn test:coverage
+      - name: ✅ Upload coverage to Codecov
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          flags: frontend
   backend-test:
     name: 🧪 backend-ci
     runs-on: ubuntu-latest

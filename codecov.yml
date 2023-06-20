@@ -1,0 +1,23 @@
+coverage:
+  status:
+    project: off
+    patch: off
+
+flag_management:
+  individual_flags:
+    - name: frontend
+      paths:
+        - frontend/
+      statuses:
+        - type: project
+          target: 80%
+      carryforward: true
+    # - name: backend
+    #   paths:
+    #     - server/
+    #   statuses:
+    #     - type: project
+    #       target: 80%
+github_checks:
+  annotations: true
+  

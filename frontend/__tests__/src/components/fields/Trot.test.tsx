@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable react/react-in-jsx-scope */
 import { fireEvent, render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import App from "../../App";
+import React from "react";
+import App from "../../../../src/App";
 describe("testing trot field ", () => {
   test("testing trot rendered but not visible if non-equilibrium-switch* is not checked", () => {
     render(<App />);

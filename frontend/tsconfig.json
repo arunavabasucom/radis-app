@@ -22,7 +22,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["vitest/globals"]
+
   },
   "include": [
     "src"

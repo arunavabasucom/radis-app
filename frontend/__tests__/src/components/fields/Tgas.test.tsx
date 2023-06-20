@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable react/react-in-jsx-scope */
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import App from "../../App";
+import React from "react";
+import App from "../../../../src/App";
 describe("testing tgas field ", () => {
   test("testing tgas field render with defaultValue and perfectly visible", () => {
     render(<App />);
