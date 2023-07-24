@@ -1,4 +1,4 @@
-## 🌱 Radis App 
+## 🌱 Radis App test app
 
    [![Production deployment](https://github.com/suzil/radis-app/actions/workflows/cd.yml/badge.svg)](https://github.com/suzil/radis-app/actions/workflows/cd.yml)
 
