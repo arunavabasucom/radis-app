@@ -2,6 +2,9 @@
 title: 'Radis app : web app for Radis high-resolution infrared molecular spectra'
 tags:
   - python
+  - typescript
+  - react
+  - fastapi
   - spectroscopy
   - physics
   - web app
@@ -11,9 +14,15 @@ tags:
 authors:
   - name: Arunava Basu
     orcid: 0009-0000-2880-2142
+    affiliation: 1
   - name: Susannah Klanecek
     orcid: 0000-0002-3325-6569
+    affiliation: 2
 affiliations:
+- name: arunavabasu.com
+  index: 1
+- name: suzil.dev
+  index: 2
 date: 20 July 2023
 bibliography: paper.bib
 ---
