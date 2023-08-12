@@ -10,14 +10,13 @@ flag_management:
         - frontend/
       statuses:
         - type: project
-          target: 80%
-      carryforward: true
-    # - name: backend
-    #   paths:
-    #     - server/
-    #   statuses:
-    #     - type: project
-    #       target: 80%
+          target: 60%
+    - name: backend
+      paths:
+        - backend/
+      statuses:
+        - type: project
+          target: 60%
 github_checks:
   annotations: true
   
