@@ -22,5 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# RADIS App logo type declaration
-!./src/.radis.d.ts
+#  type declaration
+!*.d.ts
