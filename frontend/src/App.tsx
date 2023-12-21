@@ -145,7 +145,7 @@ function App(): React.ReactElement {
   const theme = useTheme();
   return (
     <div className={classes.root}>
-      <ThemeProvider theme={theme}>
+      {/* <ThemeProvider theme={theme}> */}
         <CssBaseline />
         <Header />
         <Container maxWidth="lg">
@@ -153,7 +153,7 @@ function App(): React.ReactElement {
             <PlotSpectra />
           </Box>
         </Container>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </div>
   );
 }
@@ -182,10 +182,10 @@ export default function ToggleColorMode() {
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+    // <ColorModeContext.Provider value={colorMode}>
+    //   <ThemeProvider theme={theme}>
         <App />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    //   </ThemeProvider>
+    // </ColorModeContext.Provider>
   );
 }

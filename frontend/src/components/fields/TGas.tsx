@@ -1,34 +1,35 @@
+import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
 import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
+
 interface TGasProps {
   control: Control<FormValues>;
 }
 export const TGas: React.FC<TGasProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="tgas-input"
-        variant="standard"
-        type="number"
-        label="TGas"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.tgas}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">K</InputAdornment>,
-        }}
-        helperText={formState.errors?.tgas?.message as ReactNode}
-        onKeyPress={(event) => {
-          if (event?.key === "-" || event?.key === "+") {
-            event.preventDefault();
-          }
-        }}
-      />
+      <FormControl>
+        <FormLabel>TGas</FormLabel>
+        <Input
+          {...field}
+          {...formState}
+          id="tgas-input"
+          type="number"
+          onChange={field.onChange}
+          value={field.value}
+          error={!!formState.errors?.tgas}
+          endDecorator={<InputAdornment position="end">K</InputAdornment>}
+          onKeyPress={(event: any) => {
+            if (event?.key === "-" || event?.key === "+") {
+              event.preventDefault();
+            }
+          }}
+        />
+      </FormControl>
     )}
     name="tgas"
     control={control}

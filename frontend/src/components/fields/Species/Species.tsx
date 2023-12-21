@@ -1,9 +1,12 @@
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import Input from "@mui/joy/Input";
+
 import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
 import { Database, FormValues } from "../../types";
@@ -48,21 +51,21 @@ export const Species: React.FC<SpeciesProps> = ({
               name={`species.${index}.mole_fraction` as const}
               control={control}
               render={({ field: { onChange, value }, formState }) => (
-                <TextField
-                  variant="standard"
-                  fullWidth
-                  id="mole-fraction-input"
-                  label="Mole Fraction"
-                  error={!!formState.errors?.species?.[index]?.mole_fraction}
-                  helperText={
-                    formState.errors?.species?.[index]?.mole_fraction?.message
-                  }
-                  value={value}
-                  type="number"
-                  onChange={(e) => {
-                    onChange(parseFloat(e.target.value));
-                  }}
-                />
+                <FormControl>
+                  <FormLabel>Path Length</FormLabel>
+                  <Input
+                    id="mole-fraction-input"
+                    error={!!formState.errors?.species?.[index]?.mole_fraction}
+                    // helperText={
+                    //   formState.errors?.species?.[index]?.mole_fraction?.message
+                    // }
+                    value={value}
+                    type="number"
+                    onChange={(e) => {
+                      onChange(parseFloat(e.target.value));
+                    }}
+                  />
+                </FormControl>
               )}
             />
           </Grid>

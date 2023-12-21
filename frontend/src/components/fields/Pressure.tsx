@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
-
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Input from "@mui/joy/Input";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 interface TGasProps {
@@ -9,21 +10,18 @@ interface TGasProps {
 export const Pressure: React.FC<TGasProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="pressure-input"
-        variant="standard"
-        type="number"
-        label="Pressure"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.pressure}
-        helperText={formState.errors?.pressure?.message as ReactNode}
-        inputProps={{
-          step: "any",
-        }}
-      />
+      <FormControl>
+        <FormLabel>Pressure</FormLabel>
+        <Input
+          {...field}
+          {...formState}
+          id="pressure-input"
+          type="number"
+          onChange={field.onChange}
+          value={field.value}
+          error={!!formState.errors?.pressure}
+        />
+      </FormControl>
     )}
     name="pressure"
     control={control}

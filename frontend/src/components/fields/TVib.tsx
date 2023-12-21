@@ -1,5 +1,7 @@
+import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
 import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
@@ -9,27 +11,24 @@ interface TVibProps {
 export const TVib: React.FC<TVibProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="tvib-input"
-        variant="standard"
-        type="number"
-        label="TVib"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.tvib}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">K</InputAdornment>,
-        }}
-        inputProps={{ "data-testid": "tvib-testid" }}
-        helperText={formState.errors?.tvib?.message as ReactNode}
-        onKeyPress={(event) => {
-          if (event?.key === "-" || event?.key === "+") {
-            event.preventDefault();
-          }
-        }}
-      />
+      <FormControl>
+        <FormLabel>TVib</FormLabel>
+        <Input
+          {...field}
+          {...formState}
+          id="tvib-input"
+          type="number"
+          onChange={field.onChange}
+          value={field.value}
+          error={!!formState.errors?.tvib}
+          endDecorator={<InputAdornment position="end">K</InputAdornment>}
+          onKeyPress={(event: any) => {
+            if (event?.key === "-" || event?.key === "+") {
+              event.preventDefault();
+            }
+          }}
+        />
+      </FormControl>
     )}
     name="tvib"
     control={control}

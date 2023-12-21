@@ -1,6 +1,8 @@
-import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
-
+import React from "react";
+import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 interface TGasProps {
@@ -9,21 +11,24 @@ interface TGasProps {
 export const PathLength: React.FC<TGasProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="path-length-input"
-        variant="standard"
-        type="number"
-        label="Path Length"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.path_length}
-        helperText={formState.errors?.path_length?.message as ReactNode}
-        inputProps={{
-          step: "any",
-        }}
-      />
+      <FormControl>
+        <FormLabel>Path Length</FormLabel>
+        <Input
+          {...field}
+          {...formState}
+          type="number"
+          onChange={field.onChange}
+          value={field.value}
+          error={!!formState.errors?.path_length}
+        />
+        {formState.errors?.path_length ? (
+          <FormHelperText sx={{
+            color:"red"
+          }}>
+            {formState.errors?.path_length?.message}
+          </FormHelperText>
+        ) : null}
+      </FormControl>
     )}
     name="path_length"
     control={control}
