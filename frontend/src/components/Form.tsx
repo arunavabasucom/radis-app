@@ -282,6 +282,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
       label="Use non-equilibrium calculations"
       control={
         <Switch
+          sx={{m:2}}
           color={isNonEquilibrium ? "success" : "danger"}
           data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
@@ -302,6 +303,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           label="Apply Instrumental Slit Function"
           control={
             <Switch
+               sx={{m:2}}
               color={useSlit ? "success" : "danger"}
               data-testid="slit-switch-testid"
               checked={useSlit}
@@ -333,7 +335,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         <Grid item xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={11}>
           <WavenumberRangeSlider
             isUnitChanged={simulateSlitUnit}
             minRange={simulateSlitUnit ? 1000 : 500}
@@ -341,11 +343,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
             control={control}
             setValue={setValue}
           />
-        </Grid>
-
-        <Grid item sm={3} lg={3}>
-          <WaveLengthUnit control={control} />
-          <WaveLengthUnit control={control} />
         </Grid>
 
         <Grid item sm={8} lg={4}>

@@ -19,12 +19,18 @@ export const WaveLengthUnit: React.FC<WaveLengthUnProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
+            variant="plain"
             id="mode-select"
             onChange={(_, value) => {
               field.onChange(value);
             }}
             value={field.value}
-            style={{ marginTop: "36px" }}
+            slotProps={{
+              listbox: {
+                variant: "outlined",
+              },
+            }}
+            sx={{ mr: -1.5, "&:hover": { bgcolor: "transparent" } }}
           >
             <Option value={"1/u.cm"}>cm⁻¹</Option>
             <Option value={"u.nm"}>nm</Option>

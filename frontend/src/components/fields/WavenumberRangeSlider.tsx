@@ -6,7 +6,10 @@ import { Control, Controller, UseFormSetValue } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 import { FormValues } from "../types";
-
+import Divider from "@mui/joy/Divider";
+import { WaveLengthUnit } from "./WaveLengthUnits";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
 interface WavelengthRangeSliderProps {
   minRange: number;
   maxRange: number;
@@ -63,15 +66,22 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
       onChange={(e) =>
         onChange(e.target.value === "" ? "" : Number(e.target.value))
       }
+      sx={{ width: 150 }}
       onBlur={handleBlur}
+      endDecorator={
+        <React.Fragment>
+          <Divider orientation="vertical" />
+          <WaveLengthUnit control={control} />
+        </React.Fragment>
+      }
     />
   );
 
   return (
-    <div>
-      <Typography id="input-slider" gutterBottom>
+    <FormControl>
+      <FormLabel>
         {isUnitChanged ? " Wavelength range (nm)" : " Wavenumber range (cm⁻¹)"}
-      </Typography>
+      </FormLabel>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={3} lg={4}>
           <Controller
@@ -83,7 +93,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
             }
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs={3} lg={4}>
           <Slider
             value={[
               lowerRange === "" ? minRange : lowerRange,
@@ -106,6 +116,6 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
           />
         </Grid>
       </Grid>
-    </div>
+    </FormControl>
   );
 };

@@ -1,6 +1,5 @@
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
-import FormLabel from "@mui/joy/FormLabel";
 import FormControl from "@mui/joy/FormControl";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";

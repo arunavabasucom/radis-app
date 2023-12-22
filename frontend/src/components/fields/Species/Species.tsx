@@ -81,7 +81,7 @@ export const Species: React.FC<SpeciesProps> = ({
               )}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} style={{ marginTop: 24 }}>
             {index === 0 ? (
               <IconButton
                 color="primary"
