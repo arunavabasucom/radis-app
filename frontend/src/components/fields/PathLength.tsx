@@ -5,6 +5,8 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
+import { PathLengthUnit } from "./PathLengthUnits";
+import Divider from "@mui/joy/Divider";
 interface TGasProps {
   control: Control<FormValues>;
 }
@@ -20,11 +22,20 @@ export const PathLength: React.FC<TGasProps> = ({ control }) => (
           onChange={field.onChange}
           value={field.value}
           error={!!formState.errors?.path_length}
+          endDecorator={
+            <React.Fragment>
+              <Divider orientation="vertical" />
+              <PathLengthUnit control={control} />
+            </React.Fragment>
+          }
+          sx={{ width: 200 }}
         />
         {formState.errors?.path_length ? (
-          <FormHelperText sx={{
-            color:"red"
-          }}>
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
             {formState.errors?.path_length?.message}
           </FormHelperText>
         ) : null}

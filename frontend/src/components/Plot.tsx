@@ -166,8 +166,8 @@ export const Plot_: React.FC<PlotProps> = ({
         })
       )}
       layout={{
-        width: 800,
-        height: 600,
+        width: 650,
+        height: 450,
         title: spectra.length === 1 ? "Spectrum" : "Spectra",
         font: { family: "Roboto", color: "#000" },
         xaxis: {

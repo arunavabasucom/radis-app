@@ -1,6 +1,7 @@
 import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 import React, { ReactNode } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
@@ -29,6 +30,15 @@ export const TGas: React.FC<TGasProps> = ({ control }) => (
             }
           }}
         />
+        {formState.errors?.tgas ? (
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
+            {formState.errors?.tgas?.message}
+          </FormHelperText>
+        ) : null}
       </FormControl>
     )}
     name="tgas"

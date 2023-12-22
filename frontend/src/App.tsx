@@ -146,13 +146,14 @@ function App(): React.ReactElement {
   return (
     <div className={classes.root}>
       {/* <ThemeProvider theme={theme}> */}
-        <CssBaseline />
-        <Header />
-        <Container maxWidth="lg">
-          <Box sx={{ m: 6 }}>
-            <PlotSpectra />
-          </Box>
-        </Container>
+      <CssBaseline />
+      <Header />
+      <Container maxWidth="none">
+        <Box sx={{ m: 6 }}>
+          <PlotSpectra />
+        </Box>
+      </Container>
+
       {/* </ThemeProvider> */}
     </div>
   );
@@ -184,7 +185,7 @@ export default function ToggleColorMode() {
   return (
     // <ColorModeContext.Provider value={colorMode}>
     //   <ThemeProvider theme={theme}>
-        <App />
+    <App />
     //   </ThemeProvider>
     // </ColorModeContext.Provider>
   );

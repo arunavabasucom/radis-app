@@ -1,8 +1,6 @@
-import React from "react";
-import FormControl from "@mui/material/FormControl";
-
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import Option from "@mui/joy/Option";
+import Select from "@mui/joy/Select";
+import FormControl from "@mui/joy/FormControl";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 
@@ -12,7 +10,7 @@ interface WaveLengthUnProps {
 
 export const WaveLengthUnit: React.FC<WaveLengthUnProps> = ({ control }) => {
   return (
-    <FormControl fullWidth>
+    <FormControl>
       <Controller
         name="wavelength_units"
         defaultValue="1/u.cm"
@@ -21,16 +19,15 @@ export const WaveLengthUnit: React.FC<WaveLengthUnProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
-            variant="standard"
-            labelId="mode-select-label"
             id="mode-select"
-            onChange={field.onChange}
+            onChange={(_, value) => {
+              field.onChange(value);
+            }}
             value={field.value}
-            label="Select"
-            style={{ color: "gray", marginTop: "30px" }}
+            style={{ marginTop: "36px" }}
           >
-            <MenuItem value={"1/u.cm"}>cm⁻¹</MenuItem>
-            <MenuItem value={"u.nm"}>nm</MenuItem>
+            <Option value={"1/u.cm"}>cm⁻¹</Option>
+            <Option value={"u.nm"}>nm</Option>
           </Select>
         )}
       />

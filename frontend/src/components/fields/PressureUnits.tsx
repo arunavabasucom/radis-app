@@ -1,7 +1,7 @@
-import React from "react";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import Option from "@mui/joy/Option";
+import Select from "@mui/joy/Select";
+// import FormLabel from "@mui/joy/FormLabel";
+import FormControl from "@mui/joy/FormControl";
 import { Control, Controller } from "react-hook-form";
 import { FormValues } from "../types";
 
@@ -11,7 +11,7 @@ interface PressureUnitsProps {
 
 export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
   return (
-    <FormControl fullWidth>
+    <FormControl>
       <Controller
         name="pressure_units"
         defaultValue="u.bar"
@@ -20,20 +20,25 @@ export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
-            variant="standard"
-            labelId="mode-select-label"
+            variant="plain"
             id="mode-select"
-            onChange={field.onChange}
+            onChange={(_, value) => {
+              field.onChange(value);
+            }}
             value={field.value}
-            label="Select"
-            style={{ color: "gray", marginTop: "15px" }}
+            slotProps={{
+              listbox: {
+                variant: "outlined",
+              },
+            }}
+            sx={{ mr: -1.5, "&:hover": { bgcolor: "transparent" } }}
           >
-            <MenuItem value={"u.bar"}>bar</MenuItem>
-            <MenuItem value={"u.mbar"}>mbar</MenuItem>
-            <MenuItem value={"cds.atm"}>atm</MenuItem>
-            <MenuItem value={"u.torr"}>torr</MenuItem>
-            <MenuItem value={"u.mTorr"}>mTorr</MenuItem>
-            <MenuItem value={"u.Pa"}>Pa</MenuItem>
+            <Option value={"u.bar"}>bar</Option>
+            <Option value={"u.mbar"}>mbar</Option>
+            <Option value={"cds.atm"}>atm</Option>
+            <Option value={"u.torr"}>torr</Option>
+            <Option value={"u.mTorr"}>mTorr</Option>
+            <Option value={"u.Pa"}>Pa</Option>
           </Select>
         )}
       />

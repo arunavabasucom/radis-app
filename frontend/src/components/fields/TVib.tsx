@@ -1,6 +1,7 @@
 import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 import React, { ReactNode } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
@@ -28,6 +29,15 @@ export const TVib: React.FC<TVibProps> = ({ control }) => (
             }
           }}
         />
+        {formState.errors?.tvib ? (
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
+            {formState.errors?.tvib?.message}
+          </FormHelperText>
+        ) : null}
       </FormControl>
     )}
     name="tvib"

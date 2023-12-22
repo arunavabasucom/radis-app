@@ -59,14 +59,11 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   ) => (
     <Input
       id={id}
-
       value={value}
-
       onChange={(e) =>
         onChange(e.target.value === "" ? "" : Number(e.target.value))
       }
       onBlur={handleBlur}
-    
     />
   );
 

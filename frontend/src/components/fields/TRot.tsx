@@ -1,11 +1,7 @@
-// import React, { ReactNode } from "react";
-// import TextField from "@mui/material/TextField";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import { Control, Controller } from "react-hook-form";
-// import { FormValues } from "../types";
 import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 import React, { ReactNode } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Control, Controller } from "react-hook-form";
@@ -34,6 +30,15 @@ export const TRot: React.FC<TRotProps> = ({ control }) => (
             }
           }}
         />
+        {formState.errors?.trot ? (
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
+            {formState.errors?.trot?.message}
+          </FormHelperText>
+        ) : null}
       </FormControl>
     )}
     name="trot"

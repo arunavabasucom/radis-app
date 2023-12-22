@@ -1,5 +1,6 @@
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -38,7 +39,9 @@ export const Species: React.FC<SpeciesProps> = ({
                   validationError={formState.errors?.species?.[index]?.molecule}
                   control={control}
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(_, value) => {
+                    field.onChange(value);
+                  }}
                   autofocus={index !== 0}
                   isNonEquilibrium={isNonEquilibrium}
                   databaseWatch={databaseWatch}
@@ -52,19 +55,28 @@ export const Species: React.FC<SpeciesProps> = ({
               control={control}
               render={({ field: { onChange, value }, formState }) => (
                 <FormControl>
-                  <FormLabel>Path Length</FormLabel>
+                  <FormLabel>Mole Fraction</FormLabel>
                   <Input
                     id="mole-fraction-input"
                     error={!!formState.errors?.species?.[index]?.mole_fraction}
-                    // helperText={
-                    //   formState.errors?.species?.[index]?.mole_fraction?.message
-                    // }
                     value={value}
                     type="number"
                     onChange={(e) => {
                       onChange(parseFloat(e.target.value));
                     }}
                   />
+                  {formState.errors?.species?.[index]?.mole_fraction ? (
+                    <FormHelperText
+                      sx={{
+                        color: "red",
+                      }}
+                    >
+                      {
+                        formState.errors?.species?.[index]?.mole_fraction
+                          ?.message
+                      }
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
               )}
             />

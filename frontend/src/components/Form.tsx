@@ -4,8 +4,9 @@ import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
+// import Switch from "@mui/material/Switch";
+// import Button from "@mui/material/Button";
+import Button from "@mui/joy/Button";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
@@ -26,6 +27,7 @@ import { PressureUnit } from "./fields/PressureUnits";
 import { PathLengthUnit } from "./fields/PathLengthUnits";
 import { WaveLengthUnit } from "./fields/WaveLengthUnits";
 import { DownloadTxtButton } from "./DownloadTxtButton";
+import Switch from "@mui/joy/Switch";
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -135,136 +137,134 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
+    const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+    if (endpoint === "calculate-spectrum") {
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "calculate",
+        action: "click_calculate",
+        label: "calculate_spectrum",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      setProgress(30);
 
-    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      if (endpoint === "calculate-spectrum") {
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "calculate",
-          action: "click_calculate",
-          label: "calculate_spectrum",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        setProgress(30);
-
-        const rawResponse = await axios({
-          url: module.apiEndpoint + `calculate-spectrum`,
-          method: "POST",
-          data: data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (
-          rawResponse.data.data === undefined &&
-          rawResponse.data.error === undefined
-        ) {
-          handleBadResponse("Bad response from backend!");
-          setDisableDownloadButton(true);
-        } else {
-          const response = await rawResponse.data;
-          if (response.error) {
-            handleBadResponse(response.error);
-            setDisableDownloadButton(true);
-          } else {
-            setSpectra([
-              ...(appendSpectrum ? spectra : []),
-              {
-                species: data.species.map((s) => ({ ...s })),
-                database: data.database,
-                tgas: data.tgas,
-                trot: data.trot,
-                tvib: data.tvib,
-                pressure: data.pressure,
-                pressure_units: data.pressure_units,
-                wavelength_units: data.wavelength_units,
-                ...response.data,
-              },
-            ]);
-            setDisableAddToPlotButton(false);
-            setPlotSettings({
-              mode: data.mode,
-              units: data.mode.startsWith("absorbance")
-                ? "-ln(I/I0)"
-                : response.data.units,
-            });
-            setDisableDownloadButton(false);
-          }
-        }
-
-        setProgress(100);
-        setLoading(false);
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "calculate",
-          action: "click_calculate_successful",
-          label: "calculate_spectrum_successful",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      }
-
-      if (endpoint === "download-spectrum" || endpoint === "download-txt") {
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "file_download",
-          action: "click_download",
-          label: "download_spectrum_file",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        setProgress(30);
-        setLoading(false);
-        let serverFullUrl: string;
-        if (endpoint === "download-spectrum") {
-          serverFullUrl = module.apiEndpoint + `download-spectrum`;
-        } else {
-          serverFullUrl = module.apiEndpoint + `download-txt`;
-        }
-        const rawResponse = await axios({
-          url: serverFullUrl,
-          method: "POST",
-          responseType: "blob",
-          data: data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        if (endpoint === "download-spectrum") {
-          link.setAttribute(
-            "download",
-            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
-          );
-        }
-        if (endpoint === "download-txt") {
-          link.setAttribute(
-            "download",
-            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
-          );
-        }
-
-        document.body.appendChild(link);
-        link.click();
-        setDisableDownloadButton(false);
+      const rawResponse = await axios({
+        url: apiEndpoint + `calculate-spectrum`,
+        method: "POST",
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (
+        rawResponse.data.data === undefined &&
+        rawResponse.data.error === undefined
+      ) {
+        handleBadResponse("Bad response from backend!");
+        setDisableDownloadButton(true);
+      } else {
         const response = await rawResponse.data;
         if (response.error) {
           handleBadResponse(response.error);
+          setDisableDownloadButton(true);
         } else {
+          setSpectra([
+            ...(appendSpectrum ? spectra : []),
+            {
+              species: data.species.map((s) => ({ ...s })),
+              database: data.database,
+              tgas: data.tgas,
+              trot: data.trot,
+              tvib: data.tvib,
+              pressure: data.pressure,
+              pressure_units: data.pressure_units,
+              wavelength_units: data.wavelength_units,
+              ...response.data,
+            },
+          ]);
+          setDisableAddToPlotButton(false);
+          setPlotSettings({
+            mode: data.mode,
+            units: data.mode.startsWith("absorbance")
+              ? "-ln(I/I0)"
+              : response.data.units,
+          });
           setDisableDownloadButton(false);
         }
-        setDisableDownloadButton(false);
-        setProgress(100);
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "file_download",
-          action: "click_download_successful",
-          label: "download_spectrum_file_successful",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       }
-    });
+
+      setProgress(100);
+      setLoading(false);
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "calculate",
+        action: "click_calculate_successful",
+        label: "calculate_spectrum_successful",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+    }
+
+    if (endpoint === "download-spectrum" || endpoint === "download-txt") {
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "file_download",
+        action: "click_download",
+        label: "download_spectrum_file",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      setProgress(30);
+      setLoading(false);
+      let serverFullUrl: string;
+      if (endpoint === "download-spectrum") {
+        serverFullUrl = apiEndpoint + `download-spectrum`;
+      } else {
+        serverFullUrl = apiEndpoint + `download-txt`;
+      }
+      const rawResponse = await axios({
+        url: serverFullUrl,
+        method: "POST",
+        responseType: "blob",
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      if (endpoint === "download-spectrum") {
+        link.setAttribute(
+          "download",
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
+        );
+      }
+      if (endpoint === "download-txt") {
+        link.setAttribute(
+          "download",
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+        );
+      }
+
+      document.body.appendChild(link);
+      link.click();
+      setDisableDownloadButton(false);
+      const response = await rawResponse.data;
+      if (response.error) {
+        handleBadResponse(response.error);
+      } else {
+        setDisableDownloadButton(false);
+      }
+      setDisableDownloadButton(false);
+      setProgress(100);
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "file_download",
+        action: "click_download_successful",
+        label: "download_spectrum_file_successful",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+    }
   };
 
   useEffect(() => {
@@ -282,6 +282,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
       label="Use non-equilibrium calculations"
       control={
         <Switch
+          color={isNonEquilibrium ? "success" : "danger"}
           data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
           onChange={(event) => setIsNonEquilibrium(event.target.checked)}
@@ -301,11 +302,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
           label="Apply Instrumental Slit Function"
           control={
             <Switch
+              color={useSlit ? "success" : "danger"}
               data-testid="slit-switch-testid"
               checked={useSlit}
-              onChange={(event, value) => {
+              onChange={(event: any) => {
+                console.log(event.target.checked);
                 setUseSlit(event.target.checked);
-                field.onChange(value);
+                field.onChange(event.target.checked);
                 if (event.target.checked) {
                   setValue("simulate_slit", 5);
                 } else {
@@ -342,6 +345,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
         <Grid item sm={3} lg={3}>
           <WaveLengthUnit control={control} />
+          <WaveLengthUnit control={control} />
         </Grid>
 
         <Grid item sm={8} lg={4}>
@@ -359,28 +363,20 @@ export const Form: React.FunctionComponent<FormProps> = ({
           </>
         ) : null}
 
-        <Grid item sm={8} lg={3}>
+        <Grid item sm={8} lg={5}>
           <Pressure control={control} />
         </Grid>
-        <Grid item sm={3} lg={3}>
-          <PressureUnit control={control} />
-        </Grid>
+
         {isNonEquilibrium ? (
           <>
             <Grid item sm={8} lg={3}>
               <PathLength control={control} />
-            </Grid>
-            <Grid item sm={3} lg={3}>
-              <PathLengthUnit control={control} />
             </Grid>
           </>
         ) : (
           <>
             <Grid item sm={8} lg={7}>
               <PathLength control={control} />
-            </Grid>
-            <Grid item sm={3} lg={3}>
-              <PathLengthUnit control={control} />
             </Grid>
           </>
         )}
@@ -420,8 +416,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
         <Grid item xs={6}>
           <Button
             fullWidth
-            color="secondary"
-            variant="contained"
             disabled={disableAddToPlotButton}
             onClick={handleSubmit((data) =>
               onSubmit(data, `calculate-spectrum`, true)
