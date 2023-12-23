@@ -30,7 +30,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",

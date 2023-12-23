@@ -282,7 +282,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
       label="Use non-equilibrium calculations"
       control={
         <Switch
-          sx={{m:2}}
+          sx={{ m: 2 }}
           color={isNonEquilibrium ? "success" : "danger"}
           data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
@@ -303,7 +303,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           label="Apply Instrumental Slit Function"
           control={
             <Switch
-               sx={{m:2}}
+              sx={{ m: 2 }}
               color={useSlit ? "success" : "danger"}
               data-testid="slit-switch-testid"
               checked={useSlit}
@@ -329,13 +329,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
       onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
     >
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={8} md={5} lg={5}>
+        <Grid item xs={12} sm={8} md={5} lg={6}>
           <DatabaseField control={control}></DatabaseField>
         </Grid>
         <Grid item xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <WavenumberRangeSlider
             isUnitChanged={simulateSlitUnit}
             minRange={simulateSlitUnit ? 1000 : 500}
@@ -345,9 +345,15 @@ export const Form: React.FunctionComponent<FormProps> = ({
           />
         </Grid>
 
-        <Grid item sm={8} lg={4}>
-          <TGas control={control} />
-        </Grid>
+        {isNonEquilibrium ? (
+          <Grid item sm={8} lg={4}>
+            <TGas control={control} />
+          </Grid>
+        ) : (
+          <Grid item sm={8} lg={12}>
+            <TGas control={control} />
+          </Grid>
+        )}
 
         {isNonEquilibrium ? (
           <>
@@ -360,19 +366,25 @@ export const Form: React.FunctionComponent<FormProps> = ({
           </>
         ) : null}
 
-        <Grid item sm={8} lg={5}>
-          <Pressure control={control} />
-        </Grid>
+        {isNonEquilibrium ? (
+          <Grid item sm={8} lg={12}>
+            <Pressure control={control} />
+          </Grid>
+        ) : (
+          <Grid item sm={8} lg={12} style={{ backgroundColor: "green" }}>
+            <Pressure control={control} />
+          </Grid>
+        )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={3}>
+            <Grid item sm={8} lg={6}>
               <PathLength control={control} />
             </Grid>
           </>
         ) : (
           <>
-            <Grid item sm={8} lg={7}>
+            <Grid item sm={8} lg={6}>
               <PathLength control={control} />
             </Grid>
           </>

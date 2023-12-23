@@ -105,7 +105,7 @@ const Header: React.FC = () => {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   return (
-    <AppBar position="static">
+    <AppBar position="static" elevation={0}>
       <Container maxWidth="xl">
         <Toolbar>
           <Box m={1}>
