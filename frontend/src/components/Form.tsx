@@ -136,135 +136,134 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setLoading(true);
     setError(undefined);
 
-    import(/* webpackIgnore: true */ "./config.js").then(async (module) => {
-      if (endpoint === "calculate-spectrum") {
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "calculate",
-          action: "click_calculate",
-          label: "calculate_spectrum",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        setProgress(30);
+    const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+    if (endpoint === "calculate-spectrum") {
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "calculate",
+        action: "click_calculate",
+        label: "calculate_spectrum",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      setProgress(30);
 
-        const rawResponse = await axios({
-          url: module.apiEndpoint + `calculate-spectrum`,
-          method: "POST",
-          data: data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (
-          rawResponse.data.data === undefined &&
-          rawResponse.data.error === undefined
-        ) {
-          handleBadResponse("Bad response from backend!");
-          setDisableDownloadButton(true);
-        } else {
-          const response = await rawResponse.data;
-          if (response.error) {
-            handleBadResponse(response.error);
-            setDisableDownloadButton(true);
-          } else {
-            setSpectra([
-              ...(appendSpectrum ? spectra : []),
-              {
-                species: data.species.map((s) => ({ ...s })),
-                database: data.database,
-                tgas: data.tgas,
-                trot: data.trot,
-                tvib: data.tvib,
-                pressure: data.pressure,
-                pressure_units: data.pressure_units,
-                wavelength_units: data.wavelength_units,
-                ...response.data,
-              },
-            ]);
-            setDisableAddToPlotButton(false);
-            setPlotSettings({
-              mode: data.mode,
-              units: data.mode.startsWith("absorbance")
-                ? "-ln(I/I0)"
-                : response.data.units,
-            });
-            setDisableDownloadButton(false);
-          }
-        }
-
-        setProgress(100);
-        setLoading(false);
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "calculate",
-          action: "click_calculate_successful",
-          label: "calculate_spectrum_successful",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      }
-
-      if (endpoint === "download-spectrum" || endpoint === "download-txt") {
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "file_download",
-          action: "click_download",
-          label: "download_spectrum_file",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        setProgress(30);
-        setLoading(false);
-        let serverFullUrl: string;
-        if (endpoint === "download-spectrum") {
-          serverFullUrl = module.apiEndpoint + `download-spectrum`;
-        } else {
-          serverFullUrl = module.apiEndpoint + `download-txt`;
-        }
-        const rawResponse = await axios({
-          url: serverFullUrl,
-          method: "POST",
-          responseType: "blob",
-          data: data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        if (endpoint === "download-spectrum") {
-          link.setAttribute(
-            "download",
-            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
-          );
-        }
-        if (endpoint === "download-txt") {
-          link.setAttribute(
-            "download",
-            `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
-          );
-        }
-
-        document.body.appendChild(link);
-        link.click();
-        setDisableDownloadButton(false);
+      const rawResponse = await axios({
+        url: apiEndpoint + `calculate-spectrum`,
+        method: "POST",
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (
+        rawResponse.data.data === undefined &&
+        rawResponse.data.error === undefined
+      ) {
+        handleBadResponse("Bad response from backend!");
+        setDisableDownloadButton(true);
+      } else {
         const response = await rawResponse.data;
         if (response.error) {
           handleBadResponse(response.error);
+          setDisableDownloadButton(true);
         } else {
+          setSpectra([
+            ...(appendSpectrum ? spectra : []),
+            {
+              species: data.species.map((s) => ({ ...s })),
+              database: data.database,
+              tgas: data.tgas,
+              trot: data.trot,
+              tvib: data.tvib,
+              pressure: data.pressure,
+              pressure_units: data.pressure_units,
+              wavelength_units: data.wavelength_units,
+              ...response.data,
+            },
+          ]);
+          setDisableAddToPlotButton(false);
+          setPlotSettings({
+            mode: data.mode,
+            units: data.mode.startsWith("absorbance")
+              ? "-ln(I/I0)"
+              : response.data.units,
+          });
           setDisableDownloadButton(false);
         }
-        setDisableDownloadButton(false);
-        setProgress(100);
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-        ReactGA.event({
-          category: "file_download",
-          action: "click_download_successful",
-          label: "download_spectrum_file_successful",
-        });
-        /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       }
-    });
+
+      setProgress(100);
+      setLoading(false);
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "calculate",
+        action: "click_calculate_successful",
+        label: "calculate_spectrum_successful",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+    }
+
+    if (endpoint === "download-spectrum" || endpoint === "download-txt") {
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "file_download",
+        action: "click_download",
+        label: "download_spectrum_file",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      setProgress(30);
+      setLoading(false);
+      let serverFullUrl: string;
+      if (endpoint === "download-spectrum") {
+        serverFullUrl = apiEndpoint + `download-spectrum`;
+      } else {
+        serverFullUrl = apiEndpoint + `download-txt`;
+      }
+      const rawResponse = await axios({
+        url: serverFullUrl,
+        method: "POST",
+        responseType: "blob",
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const url = window.URL.createObjectURL(new Blob([rawResponse.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      if (endpoint === "download-spectrum") {
+        link.setAttribute(
+          "download",
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.spec`
+        );
+      }
+      if (endpoint === "download-txt") {
+        link.setAttribute(
+          "download",
+          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+        );
+      }
+
+      document.body.appendChild(link);
+      link.click();
+      setDisableDownloadButton(false);
+      const response = await rawResponse.data;
+      if (response.error) {
+        handleBadResponse(response.error);
+      } else {
+        setDisableDownloadButton(false);
+      }
+      setDisableDownloadButton(false);
+      setProgress(100);
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      ReactGA.event({
+        category: "file_download",
+        action: "click_download_successful",
+        label: "download_spectrum_file_successful",
+      });
+      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+    }
   };
 
   useEffect(() => {
