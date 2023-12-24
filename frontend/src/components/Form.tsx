@@ -148,17 +148,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       setProgress(30);
 
-    const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
-    if (endpoint === "calculate-spectrum") {
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      ReactGA.event({
-        category: "calculate",
-        action: "click_calculate",
-        label: "calculate_spectrum",
-      });
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      setProgress(30);
-
 
       const rawResponse = await axios({
         url: apiEndpoint + `calculate-spectrum`,
