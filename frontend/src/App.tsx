@@ -11,18 +11,10 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
-import ReactGA from "react-ga4";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
-import logo from "./radis.png";
-
-/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
-ReactGA.initialize("G-V67HS7VB4R");
-ReactGA.send(window.location.pathname);
-/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
+import logo from "./logo.png";
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {
@@ -40,6 +32,8 @@ const useStyles = makeStyles({
   },
   title: {
     flexGrow: 1,
+    color: "black",
+    fontWeight: "bold",
   },
 });
 
@@ -61,7 +55,7 @@ const InfoPopover = () => {
   return (
     <div>
       <IconButton onClick={handleClick}>
-        <InfoIcon style={{ color: "white", fontSize: "30" }} />
+        <InfoIcon style={{ color: "#0A6ACA", fontSize: "30" }} />
       </IconButton>
       <Popover
         id={id}
@@ -105,24 +99,32 @@ const Header: React.FC = () => {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   return (
-    <AppBar position="static" elevation={0}>
+    <AppBar
+      position="static"
+      elevation={0}
+      style={{ backgroundColor: "white", borderBottom: "1px solid #ccc" }}
+    >
       <Container maxWidth="xl">
         <Toolbar>
           <Box m={1}>
             <img src={logo} height={50} alt="Radish logo" />
           </Box>
-          <Typography variant="h6" className={classes.title}>
-            RADIS app
+          <Typography
+            variant="h4"
+            className={classes.title}
+            style={{ fontWeight: 1000 }}
+          >
+            Radis App
           </Typography>
           <IconButton>
             <GitHubIcon
-              style={{ color: "white", fontSize: "28" }}
+              style={{ color: "#0A6ACA", fontSize: "28" }}
               onClick={() =>
                 (window.location.href = "https://github.com/suzil/radis-app")
               }
             />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}
             color="inherit"
@@ -132,7 +134,7 @@ const Header: React.FC = () => {
             ) : (
               <Brightness4Icon />
             )}
-          </IconButton>
+          </IconButton> */}
           <InfoPopover />
         </Toolbar>
       </Container>
@@ -145,21 +147,19 @@ function App(): React.ReactElement {
   const theme = useTheme();
   return (
     <div className={classes.root}>
-      {/* <ThemeProvider theme={theme}> */}
       <CssBaseline />
       <Header />
-      <Container maxWidth="none">
+      <Container style={{ maxWidth: "none" }}>
         <Box sx={{ m: 6 }}>
           <PlotSpectra />
         </Box>
       </Container>
 
-      {/* </ThemeProvider> */}
     </div>
   );
 }
 
-// export default App;
+
 
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
@@ -182,11 +182,5 @@ export default function ToggleColorMode() {
     [mode]
   );
 
-  return (
-    // <ColorModeContext.Provider value={colorMode}>
-    //   <ThemeProvider theme={theme}>
-    <App />
-    //   </ThemeProvider>
-    // </ColorModeContext.Provider>
-  );
+  return <App />;
 }

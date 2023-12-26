@@ -28,7 +28,6 @@ export const PathLength: React.FC<TGasProps> = ({ control }) => (
               <PathLengthUnit control={control} />
             </React.Fragment>
           }
-          sx={{ width: 200 }}
         />
         {formState.errors?.path_length ? (
           <FormHelperText

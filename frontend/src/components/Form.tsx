@@ -23,11 +23,9 @@ import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
-import { PressureUnit } from "./fields/PressureUnits";
-import { PathLengthUnit } from "./fields/PathLengthUnits";
-import { WaveLengthUnit } from "./fields/WaveLengthUnits";
 import { DownloadTxtButton } from "./DownloadTxtButton";
 import Switch from "@mui/joy/Switch";
+
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -147,7 +145,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
       });
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       setProgress(30);
-
 
       const rawResponse = await axios({
         url: apiEndpoint + `calculate-spectrum`,
@@ -284,7 +281,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
       control={
         <Switch
           sx={{ m: 2 }}
-          color={isNonEquilibrium ? "success" : "danger"}
           data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
           onChange={(event) => setIsNonEquilibrium(event.target.checked)}
@@ -305,7 +301,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
           control={
             <Switch
               sx={{ m: 2 }}
-              color={useSlit ? "success" : "danger"}
               data-testid="slit-switch-testid"
               checked={useSlit}
               onChange={(event: any) => {
@@ -372,20 +367,20 @@ export const Form: React.FunctionComponent<FormProps> = ({
             <Pressure control={control} />
           </Grid>
         ) : (
-          <Grid item sm={8} lg={12} style={{ backgroundColor: "green" }}>
+          <Grid item sm={8} lg={12}>
             <Pressure control={control} />
           </Grid>
         )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={6}>
+            <Grid item sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>
         ) : (
           <>
-            <Grid item sm={8} lg={6}>
+            <Grid item sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>

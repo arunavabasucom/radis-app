@@ -13,7 +13,7 @@ interface TGasProps {
 export const Pressure: React.FC<TGasProps> = ({ control }) => (
   <Controller
     render={({ field, formState }) => (
-      <FormControl>
+      <FormControl >
         <FormLabel>Pressure</FormLabel>
         <Input
           {...field}
@@ -29,7 +29,7 @@ export const Pressure: React.FC<TGasProps> = ({ control }) => (
               <PressureUnit control={control} />
             </React.Fragment>
           }
-          sx={{ width: 200 }}
+      
         />
         {formState.errors?.pressure ? (
           <FormHelperText

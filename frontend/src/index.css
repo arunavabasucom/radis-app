@@ -12,13 +12,9 @@ code {
     monospace;
 }
 
-/* Hide arrows for number input (https://stackoverflow.com/a/4298216) */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number] {
-    -moz-appearance: textfield;
-}
