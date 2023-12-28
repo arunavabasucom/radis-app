@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-// import Switch from "@mui/material/Switch";
-// import Button from "@mui/material/Button";
 import Button from "@mui/joy/Button";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
@@ -25,6 +23,7 @@ import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
 import Switch from "@mui/joy/Switch";
+import useFromStore from "../store/form";
 
 export interface Response<T> {
   data?: T;
@@ -50,15 +49,24 @@ export const Form: React.FunctionComponent<FormProps> = ({
   spectra,
   setSpectra,
 }) => {
-  const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
-  const [showNonEquilibriumSwitch, setShowNonEquilibriumSwitch] =
-    useState(false);
-  const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
-  const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
-  const [disableDownloadButton, setDisableDownloadButton] = useState(true);
-  const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
+  //zustand
+  const {
+    isNonEquilibrium,
+    toggleIsNonEquilibrium,
+    showNonEquilibriumSwitch,
+    toggleshowNonEquilibriumSwitch,
+    useSlit,
+    setUseSlit,
+    useSimulateSlitFunction,
+    setUseSimulateSlitFunction,
+    simulateSlitUnit,
+    setSimulateSlitUnit,
+    disableAddToPlotButton,
+    setDisableAddToPlotButton,
+    disableDownloadButton,
+    setDisableDownloadButton,
+  } = useFromStore(); //zustand
 
-  const [simulateSlitUnit, setSimulateSlitUnit] = useState(false);
   const {
     control,
     handleSubmit,
@@ -73,10 +81,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
   const databaseWatch = watch("database");
   React.useEffect(() => {
     if (databaseWatch === Database.GEISA) {
-      setIsNonEquilibrium(false);
-      setShowNonEquilibriumSwitch(false);
+      toggleIsNonEquilibrium(false);
+      toggleshowNonEquilibriumSwitch(false);
     } else {
-      setShowNonEquilibriumSwitch(true);
+      toggleshowNonEquilibriumSwitch(true);
     }
   }, [databaseWatch]);
 
@@ -283,7 +291,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
           sx={{ m: 2 }}
           data-testid="non-equilibrium-switch-testid"
           checked={isNonEquilibrium}
-          onChange={(event) => setIsNonEquilibrium(event.target.checked)}
+          onChange={(event) => toggleIsNonEquilibrium(event.target.checked)}
         />
       }
     />
