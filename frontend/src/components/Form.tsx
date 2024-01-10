@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/joy/Grid";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/joy/Button";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
@@ -22,7 +21,6 @@ import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
-import Switch from "@mui/joy/Switch";
 import useFromStore from "../store/form";
 import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
 import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
@@ -58,7 +56,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
     showNonEquilibriumSwitch,
     toggleshowNonEquilibriumSwitch,
     useSlit,
-    setUseSlit,
     useSimulateSlitFunction,
     setUseSimulateSlitFunction,
     simulateSlitUnit,

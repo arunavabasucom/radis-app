@@ -16,7 +16,7 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
       <FormLabel>Mode</FormLabel>
       <Controller
         name="mode"
-        defaultValue="radiance_noslit"
+        defaultValue="absorbance"
         control={control}
         render={({ field, formState }) => (
           <Select
