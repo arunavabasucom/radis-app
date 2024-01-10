@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Grid from '@mui/joy/Grid';
+import Grid from "@mui/joy/Grid";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -25,6 +25,7 @@ import { DownloadTxtButton } from "./DownloadTxtButton";
 import Switch from "@mui/joy/Switch";
 import useFromStore from "../store/form";
 import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
+import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
 
 export interface Response<T> {
   data?: T;
@@ -284,63 +285,18 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
   }, [setValue, isNonEquilibrium]);
 
-  // const UseNonEquilibriumCalculationsSwitch = () => (
-  //   <FormControlLabel
-  //     label="Use non-equilibrium calculations"
-  //     control={
-  //       <Switch
-  //         sx={{ m: 2 }}
-  //         data-testid="non-equilibrium-switch-testid"
-  //         checked={isNonEquilibrium}
-  //         onChange={(event) => toggleIsNonEquilibrium(event.target.checked)}
-  //       />
-  //     }
-  //   />
-  // );
-
-  //slit-switch
-  const UseSimulateSlit = () => (
-    <Controller
-      name="use_simulate_slit"
-      defaultValue={false}
-      control={control}
-      render={({ field }) => (
-        <FormControlLabel
-          label="Apply Instrumental Slit Function"
-          control={
-            <Switch
-              sx={{ m: 2 }}
-              data-testid="slit-switch-testid"
-              checked={useSlit}
-              onChange={(event: any) => {
-                console.log(event.target.checked);
-                setUseSlit(event.target.checked);
-                field.onChange(event.target.checked);
-                if (event.target.checked) {
-                  setValue("simulate_slit", 5);
-                } else {
-                  setValue("simulate_slit", undefined);
-                }
-              }}
-            />
-          }
-        />
-      )}
-    />
-  );
-
   return (
     <form
       onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
     >
       <Grid container spacing={3}>
-        <Grid  xs={12} sm={8} md={5} lg={6}>
+        <Grid xs={12} sm={8} md={5} lg={6}>
           <DatabaseField control={control}></DatabaseField>
         </Grid>
-        <Grid  xs={12} sm={8} md={5} lg={6}>
+        <Grid xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid  xs={12}>
+        <Grid xs={12}>
           <WavenumberRangeSlider
             isUnitChanged={simulateSlitUnit}
             minRange={simulateSlitUnit ? 1000 : 500}
@@ -351,51 +307,51 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
 
         {isNonEquilibrium ? (
-          <Grid  sm={8} lg={4}>
+          <Grid sm={8} lg={4}>
             <TGas control={control} />
           </Grid>
         ) : (
-          <Grid  sm={8} lg={12}>
+          <Grid sm={8} lg={12}>
             <TGas control={control} />
           </Grid>
         )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid  sm={8} lg={4}>
+            <Grid sm={8} lg={4}>
               <TRot control={control} />
             </Grid>
-            <Grid  sm={8} lg={4}>
+            <Grid sm={8} lg={4}>
               <TVib control={control} />
             </Grid>
           </>
         ) : null}
 
         {isNonEquilibrium ? (
-          <Grid  sm={8} lg={12}>
+          <Grid sm={8} lg={12}>
             <Pressure control={control} />
           </Grid>
         ) : (
-          <Grid  sm={8} lg={12}>
+          <Grid sm={8} lg={12}>
             <Pressure control={control} />
           </Grid>
         )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid  sm={8} lg={12}>
+            <Grid sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>
         ) : (
           <>
-            <Grid  sm={8} lg={12}>
+            <Grid sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>
         )}
 
-        <Grid  xs={12}>
+        <Grid xs={12}>
           <Species
             isNonEquilibrium={isNonEquilibrium}
             control={control}
@@ -404,14 +360,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
 
         {useSimulateSlitFunction ? (
-          <Grid  xs={12}>
-            <UseSimulateSlit />
+          <Grid xs={12}>
+            <UseSimulateSlitSwitch control={control} setValue={setValue} />
           </Grid>
         ) : null}
 
         {useSimulateSlitFunction ? (
           useSlit ? (
-            <Grid  xs={12}>
+            <Grid xs={12}>
               <SimulateSlit
                 isUnitChangeable={simulateSlitUnit}
                 control={control}
@@ -420,15 +376,15 @@ export const Form: React.FunctionComponent<FormProps> = ({
           ) : null
         ) : null}
         {showNonEquilibriumSwitch && (
-          <Grid  xs={12}>
+          <Grid xs={12}>
             {/* <UseNonEquilibriumCalculationsSwitch /> */}
-            <UseNonEquilibriumCalculationsSwitch/>
+            <UseNonEquilibriumCalculationsSwitch />
           </Grid>
         )}
-        <Grid  xs={6}>
+        <Grid xs={6}>
           <CalcSpectrumButton />
         </Grid>
-        <Grid  xs={6}>
+        <Grid xs={6}>
           <Button
             fullWidth
             disabled={disableAddToPlotButton}
@@ -439,7 +395,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             Add to plot
           </Button>
         </Grid>
-        <Grid  xs={12}>
+        <Grid xs={12}>
           <DownloadSpecButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
@@ -447,7 +403,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             })}
           />
         </Grid>
-        <Grid  xs={12}>
+        <Grid xs={12}>
           <DownloadTxtButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
