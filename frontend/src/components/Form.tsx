@@ -49,7 +49,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
   spectra,
   setSpectra,
 }) => {
-  //zustand
   const {
     isNonEquilibrium,
     toggleIsNonEquilibrium,
@@ -64,8 +63,9 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableAddToPlotButton,
     disableDownloadButton,
     setDisableDownloadButton,
-  } = useFromStore(); //zustand
+  } = useFromStore();
 
+  //TODO - we need to make it global (zuatand)
   const {
     control,
     handleSubmit,
@@ -374,7 +374,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
         ) : null}
         {showNonEquilibriumSwitch && (
           <Grid xs={12}>
-            {/* <UseNonEquilibriumCalculationsSwitch /> */}
             <UseNonEquilibriumCalculationsSwitch />
           </Grid>
         )}
