@@ -24,6 +24,7 @@ import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
 import Switch from "@mui/joy/Switch";
 import useFromStore from "../store/form";
+import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
 
 export interface Response<T> {
   data?: T;
@@ -283,19 +284,19 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
   }, [setValue, isNonEquilibrium]);
 
-  const UseNonEquilibriumCalculationsSwitch = () => (
-    <FormControlLabel
-      label="Use non-equilibrium calculations"
-      control={
-        <Switch
-          sx={{ m: 2 }}
-          data-testid="non-equilibrium-switch-testid"
-          checked={isNonEquilibrium}
-          onChange={(event) => toggleIsNonEquilibrium(event.target.checked)}
-        />
-      }
-    />
-  );
+  // const UseNonEquilibriumCalculationsSwitch = () => (
+  //   <FormControlLabel
+  //     label="Use non-equilibrium calculations"
+  //     control={
+  //       <Switch
+  //         sx={{ m: 2 }}
+  //         data-testid="non-equilibrium-switch-testid"
+  //         checked={isNonEquilibrium}
+  //         onChange={(event) => toggleIsNonEquilibrium(event.target.checked)}
+  //       />
+  //     }
+  //   />
+  // );
 
   //slit-switch
   const UseSimulateSlit = () => (
@@ -420,7 +421,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
         ) : null}
         {showNonEquilibriumSwitch && (
           <Grid  xs={12}>
-            <UseNonEquilibriumCalculationsSwitch />
+            {/* <UseNonEquilibriumCalculationsSwitch /> */}
+            <UseNonEquilibriumCalculationsSwitch/>
           </Grid>
         )}
         <Grid  xs={6}>
