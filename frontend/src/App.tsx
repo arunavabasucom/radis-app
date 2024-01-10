@@ -8,24 +8,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InfoIcon from "@mui/icons-material/Info";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PlotSpectra } from "./components/PlotSpectra";
-import { palette } from "./constants";
+
 import logo from "./logo.png";
-
-const ColorModeContext = React.createContext({
-  toggleColorMode: () => {
-    console.warn("toggleColorMode has no implementation");
-  },
-});
-
-export const theme = createTheme({
-  palette,
-});
-
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -96,8 +84,6 @@ const InfoPopover = () => {
 
 const Header: React.FC = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
   return (
     <AppBar
       position="static"
@@ -142,9 +128,9 @@ const Header: React.FC = () => {
   );
 };
 
-function App(): React.ReactElement {
+export default function App(): React.ReactElement {
   const classes = useStyles();
-  const theme = useTheme();
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -154,33 +140,6 @@ function App(): React.ReactElement {
           <PlotSpectra />
         </Box>
       </Container>
-
     </div>
   );
-}
-
-
-
-export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState<"light" | "dark">("light");
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-    }),
-    []
-  );
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
-
-  return <App />;
 }

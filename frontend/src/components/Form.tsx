@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/joy/Grid';
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -333,13 +333,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
       onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
     >
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={8} md={5} lg={6}>
+        <Grid  xs={12} sm={8} md={5} lg={6}>
           <DatabaseField control={control}></DatabaseField>
         </Grid>
-        <Grid item xs={12} sm={8} md={5} lg={6}>
+        <Grid  xs={12} sm={8} md={5} lg={6}>
           <Mode control={control} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid  xs={12}>
           <WavenumberRangeSlider
             isUnitChanged={simulateSlitUnit}
             minRange={simulateSlitUnit ? 1000 : 500}
@@ -350,51 +350,51 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
 
         {isNonEquilibrium ? (
-          <Grid item sm={8} lg={4}>
+          <Grid  sm={8} lg={4}>
             <TGas control={control} />
           </Grid>
         ) : (
-          <Grid item sm={8} lg={12}>
+          <Grid  sm={8} lg={12}>
             <TGas control={control} />
           </Grid>
         )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={4}>
+            <Grid  sm={8} lg={4}>
               <TRot control={control} />
             </Grid>
-            <Grid item sm={8} lg={4}>
+            <Grid  sm={8} lg={4}>
               <TVib control={control} />
             </Grid>
           </>
         ) : null}
 
         {isNonEquilibrium ? (
-          <Grid item sm={8} lg={12}>
+          <Grid  sm={8} lg={12}>
             <Pressure control={control} />
           </Grid>
         ) : (
-          <Grid item sm={8} lg={12}>
+          <Grid  sm={8} lg={12}>
             <Pressure control={control} />
           </Grid>
         )}
 
         {isNonEquilibrium ? (
           <>
-            <Grid item sm={8} lg={12}>
+            <Grid  sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>
         ) : (
           <>
-            <Grid item sm={8} lg={12}>
+            <Grid  sm={8} lg={12}>
               <PathLength control={control} />
             </Grid>
           </>
         )}
 
-        <Grid item xs={12}>
+        <Grid  xs={12}>
           <Species
             isNonEquilibrium={isNonEquilibrium}
             control={control}
@@ -403,14 +403,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
         </Grid>
 
         {useSimulateSlitFunction ? (
-          <Grid item xs={12}>
+          <Grid  xs={12}>
             <UseSimulateSlit />
           </Grid>
         ) : null}
 
         {useSimulateSlitFunction ? (
           useSlit ? (
-            <Grid item xs={12}>
+            <Grid  xs={12}>
               <SimulateSlit
                 isUnitChangeable={simulateSlitUnit}
                 control={control}
@@ -419,14 +419,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
           ) : null
         ) : null}
         {showNonEquilibriumSwitch && (
-          <Grid item xs={12}>
+          <Grid  xs={12}>
             <UseNonEquilibriumCalculationsSwitch />
           </Grid>
         )}
-        <Grid item xs={6}>
+        <Grid  xs={6}>
           <CalcSpectrumButton />
         </Grid>
-        <Grid item xs={6}>
+        <Grid  xs={6}>
           <Button
             fullWidth
             disabled={disableAddToPlotButton}
@@ -437,7 +437,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             Add to plot
           </Button>
         </Grid>
-        <Grid item xs={12}>
+        <Grid  xs={12}>
           <DownloadSpecButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
@@ -445,7 +445,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
             })}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid  xs={12}>
           <DownloadTxtButton
             disabled={disableDownloadButton}
             onClick={handleSubmit((data) => {
