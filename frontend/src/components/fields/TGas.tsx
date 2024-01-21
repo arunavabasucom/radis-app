@@ -2,7 +2,6 @@ import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
-import InputAdornment from "@mui/material/InputAdornment";
 import {  Controller, useFormContext } from "react-hook-form";
 
 
@@ -11,6 +10,9 @@ export const TGas: React.FC = () => {
   const { control } = useFormContext();
   return (
     <Controller
+      name="tgas"
+      control={control}
+      defaultValue={300}
       render={({ field, fieldState }) => (
         <FormControl>
           <FormLabel>TGas</FormLabel>
@@ -21,7 +23,7 @@ export const TGas: React.FC = () => {
             onChange={field.onChange}
             value={field.value}
             error={!!fieldState.error}
-            endDecorator={<InputAdornment position="end">K</InputAdornment>}
+            endDecorator={"k"}
             onKeyPress={(event: any) => {
               if (event?.key === "-" || event?.key === "+") {
                 event.preventDefault();
@@ -39,9 +41,6 @@ export const TGas: React.FC = () => {
           ) : null}
         </FormControl>
       )}
-      name="tgas"
-      control={control}
-      defaultValue={300}
     />
   );
 };
