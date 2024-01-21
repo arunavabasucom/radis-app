@@ -292,10 +292,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
       >
         <Grid container spacing={3}>
           <Grid xs={12} sm={8} md={5} lg={6}>
-            <DatabaseField control={control}></DatabaseField>
+            <DatabaseField />
           </Grid>
           <Grid xs={12} sm={8} md={5} lg={6}>
-            <Mode control={control} />
+            <Mode  />
           </Grid>
           <Grid xs={12}>
             <WavenumberRangeSlider
@@ -309,7 +309,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={4}>
-              <TGas control={control} />
+              <TGas  />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
@@ -320,34 +320,34 @@ export const Form: React.FunctionComponent<FormProps> = ({
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={4}>
-                <TRot control={control} />
+                <TRot  />
               </Grid>
               <Grid sm={8} lg={4}>
-                <TVib control={control} />
+                <TVib  />
               </Grid>
             </>
           ) : null}
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={12}>
-              <Pressure control={control} />
+              <Pressure  />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
-              <Pressure control={control} />
+              <Pressure  />
             </Grid>
           )}
 
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength control={control} />
+                <PathLength  />
               </Grid>
             </>
           ) : (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength control={control} />
+                <PathLength  />
               </Grid>
             </>
           )}
@@ -362,7 +362,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
           {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              <UseSimulateSlitSwitch control={control} setValue={setValue} />
+              <UseSimulateSlitSwitch   />
             </Grid>
           ) : null}
 
@@ -370,8 +370,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
             useSlit ? (
               <Grid xs={12}>
                 <SimulateSlit
-                  isUnitChangeable={simulateSlitUnit}
-                  control={control}
                 />
               </Grid>
             ) : null
