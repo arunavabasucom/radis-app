@@ -13,7 +13,9 @@ interface SimulateSlitProps {
 export const SimulateSlit: React.FC<SimulateSlitProps> = ({
   control,
   isUnitChangeable,
-}) => (
+}) =>
+
+(
   <Controller
     render={({ field, formState }) => (
       <FormControl>

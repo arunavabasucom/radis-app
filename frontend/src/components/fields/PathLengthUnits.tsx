@@ -1,24 +1,21 @@
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import FormControl from "@mui/joy/FormControl";
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
+import {  Controller, useFormContext } from "react-hook-form";
 
-interface PathLengthUnitsProps {
-  control: Control<FormValues>;
-}
 
-export const PathLengthUnit: React.FC<PathLengthUnitsProps> = ({ control }) => {
+
+export const PathLengthUnit: React.FC = () => {
+  const { control } = useFormContext();
   return (
     <FormControl>
       <Controller
         name="path_length_units"
         defaultValue="u.cm"
         control={control}
-        render={({ field, formState }) => (
+        render={({ field }) => (
           <Select
             {...field}
-            {...formState}
             variant="plain"
             id="mode-select"
             onChange={(_, value) => {

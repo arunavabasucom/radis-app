@@ -2,14 +2,13 @@ import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import FormLabel from "@mui/joy/FormLabel";
 import FormControl from "@mui/joy/FormControl";
-import { Control, Controller } from "react-hook-form";
-import { Database as TDatabase, FormValues } from "../types";
+import {  Controller, useFormContext } from "react-hook-form";
+import { Database as TDatabase } from "../types";
 
-interface DatabaseProps {
-  control: Control<FormValues>;
-}
 
-export const Database: React.FC<DatabaseProps> = ({ control }) => {
+
+export const Database: React.FC = () => {
+  const { control } = useFormContext();
   return (
     <FormControl>
       <FormLabel>Database</FormLabel>

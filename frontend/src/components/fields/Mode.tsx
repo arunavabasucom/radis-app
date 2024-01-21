@@ -4,13 +4,10 @@ import FormLabel from "@mui/joy/FormLabel";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
-interface DatabaseProps {
-  control: Control<FormValues>;
-}
+import { Controller, useFormContext } from "react-hook-form";
 
-export const Mode: React.FC<DatabaseProps> = ({ control }) => {
+export const Mode: React.FC = () => {
+  const { control } = useFormContext();
   return (
     <FormControl>
       <FormLabel>Mode</FormLabel>
@@ -18,10 +15,9 @@ export const Mode: React.FC<DatabaseProps> = ({ control }) => {
         name="mode"
         defaultValue="absorbance"
         control={control}
-        render={({ field, formState }) => (
+        render={({ field }) => (
           <Select
             {...field}
-            {...formState}
             onChange={(_, value) => {
               field.onChange(value);
             }}
