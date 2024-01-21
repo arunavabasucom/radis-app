@@ -1,49 +1,49 @@
-import React, { ReactNode } from "react";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
+import {Controller, useFormContext } from "react-hook-form";
+
 import { PressureUnit } from "./PressureUnits";
 import Divider from "@mui/joy/Divider";
-interface TGasProps {
-  control: Control<FormValues>;
-}
-export const Pressure: React.FC<TGasProps> = ({ control }) => (
-  <Controller
-    render={({ field, formState }) => (
-      <FormControl >
+
+export const Pressure: React.FC = () => {
+    const { control } = useFormContext();
+  
+  return (
+    
+    <Controller
+      name="pressure"
+    control={control}
+    defaultValue={1.01325}
+    render={({ field, fieldState }) => (
+      <FormControl>
         <FormLabel>Pressure</FormLabel>
         <Input
           {...field}
-          {...formState}
           id="pressure-input"
           type="number"
           onChange={field.onChange}
           value={field.value}
-          error={!!formState.errors?.pressure}
+          error={!!fieldState.error}
           endDecorator={
-            <React.Fragment>
+            <div>
               <Divider orientation="vertical" />
-              <PressureUnit control={control} />
-            </React.Fragment>
+              <PressureUnit />
+            </div>
           }
-      
         />
-        {formState.errors?.pressure ? (
+        {fieldState.error ? (
           <FormHelperText
             sx={{
               color: "red",
             }}
           >
-            {formState.errors?.pressure?.message}
+            {fieldState.error.message}
           </FormHelperText>
         ) : null}
       </FormControl>
     )}
-    name="pressure"
-    control={control}
-    defaultValue={1.01325}
-  />
-);
+  
+  />);
+};

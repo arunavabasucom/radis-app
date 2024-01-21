@@ -1,25 +1,20 @@
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
-// import FormLabel from "@mui/joy/FormLabel";
-import FormControl from "@mui/joy/FormControl";
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
+import { Controller, useFormContext } from "react-hook-form";
 
-interface PressureUnitsProps {
-  control: Control<FormValues>;
-}
 
-export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
+
+export const PressureUnit: React.FC = () => {
+  const { control } = useFormContext();
+  
   return (
-    <FormControl>
       <Controller
         name="pressure_units"
         defaultValue="u.bar"
         control={control}
-        render={({ field, formState }) => (
+        render={({ field }) => (
           <Select
             {...field}
-            {...formState}
             variant="plain"
             id="mode-select"
             onChange={(_, value) => {
@@ -42,6 +37,5 @@ export const PressureUnit: React.FC<PressureUnitsProps> = ({ control }) => {
           </Select>
         )}
       />
-    </FormControl>
   );
 };
