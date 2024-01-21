@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/joy/Grid";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/joy/Button";
@@ -65,17 +65,20 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton,
   } = useFromStore();
 
-  //TODO - we need to make it global (zuatand)
+  //TODO - we need to make it global
+
+  const methods = useForm<FormValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    resolver: yupResolver(formSchema),
+  });
+
   const {
     control,
     handleSubmit,
     setValue,
     watch,
     formState: { dirtyFields },
-  } = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
-    resolver: yupResolver(formSchema),
-  });
+  } = methods;
 
   const databaseWatch = watch("database");
   React.useEffect(() => {
@@ -283,131 +286,133 @@ export const Form: React.FunctionComponent<FormProps> = ({
   }, [setValue, isNonEquilibrium]);
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
-    >
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={8} md={5} lg={6}>
-          <DatabaseField control={control}></DatabaseField>
-        </Grid>
-        <Grid xs={12} sm={8} md={5} lg={6}>
-          <Mode control={control} />
-        </Grid>
-        <Grid xs={12}>
-          <WavenumberRangeSlider
-            isUnitChanged={simulateSlitUnit}
-            minRange={simulateSlitUnit ? 1000 : 500}
-            maxRange={simulateSlitUnit ? 20000 : 10000}
-            control={control}
-            setValue={setValue}
-          />
-        </Grid>
-
-        {isNonEquilibrium ? (
-          <Grid sm={8} lg={4}>
-            <TGas control={control} />
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
+      >
+        <Grid container spacing={3}>
+          <Grid xs={12} sm={8} md={5} lg={6}>
+            <DatabaseField control={control}></DatabaseField>
           </Grid>
-        ) : (
-          <Grid sm={8} lg={12}>
-            <TGas control={control} />
+          <Grid xs={12} sm={8} md={5} lg={6}>
+            <Mode control={control} />
           </Grid>
-        )}
-
-        {isNonEquilibrium ? (
-          <>
-            <Grid sm={8} lg={4}>
-              <TRot control={control} />
-            </Grid>
-            <Grid sm={8} lg={4}>
-              <TVib control={control} />
-            </Grid>
-          </>
-        ) : null}
-
-        {isNonEquilibrium ? (
-          <Grid sm={8} lg={12}>
-            <Pressure control={control} />
-          </Grid>
-        ) : (
-          <Grid sm={8} lg={12}>
-            <Pressure control={control} />
-          </Grid>
-        )}
-
-        {isNonEquilibrium ? (
-          <>
-            <Grid sm={8} lg={12}>
-              <PathLength control={control} />
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid sm={8} lg={12}>
-              <PathLength control={control} />
-            </Grid>
-          </>
-        )}
-
-        <Grid xs={12}>
-          <Species
-            isNonEquilibrium={isNonEquilibrium}
-            control={control}
-            databaseWatch={databaseWatch}
-          />
-        </Grid>
-
-        {useSimulateSlitFunction ? (
           <Grid xs={12}>
-            <UseSimulateSlitSwitch control={control} setValue={setValue} />
+            <WavenumberRangeSlider
+              isUnitChanged={simulateSlitUnit}
+              minRange={simulateSlitUnit ? 1000 : 500}
+              maxRange={simulateSlitUnit ? 20000 : 10000}
+              control={control}
+              setValue={setValue}
+            />
           </Grid>
-        ) : null}
 
-        {useSimulateSlitFunction ? (
-          useSlit ? (
+          {isNonEquilibrium ? (
+            <Grid sm={8} lg={4}>
+              <TGas control={control} />
+            </Grid>
+          ) : (
+            <Grid sm={8} lg={12}>
+              <TGas />
+            </Grid>
+          )}
+
+          {isNonEquilibrium ? (
+            <>
+              <Grid sm={8} lg={4}>
+                <TRot control={control} />
+              </Grid>
+              <Grid sm={8} lg={4}>
+                <TVib control={control} />
+              </Grid>
+            </>
+          ) : null}
+
+          {isNonEquilibrium ? (
+            <Grid sm={8} lg={12}>
+              <Pressure control={control} />
+            </Grid>
+          ) : (
+            <Grid sm={8} lg={12}>
+              <Pressure control={control} />
+            </Grid>
+          )}
+
+          {isNonEquilibrium ? (
+            <>
+              <Grid sm={8} lg={12}>
+                <PathLength control={control} />
+              </Grid>
+            </>
+          ) : (
+            <>
+              <Grid sm={8} lg={12}>
+                <PathLength control={control} />
+              </Grid>
+            </>
+          )}
+
+          <Grid xs={12}>
+            <Species
+              isNonEquilibrium={isNonEquilibrium}
+              control={control}
+              databaseWatch={databaseWatch}
+            />
+          </Grid>
+
+          {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              <SimulateSlit
-                isUnitChangeable={simulateSlitUnit}
-                control={control}
-              />
+              <UseSimulateSlitSwitch control={control} setValue={setValue} />
             </Grid>
-          ) : null
-        ) : null}
-        {showNonEquilibriumSwitch && (
-          <Grid xs={12}>
-            <UseNonEquilibriumCalculationsSwitch />
+          ) : null}
+
+          {useSimulateSlitFunction ? (
+            useSlit ? (
+              <Grid xs={12}>
+                <SimulateSlit
+                  isUnitChangeable={simulateSlitUnit}
+                  control={control}
+                />
+              </Grid>
+            ) : null
+          ) : null}
+          {showNonEquilibriumSwitch && (
+            <Grid xs={12}>
+              <UseNonEquilibriumCalculationsSwitch />
+            </Grid>
+          )}
+          <Grid xs={6}>
+            <CalcSpectrumButton />
           </Grid>
-        )}
-        <Grid xs={6}>
-          <CalcSpectrumButton />
+          <Grid xs={6}>
+            <Button
+              fullWidth
+              disabled={disableAddToPlotButton}
+              onClick={handleSubmit((data) =>
+                onSubmit(data, `calculate-spectrum`, true)
+              )}
+            >
+              Add to plot
+            </Button>
+          </Grid>
+          <Grid xs={12}>
+            <DownloadSpecButton
+              disabled={disableDownloadButton}
+              onClick={handleSubmit((data) => {
+                onSubmit(data, `download-spectrum`);
+              })}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <DownloadTxtButton
+              disabled={disableDownloadButton}
+              onClick={handleSubmit((data) => {
+                onSubmit(data, `download-txt`);
+              })}
+            />
+          </Grid>
         </Grid>
-        <Grid xs={6}>
-          <Button
-            fullWidth
-            disabled={disableAddToPlotButton}
-            onClick={handleSubmit((data) =>
-              onSubmit(data, `calculate-spectrum`, true)
-            )}
-          >
-            Add to plot
-          </Button>
-        </Grid>
-        <Grid xs={12}>
-          <DownloadSpecButton
-            disabled={disableDownloadButton}
-            onClick={handleSubmit((data) => {
-              onSubmit(data, `download-spectrum`);
-            })}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <DownloadTxtButton
-            disabled={disableDownloadButton}
-            onClick={handleSubmit((data) => {
-              onSubmit(data, `download-txt`);
-            })}
-          />
-        </Grid>
-      </Grid>
-    </form>
+      </form>
+    </FormProvider>
   );
 };
