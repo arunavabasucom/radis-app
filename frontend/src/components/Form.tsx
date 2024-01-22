@@ -295,21 +295,15 @@ export const Form: React.FunctionComponent<FormProps> = ({
             <DatabaseField />
           </Grid>
           <Grid xs={12} sm={8} md={5} lg={6}>
-            <Mode  />
+            <Mode />
           </Grid>
           <Grid xs={12}>
-            <WavenumberRangeSlider
-              isUnitChanged={simulateSlitUnit}
-              minRange={simulateSlitUnit ? 1000 : 500}
-              maxRange={simulateSlitUnit ? 20000 : 10000}
-              control={control}
-              setValue={setValue}
-            />
+            <WavenumberRangeSlider />
           </Grid>
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={4}>
-              <TGas  />
+              <TGas />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
@@ -320,34 +314,34 @@ export const Form: React.FunctionComponent<FormProps> = ({
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={4}>
-                <TRot  />
+                <TRot />
               </Grid>
               <Grid sm={8} lg={4}>
-                <TVib  />
+                <TVib />
               </Grid>
             </>
           ) : null}
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={12}>
-              <Pressure  />
+              <Pressure />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
-              <Pressure  />
+              <Pressure />
             </Grid>
           )}
 
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength  />
+                <PathLength />
               </Grid>
             </>
           ) : (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength  />
+                <PathLength />
               </Grid>
             </>
           )}
@@ -362,15 +356,14 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
           {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              <UseSimulateSlitSwitch   />
+              <UseSimulateSlitSwitch />
             </Grid>
           ) : null}
 
           {useSimulateSlitFunction ? (
             useSlit ? (
               <Grid xs={12}>
-                <SimulateSlit
-                />
+                <SimulateSlit />
               </Grid>
             ) : null
           ) : null}

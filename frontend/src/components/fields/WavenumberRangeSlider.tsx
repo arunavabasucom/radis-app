@@ -1,39 +1,28 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
 import Slider from "@mui/joy/Slider";
 import Input from "@mui/joy/Input";
-import { Control, Controller, UseFormSetValue } from "react-hook-form";
+import {
+  Controller,
+  useFormContext,
+} from "react-hook-form";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
+
 import { FormValues } from "../types";
 import Divider from "@mui/joy/Divider";
 import { WaveLengthUnit } from "./WaveLengthUnits";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-interface WavelengthRangeSliderProps {
-  minRange: number;
-  maxRange: number;
-  control: Control<FormValues>;
-  setValue: UseFormSetValue<FormValues>;
-  isUnitChanged: boolean;
-}
-const useStyles = makeStyles({
-  input: {
-    width: 52,
-  },
-});
-export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
-  minRange,
-  maxRange,
-  control,
-  setValue,
-  isUnitChanged,
-}) => {
-  const classes = useStyles();
+import useFromStore from "../../store/form";
+
+export const WavenumberRangeSlider: React.FC = () => {
+  const { control, setValue } = useFormContext();
+  const { simulateSlitUnit: isUnitChanged } = useFromStore();
+  const minRange = isUnitChanged ? 1000 : 500;
+  const maxRange = isUnitChanged ? 20000 : 10000;
+
   const [lowerRange, setLowerRange] = React.useState<number | any>(1900);
   const [upperRange, setUpperRange] = React.useState<number | any>(2300);
 
-  
   React.useEffect(() => {
     setValue("min_wavenumber_range", lowerRange === "" ? minRange : lowerRange);
     setValue("max_wavenumber_range", upperRange === "" ? maxRange : upperRange);
@@ -73,7 +62,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
       endDecorator={
         <React.Fragment>
           <Divider orientation="vertical" />
-          <WaveLengthUnit control={control} />
+          <WaveLengthUnit  />
         </React.Fragment>
       }
     />
