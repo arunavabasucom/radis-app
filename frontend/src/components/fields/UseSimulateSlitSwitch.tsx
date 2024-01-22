@@ -3,7 +3,7 @@ import {  Controller, useFormContext } from "react-hook-form";
 import useFromStore from "../../store/form";
 
 function UseSimulateSlitSwitch() {
-  const { useSlit, setUseSlit } = useFromStore(); //zustand
+  const { useSlit, setUseSlit } = useFromStore(); 
   const { control, setValue } = useFormContext();
 
   return (

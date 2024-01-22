@@ -32,6 +32,8 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
   const classes = useStyles();
   const [lowerRange, setLowerRange] = React.useState<number | any>(1900);
   const [upperRange, setUpperRange] = React.useState<number | any>(2300);
+
+  
   React.useEffect(() => {
     setValue("min_wavenumber_range", lowerRange === "" ? minRange : lowerRange);
     setValue("max_wavenumber_range", upperRange === "" ? maxRange : upperRange);
