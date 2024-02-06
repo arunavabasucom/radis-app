@@ -7,7 +7,7 @@ interface TFromState {
   useSlit: boolean; // slit input
   useSimulateSlitFunction: boolean; // slit switch
   simulateSlitUnit: boolean; // slit unit
-  disableDownloadButton: boolean;
+  disableDownloadButton: boolean; // disableDownloadButton
   disableAddToPlotButton: boolean;
 }
 
