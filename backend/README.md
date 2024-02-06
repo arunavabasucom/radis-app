@@ -36,3 +36,7 @@ to start redis server
 
 info about the file 
 `ls -lh CO.hdf5`
+
+# getting the coverage information
+
+coverage run --source=src -m pytest -v __tests__/ && coverage report -m && coverage html && coverage xml
