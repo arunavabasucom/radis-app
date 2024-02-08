@@ -1,12 +1,12 @@
+import json
 import radis
+import logging
+import aioredis
 import numpy as np
-from fastapi import APIRouter, Depends
 import astropy.units as u
+from fastapi import APIRouter, Depends
 from src.models.payload import Payload
 from src.helpers.calculateSpectrum import calculate_spectrum
-import aioredis
-import json
-import logging
 
 router = APIRouter()
 
@@ -20,7 +20,9 @@ async def get_redis_client():
     return redis
 
 def serialize_payload(payload: Payload):
-    # Serialize the Payload object to a JSON string
+    '''
+    convert to payload to string
+    '''
     return json.dumps(payload.dict())
 
 @router.post("/calculate-spectrum")
@@ -79,7 +81,7 @@ async def calc_spectrum(
 
         # Use Redis for caching if the connection is available
         if redis:
-            # Cache the result in Redis with a time-to-live (TTL) of 3600 seconds (1 hour)
-            await redis.setex(f"calc_spectrum:{serialized_payload}", 3600, json.dumps(result))
+    
+            await redis.setex(f"calc_spectrum:{serialized_payload}", 1800, json.dumps(result))
 
         return result

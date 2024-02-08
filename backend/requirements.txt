@@ -1,3 +1,4 @@
+aioredis
 pandas==2.0.3
 numpy==1.22.3
 radis==0.14

@@ -133,3 +133,4 @@ cdk.out
 # !frontend/src/radis.d.ts
 frontend/coverage
 frontend/html
+backend/.coverage
