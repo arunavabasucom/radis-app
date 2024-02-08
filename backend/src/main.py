@@ -1,8 +1,10 @@
 from  fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.routes import  calculateSpectrum ,downloadSpectrum,downloadTxt,root
-import astropy.units as u
-from astropy.units import cds
+# import astropy.units as u
+# from astropy.units import cds
+
+
 
 
 # for high resolution
