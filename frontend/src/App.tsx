@@ -1,20 +1,12 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Popover from "@mui/material/Popover";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import InfoIcon from "@mui/icons-material/Info";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PlotSpectra } from "./components/PlotSpectra";
+import { Header } from "./components/Header";
 
-import logo from "./logo.png";
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
@@ -25,112 +17,8 @@ const useStyles = makeStyles({
   },
 });
 
-const InfoPopover = () => {
-  const [anchorEl, setAnchorEl] = useState<
-    (EventTarget & HTMLButtonElement) | null
-  >(null);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
-  return (
-    <div>
-      <IconButton onClick={handleClick}>
-        <InfoIcon style={{ color: "#0A6ACA", fontSize: "30" }} />
-      </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
-        <Typography style={{ width: 300, padding: 10 }}>
-          Powered by{" "}
-          <a href="https://radis.github.io/" rel="noreferrer">
-            RADIS
-          </a>
-          , based on{" "}
-          <a href="https://hitran.org/" rel="noreferrer">
-            the HITRAN database
-          </a>
-          .<br />
-          <br />
-          For research-grade use, start{" "}
-          <a href="https://radis.github.io/radis-lab/" rel="noreferrer">
-            🌱 Radis-Lab
-          </a>{" "}
-          with preconfigured databases (HITRAN, HITEMP) and an online Python
-          Jupyter environment (no install needed).
-        </Typography>
-      </Popover>
-    </div>
-  );
-};
-
-const Header: React.FC = () => {
-  const classes = useStyles();
-  return (
-    <AppBar
-      position="static"
-      elevation={0}
-      style={{ backgroundColor: "white", borderBottom: "1px solid #ccc" }}
-    >
-      <Container maxWidth="xl">
-        <Toolbar>
-          <Box m={1}>
-            <img src={logo} height={50} alt="Radish logo" />
-          </Box>
-          <Typography
-            variant="h4"
-            className={classes.title}
-            style={{ fontWeight: 1000 }}
-          >
-            Radis App
-          </Typography>
-          <IconButton>
-            <GitHubIcon
-              style={{ color: "#0A6ACA", fontSize: "28" }}
-              onClick={() =>
-                (window.location.href = "https://github.com/suzil/radis-app")
-              }
-            />
-          </IconButton>
-          {/* <IconButton
-            sx={{ ml: 1 }}
-            onClick={colorMode.toggleColorMode}
-            color="inherit"
-          >
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
-          </IconButton> */}
-          <InfoPopover />
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
-};
-
 export default function App(): React.ReactElement {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <CssBaseline />
