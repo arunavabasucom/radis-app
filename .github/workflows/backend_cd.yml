@@ -58,7 +58,7 @@ jobs:
             
       - name: Deploy to Cloud Run
         run: |
-         gcloud run deploy $SERVICE_NAME \ 
+         gcloud run deploy radisapp_backend \ 
          --image $CONTAINER_NAME:latest \  
          --platform managed --project $REPO_NAME \ 
          --region $REGION
