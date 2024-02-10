@@ -62,5 +62,6 @@ jobs:
          --image $CONTAINER_NAME:latest \  
          --platform managed --project $REPO_NAME \ 
          --region $REGION
+         --quiet
 
  
