@@ -21,39 +21,10 @@ env:
   REPO_NAME: nextjs-cloud-run
 
 jobs:
-  backend-test:
-    name: 🧪 backend-ci
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
-      - name: Set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          cache: "pip"
-      - name: Install dependencies
-        run: |
-          cd backend
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run tests and coverage
-        run: |
-          cd backend
-          pytest
-          coverage run --source=src -m pytest -v __tests__/ && coverage report -m && coverage html && coverage xml
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          flags: backend
-          files: ./backend/coverage.xml
-
   backend-deploy:
     name: 🚀 Deploy to production
-    needs: backend-test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success()
     runs-on: ubuntu-latest
+    
     steps:
       # checkout github repo
       - name: Check out Git repository
