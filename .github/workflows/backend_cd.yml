@@ -18,6 +18,8 @@ defaults:
 
 env:
   CONTAINER_NAME: arunavabasu03/radisapp_backend
+  REPO_NAME: ${{ secrets.REPO_NAME }}
+  SERVICE_NAME : ${{ secrets.SERVICE_NAME }}
   REGION: us-central1
 
 
@@ -56,8 +58,9 @@ jobs:
             
       - name: Deploy to Cloud Run
         run: |
-           gcloud run deploy $REPO_NAME \
-           --region $REGION \
-           --image  $CONTAINER_NAME:latest\
-           --platform managed 
-           --quiet
+         gcloud run deploy $SERVICE_NAME \  
+         --image $CONTAINER_NAME:latest \  
+         --platform managed --project $REPO_NAME \ 
+         --region $REGION \ 
+         --quiet
+ 
