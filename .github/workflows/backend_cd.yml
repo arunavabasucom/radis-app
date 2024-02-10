@@ -44,7 +44,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t $CONTAINER_NAME:${{ github.sha }} -t $CONTAINER_NAME:latest .
+          cd backend && docker build -t $CONTAINER_NAME:${{ github.sha }} -t $CONTAINER_NAME:latest .
 
           docker push $CONTAINER_NAME:${{ github.sha }}
 
