@@ -12,10 +12,12 @@ on:
   pull_request:
     branches:
       - main
+defaults:
+ run:
+  working-directory: ./backend
 
 env:
   CONTAINER_NAME: arunavabasu03/radisapp_backend
-  PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
   REGION: us-east1
 
   REPO_NAME: nextjs-cloud-run
