@@ -40,11 +40,12 @@ jobs:
           username: arunavabasu03
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - uses: "google-github-actions/auth@v2"
+      - name: Login to GCP
+        uses: "google-github-actions/auth@v2"
         with:
           credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
       
-      - name: "Set up Cloud SDK"
+      - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"
       
       
@@ -64,7 +65,7 @@ jobs:
       #    --project $REPO_NAME \ 
       #    --region $REGION
       #    --quiet
-      - id: 'deploy'
+      - name: Deploy to cloud run
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
          service: $SERVICE_NAME
