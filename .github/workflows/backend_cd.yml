@@ -43,7 +43,7 @@ jobs:
       - name: Login to GCP
         uses: "google-github-actions/auth@v2"
         with:
-          project_id: $REPO_NAME
+          project_id: ${{ secrets.PROJECT_ID }}
           credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
       
       - name: Set up Cloud SDK
