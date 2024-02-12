@@ -43,6 +43,7 @@ jobs:
       - name: Login to GCP
         uses: "google-github-actions/auth@v2"
         with:
+          project_id: $REPO_NAME
           credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
       
       - name: Set up Cloud SDK
@@ -70,7 +71,7 @@ jobs:
         with:
          service: $SERVICE_NAME
          image: $CONTAINER_NAME:latest
-         project_id: $REPO_NAME 
+
 
       - name: 'Use output'
         run: 'curl "${{ steps.deploy.outputs.url }}"'
