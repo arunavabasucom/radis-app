@@ -17,10 +17,10 @@ defaults:
   working-directory: ./backend
 
 env:
-  CONTAINER_NAME: arunavabasu03/radisapp_backend
+  REGION: ${{ secrets.REGION }}
   REPO_NAME: ${{ secrets.REPO_NAME }}
   SERVICE_NAME : ${{ secrets.SERVICE_NAME }}
-  REGION: us-central1
+  CONTAINER_NAME:  ${{ secrets.CONTAINER_NAME }}
 
 
 
@@ -56,12 +56,22 @@ jobs:
         run: |
           docker push $CONTAINER_NAME:${{ github.sha }} && docker push $CONTAINER_NAME:latest
             
-      - name: Deploy to Cloud Run
-        run: |
-         gcloud run deploy radisapp_backend \ 
-         --image $CONTAINER_NAME:latest \  
-         --platform managed --project $REPO_NAME \ 
-         --region $REGION
-         --quiet
+      # - name: Deploy to Cloud Run
+      #   run: |
+      #    gcloud run deploy $SERVICE_NAME \ 
+      #    --image $CONTAINER_NAME:latest \  
+      #    --platform managed \ 
+      #    --project $REPO_NAME \ 
+      #    --region $REGION
+      #    --quiet
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+         service: $SERVICE_NAME
+         image: $CONTAINER_NAME:latest
+         project_id: $REPO_NAME 
+
+      - name: 'Use output'
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
 
  
