@@ -17,9 +17,6 @@ defaults:
   working-directory: ./backend
 
 env:
-  REGION: ${{ secrets.REGION }}
-  REPO_NAME: ${{ secrets.REPO_NAME }}
-  SERVICE_NAME : ${{ secrets.SERVICE_NAME }}
   CONTAINER_NAME:  ${{ secrets.CONTAINER_NAME }}
 
 
@@ -69,8 +66,8 @@ jobs:
       - name: Deploy to cloud run
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-         service: $SERVICE_NAME
-         image: $CONTAINER_NAME:latest
+         service: ${{ secrets.SERVICE_NAME }}
+         image: ${{ secrets.CONTAINER_NAME }}
 
 
       - name: 'Use output'
