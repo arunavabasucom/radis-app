@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   backend-deploy:
-    name: 🚀 Deploy to production
+    name: 🚀 Deploy backend to production
     runs-on: ubuntu-latest
     
     steps:
@@ -39,6 +39,9 @@ jobs:
         with:
           project_id: ${{ secrets.PROJECT_ID }}
           credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"      
