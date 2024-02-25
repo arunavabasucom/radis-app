@@ -49,8 +49,7 @@ jobs:
       - name: Build Tag and Push Docker image
         uses: docker/build-push-action@v4
         with:
-          file: ./Dockerfile
-          context: radisapp_backend
+          context: .
           tags:  "arunavabasu03/radisapp_backend:latest" 
           push: true
           cache-from: type=gha
