@@ -16,9 +16,6 @@ defaults:
  run:
   working-directory: ./backend
 
-env:
-  CONTAINER_NAME:  ${{ secrets.CONTAINER_NAME }}
-
 
 
 jobs:
@@ -44,33 +41,20 @@ jobs:
           credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
       
       - name: Set up Cloud SDK
-        uses: "google-github-actions/setup-gcloud@v2"
-      
-      
-      - name: Build  Docker image
-        run: |
-          docker build -t $CONTAINER_NAME:${{ github.sha }} -t $CONTAINER_NAME:latest .
-
-      - name: Push Docker image
-        run: |
-          docker push $CONTAINER_NAME:${{ github.sha }} && docker push $CONTAINER_NAME:latest
-            
-      # - name: Deploy to Cloud Run
-      #   run: |
-      #    gcloud run deploy $SERVICE_NAME \ 
-      #    --image $CONTAINER_NAME:latest \  
-      #    --platform managed \ 
-      #    --project $REPO_NAME \ 
-      #    --region $REGION
-      #    --quiet
+        uses: "google-github-actions/setup-gcloud@v2"      
+    
+      - name: Build Tag and Push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          file: ./Dockerfile
+          context: radisapp_backend
+          tags:  "arunavabasu03/radisapp_backend:latest" 
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+    
       - name: Deploy to cloud run
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-         service: ${{ secrets.SERVICE_NAME }}
+         service: radisapp-backend
          image: ${{ secrets.CONTAINER_NAME }}
-
-
-      - name: 'Use output'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
-
- 
