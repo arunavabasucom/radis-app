@@ -160,7 +160,7 @@ function App(): React.ReactElement {
   );
 }
 
-// export default App;
+
 
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
@@ -186,7 +186,9 @@ export default function ToggleColorMode() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        {/*for analytics*/}        
         <Analytics />
+        {/*for speed insights*/}
         <SpeedInsights/>
         <App />
       </ThemeProvider>
