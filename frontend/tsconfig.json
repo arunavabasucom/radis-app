@@ -7,6 +7,9 @@
       "esnext",
       "WebWorker"
     ],
+    "paths": {
+   "react": [ "./node_modules/@types/react" ]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

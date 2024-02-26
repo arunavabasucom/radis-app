@@ -15,6 +15,8 @@ import ReactGA from "react-ga4";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CssBaseline from "@mui/material/CssBaseline";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
@@ -158,7 +160,7 @@ function App(): React.ReactElement {
   );
 }
 
-// export default App;
+
 
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
@@ -184,6 +186,10 @@ export default function ToggleColorMode() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        {/*for analytics*/}        
+        <Analytics />
+        {/*for speed insights*/}
+        <SpeedInsights/>
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
