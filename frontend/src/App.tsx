@@ -15,8 +15,8 @@ import ReactGA from "react-ga4";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CssBaseline from "@mui/material/CssBaseline";
-// eslint-disable-next-line import/no-unresolved
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
@@ -187,6 +187,7 @@ export default function ToggleColorMode() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <Analytics />
+        <SpeedInsights/>
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
