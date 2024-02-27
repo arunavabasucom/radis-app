@@ -7,6 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Button from "@mui/material/Button";
 import ReactGA from "react-ga4";
+import { track } from "@vercel/analytics";
 import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
 import { Database as DatabaseField } from "./fields/Database";
@@ -138,13 +139,9 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
     const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
     if (endpoint === "calculate-spectrum") {
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      ReactGA.event({
-        category: "calculate",
-        action: "click_calculate",
-        label: "calculate_spectrum",
-      });
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      /*#########EVENT_TRACKING##########*/
+      track("calculate_spectrum");
+      /*#########EVENT_TRACKING##########*/
       setProgress(30);
 
       const rawResponse = await axios({
@@ -194,23 +191,12 @@ export const Form: React.FunctionComponent<FormProps> = ({
 
       setProgress(100);
       setLoading(false);
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      ReactGA.event({
-        category: "calculate",
-        action: "click_calculate_successful",
-        label: "calculate_spectrum_successful",
-      });
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
     }
 
     if (endpoint === "download-spectrum" || endpoint === "download-txt") {
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      ReactGA.event({
-        category: "file_download",
-        action: "click_download",
-        label: "download_spectrum_file",
-      });
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      /*#########EVENT_TRACKING##########*/
+      track("download_spectrum");
+      /*#########EVENT_TRACKING##########*/
       setProgress(30);
       setLoading(false);
       let serverFullUrl: string;
@@ -256,13 +242,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
       }
       setDisableDownloadButton(false);
       setProgress(100);
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
-      ReactGA.event({
-        category: "file_download",
-        action: "click_download_successful",
-        label: "download_spectrum_file_successful",
-      });
-      /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
     }
   };
 

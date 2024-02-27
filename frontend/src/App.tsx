@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
@@ -11,7 +12,6 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import "fontsource-roboto";
-import ReactGA from "react-ga4";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,11 +20,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { palette } from "./constants";
 import logo from "./radis.png";
-
-/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
-ReactGA.initialize("G-V67HS7VB4R");
-ReactGA.send(window.location.pathname);
-/*#########INITIALIZING_GOOGLE_ANALYTICS###############*/
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {
@@ -160,8 +155,6 @@ function App(): React.ReactElement {
   );
 }
 
-
-
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
   const colorMode = React.useMemo(
@@ -186,10 +179,10 @@ export default function ToggleColorMode() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        {/*for analytics*/}        
+        {/*for analytics*/}
         <Analytics />
         {/*for speed insights*/}
-        <SpeedInsights/>
+        <SpeedInsights />
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
