@@ -7,6 +7,7 @@ import Button from "@mui/joy/Button";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
+import useFromStore from "../store/form";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
@@ -21,7 +22,6 @@ import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
-import useFromStore from "../store/form";
 import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
 import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
 

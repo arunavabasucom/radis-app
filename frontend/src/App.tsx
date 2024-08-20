@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { Header } from "./components/Header";
 
