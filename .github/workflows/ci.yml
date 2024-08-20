@@ -13,7 +13,9 @@ jobs:
   frontend-test:
     name: 🧪 frontend-ci
     runs-on: ubuntu-latest
-
+    # defaults:
+    #   run:
+    #     working-directory: frontend
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -22,6 +24,8 @@ jobs:
         with:
           node-version: 16
           cache: "yarn"
+          cache-dependency-path: './frontend'
+
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
       - name: Linting check
