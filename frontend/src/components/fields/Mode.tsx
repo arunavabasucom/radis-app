@@ -1,39 +1,31 @@
 import React from "react";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
-interface DatabaseProps {
-  control: Control<FormValues>;
-}
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
 
-export const Mode: React.FC<DatabaseProps> = ({ control }) => {
+import { Controller, useFormContext } from "react-hook-form";
+
+export const Mode: React.FC = () => {
+  const { control } = useFormContext();
   return (
-    <FormControl fullWidth>
-      <InputLabel variant="standard" id="mode-select-label">
-        Mode
-      </InputLabel>
+    <FormControl>
+      <FormLabel>Mode</FormLabel>
       <Controller
         name="mode"
         defaultValue="absorbance"
         control={control}
-        render={({ field, formState }) => (
+        render={({ field }) => (
           <Select
             {...field}
-            {...formState}
-            inputProps={{ "data-testid": "mode-testid" }}
-            variant="standard"
-            labelId="mode-select-label"
-            id="mode-select"
-            onChange={field.onChange}
+            onChange={(_, value) => {
+              field.onChange(value);
+            }}
             value={field.value}
-            label="Select"
           >
-            <MenuItem value={"absorbance"}>Absorbance</MenuItem>
-            <MenuItem value={"radiance_noslit"}>Radiance</MenuItem>
-            <MenuItem value={"transmittance_noslit"}>Transmittance</MenuItem>
+            <Option value={"absorbance"}>Absorbance</Option>
+            <Option value={"radiance_noslit"}>Radiance</Option>
+            <Option value={"transmittance_noslit"}>Transmittance</Option>
           </Select>
         )}
       />

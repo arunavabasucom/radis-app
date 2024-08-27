@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
-import { Controller, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import Grid from "@mui/joy/Grid";
+import { useForm, FormProvider } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
+import Button from "@mui/joy/Button";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
 import { formSchema } from "../modules/form-schema";
+import useFromStore from "../store/form";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";
 import { TGas } from "./fields/TGas";
@@ -22,10 +21,10 @@ import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
 import { Database, FormValues } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
-import { PressureUnit } from "./fields/PressureUnits";
-import { PathLengthUnit } from "./fields/PathLengthUnits";
-import { WaveLengthUnit } from "./fields/WaveLengthUnits";
 import { DownloadTxtButton } from "./DownloadTxtButton";
+import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
+import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
+
 export interface Response<T> {
   data?: T;
   error?: string;
@@ -50,33 +49,44 @@ export const Form: React.FunctionComponent<FormProps> = ({
   spectra,
   setSpectra,
 }) => {
-  const [isNonEquilibrium, setIsNonEquilibrium] = useState(false);
-  const [showNonEquilibriumSwitch, setShowNonEquilibriumSwitch] =
-    useState(false);
-  const [useSlit, setUseSlit] = useState(false); // checking that user wants to apply the slit function or not in available modes
-  const [useSimulateSlitFunction, setUseSimulateSlitFunction] = useState(false); // checking the mode and enable or disable slit feature
-  const [disableDownloadButton, setDisableDownloadButton] = useState(true);
-  const [disableAddToPlotButton, setDisableAddToPlotButton] = useState(true);
+  const {
+    isNonEquilibrium,
+    toggleIsNonEquilibrium,
+    showNonEquilibriumSwitch,
+    toggleshowNonEquilibriumSwitch,
+    useSlit,
+    useSimulateSlitFunction,
+    setUseSimulateSlitFunction,
+    simulateSlitUnit,
+    setSimulateSlitUnit,
+    disableAddToPlotButton,
+    setDisableAddToPlotButton,
+    disableDownloadButton,
+    setDisableDownloadButton,
+  } = useFromStore();
 
-  const [simulateSlitUnit, setSimulateSlitUnit] = useState(false);
+  //TODO - we need to make it global
+
+  const methods = useForm<FormValues>({
+    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    resolver: yupResolver(formSchema),
+  });
+
   const {
     control,
     handleSubmit,
     setValue,
     watch,
     formState: { dirtyFields },
-  } = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
-    resolver: yupResolver(formSchema),
-  });
+  } = methods;
 
   const databaseWatch = watch("database");
   React.useEffect(() => {
     if (databaseWatch === Database.GEISA) {
-      setIsNonEquilibrium(false);
-      setShowNonEquilibriumSwitch(false);
+      toggleIsNonEquilibrium(false);
+      toggleshowNonEquilibriumSwitch(false);
     } else {
-      setShowNonEquilibriumSwitch(true);
+      toggleshowNonEquilibriumSwitch(true);
     }
   }, [databaseWatch]);
 
@@ -135,7 +145,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
-
     const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
     if (endpoint === "calculate-spectrum") {
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
@@ -276,176 +285,125 @@ export const Form: React.FunctionComponent<FormProps> = ({
     }
   }, [setValue, isNonEquilibrium]);
 
-  const UseNonEquilibriumCalculationsSwitch = () => (
-    <FormControlLabel
-      label="Use non-equilibrium calculations"
-      control={
-        <Switch
-          data-testid="non-equilibrium-switch-testid"
-          checked={isNonEquilibrium}
-          onChange={(event) => setIsNonEquilibrium(event.target.checked)}
-        />
-      }
-    />
-  );
-
-  //slit-switch
-  const UseSimulateSlit = () => (
-    <Controller
-      name="use_simulate_slit"
-      defaultValue={false}
-      control={control}
-      render={({ field }) => (
-        <FormControlLabel
-          label="Apply Instrumental Slit Function"
-          control={
-            <Switch
-              data-testid="slit-switch-testid"
-              checked={useSlit}
-              onChange={(event, value) => {
-                setUseSlit(event.target.checked);
-                field.onChange(value);
-                if (event.target.checked) {
-                  setValue("simulate_slit", 5);
-                } else {
-                  setValue("simulate_slit", undefined);
-                }
-              }}
-            />
-          }
-        />
-      )}
-    />
-  );
-
   return (
-    <form
-      onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
-    >
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={8} md={5} lg={5}>
-          <DatabaseField control={control}></DatabaseField>
-        </Grid>
-        <Grid item xs={12} sm={8} md={5} lg={6}>
-          <Mode control={control} />
-        </Grid>
-        <Grid item xs={9}>
-          <WavenumberRangeSlider
-            isUnitChanged={simulateSlitUnit}
-            minRange={simulateSlitUnit ? 1000 : 500}
-            maxRange={simulateSlitUnit ? 20000 : 10000}
-            control={control}
-            setValue={setValue}
-          />
-        </Grid>
-
-        <Grid item sm={3} lg={3}>
-          <WaveLengthUnit control={control} />
-        </Grid>
-
-        <Grid item sm={8} lg={4}>
-          <TGas control={control} />
-        </Grid>
-
-        {isNonEquilibrium ? (
-          <>
-            <Grid item sm={8} lg={4}>
-              <TRot control={control} />
-            </Grid>
-            <Grid item sm={8} lg={4}>
-              <TVib control={control} />
-            </Grid>
-          </>
-        ) : null}
-
-        <Grid item sm={8} lg={3}>
-          <Pressure control={control} />
-        </Grid>
-        <Grid item sm={3} lg={3}>
-          <PressureUnit control={control} />
-        </Grid>
-        {isNonEquilibrium ? (
-          <>
-            <Grid item sm={8} lg={3}>
-              <PathLength control={control} />
-            </Grid>
-            <Grid item sm={3} lg={3}>
-              <PathLengthUnit control={control} />
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid item sm={8} lg={7}>
-              <PathLength control={control} />
-            </Grid>
-            <Grid item sm={3} lg={3}>
-              <PathLengthUnit control={control} />
-            </Grid>
-          </>
-        )}
-
-        <Grid item xs={12}>
-          <Species
-            isNonEquilibrium={isNonEquilibrium}
-            control={control}
-            databaseWatch={databaseWatch}
-          />
-        </Grid>
-
-        {useSimulateSlitFunction ? (
-          <Grid item xs={12}>
-            <UseSimulateSlit />
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) => onSubmit(data, `calculate-spectrum`))}
+      >
+        <Grid container spacing={3}>
+          <Grid xs={12} sm={8} md={5} lg={6}>
+            <DatabaseField />
           </Grid>
-        ) : null}
-
-        {useSimulateSlitFunction ? (
-          useSlit ? (
-            <Grid item xs={12}>
-              <SimulateSlit
-                isUnitChangeable={simulateSlitUnit}
-                control={control}
-              />
-            </Grid>
-          ) : null
-        ) : null}
-        {showNonEquilibriumSwitch && (
-          <Grid item xs={12}>
-            <UseNonEquilibriumCalculationsSwitch />
+          <Grid xs={12} sm={8} md={5} lg={6}>
+            <Mode />
           </Grid>
-        )}
-        <Grid item xs={6}>
-          <CalcSpectrumButton />
+          <Grid xs={12}>
+            <WavenumberRangeSlider />
+          </Grid>
+
+          {isNonEquilibrium ? (
+            <Grid sm={8} lg={4}>
+              <TGas />
+            </Grid>
+          ) : (
+            <Grid sm={8} lg={12}>
+              <TGas />
+            </Grid>
+          )}
+
+          {isNonEquilibrium ? (
+            <>
+              <Grid sm={8} lg={4}>
+                <TRot />
+              </Grid>
+              <Grid sm={8} lg={4}>
+                <TVib />
+              </Grid>
+            </>
+          ) : null}
+
+          {isNonEquilibrium ? (
+            <Grid sm={8} lg={12}>
+              <Pressure />
+            </Grid>
+          ) : (
+            <Grid sm={8} lg={12}>
+              <Pressure />
+            </Grid>
+          )}
+
+          {isNonEquilibrium ? (
+            <>
+              <Grid sm={8} lg={12}>
+                <PathLength />
+              </Grid>
+            </>
+          ) : (
+            <>
+              <Grid sm={8} lg={12}>
+                <PathLength />
+              </Grid>
+            </>
+          )}
+
+          <Grid xs={12}>
+            <Species
+              isNonEquilibrium={isNonEquilibrium}
+              control={control}
+              databaseWatch={databaseWatch}
+            />
+          </Grid>
+
+          {useSimulateSlitFunction ? (
+            <Grid xs={12}>
+              <UseSimulateSlitSwitch />
+            </Grid>
+          ) : null}
+
+          {useSimulateSlitFunction ? (
+            useSlit ? (
+              <Grid xs={12}>
+                <SimulateSlit />
+              </Grid>
+            ) : null
+          ) : null}
+          {showNonEquilibriumSwitch && (
+            <Grid xs={12}>
+              <UseNonEquilibriumCalculationsSwitch />
+            </Grid>
+          )}
+          <Grid xs={6}>
+            <CalcSpectrumButton />
+          </Grid>
+          <Grid xs={6}>
+            <Button
+              fullWidth
+              disabled={disableAddToPlotButton}
+              onClick={handleSubmit((data) =>
+                onSubmit(data, `calculate-spectrum`, true)
+              )}
+            >
+              Add to plot
+            </Button>
+          </Grid>
+          <Grid xs={12}>
+            <DownloadSpecButton
+              disabled={disableDownloadButton}
+              onClick={handleSubmit((data) => {
+                onSubmit(data, `download-spectrum`);
+              })}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <DownloadTxtButton
+              disabled={disableDownloadButton}
+              onClick={handleSubmit((data) => {
+                onSubmit(data, `download-txt`);
+              })}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Button
-            fullWidth
-            color="secondary"
-            variant="contained"
-            disabled={disableAddToPlotButton}
-            onClick={handleSubmit((data) =>
-              onSubmit(data, `calculate-spectrum`, true)
-            )}
-          >
-            Add to plot
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <DownloadSpecButton
-            disabled={disableDownloadButton}
-            onClick={handleSubmit((data) => {
-              onSubmit(data, `download-spectrum`);
-            })}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <DownloadTxtButton
-            disabled={disableDownloadButton}
-            onClick={handleSubmit((data) => {
-              onSubmit(data, `download-txt`);
-            })}
-          />
-        </Grid>
-      </Grid>
-    </form>
+      </form>
+    </FormProvider>
   );
 };

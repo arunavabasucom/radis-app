@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Autocomplete from "@mui/joy/Autocomplete";
 import { Control, FieldError } from "react-hook-form";
 import {
   addSubscriptsToMolecule,
@@ -14,6 +15,7 @@ import {
   moleculeOptionsGesia,
   moleculeOptionsHitemp,
 } from "./molecules";
+
 
 export interface MoleculeSelectorProps {
   validationError?: FieldError;
@@ -49,37 +51,32 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
   }, [isNonEquilibrium, databaseWatch]);
 
   return (
-    <Autocomplete
-      id="molecule-selector"
-      className="MoleculeSelector"
-      options={moleculeOptions.map((molecule) =>
-        addSubscriptsToMolecule(molecule)
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          variant="standard"
-          fullWidth
-          label="Molecule"
-          error={validationError !== undefined}
-          autoFocus={autofocus}
-        />
-      )}
-      value={addSubscriptsToMolecule(value || "")}
-      inputValue={input}
-      onInputChange={(_, newInput) => {
-        setInput(addSubscriptsToMolecule(newInput.toUpperCase()));
-      }}
-      renderOption={(props, value) => {
-        return <li {...props}>{addSubscriptsToMolecule(value)}</li>;
-      }}
-      onChange={(
-        _: React.SyntheticEvent<Element, Event>,
-        value: string | null
-      ) => {
-        const newMolecule = value ? removeSubscriptsFromMolecule(value) : "";
-        onChange(newMolecule);
-      }}
-    />
+    <FormControl>
+      <FormLabel>Molecule</FormLabel>
+      <Autocomplete
+        id="molecule-selector"
+        variant="outlined"
+        options={moleculeOptions.map((molecule) =>
+          addSubscriptsToMolecule(molecule)
+        )}
+        error={validationError !== undefined}
+        autoFocus={autofocus}
+        value={addSubscriptsToMolecule(value || "")}
+        inputValue={input}
+        onInputChange={(_, newInput) => {
+          setInput(addSubscriptsToMolecule(newInput.toUpperCase()));
+        }}
+        renderOption={(props, value) => {
+          return <li {...props}>{addSubscriptsToMolecule(value)}</li>;
+        }}
+        onChange={(
+          _: React.SyntheticEvent<Element, Event>,
+          value: string | null
+        ) => {
+          const newMolecule = value ? removeSubscriptsFromMolecule(value) : "";
+          onChange(newMolecule);
+        }}
+      />
+    </FormControl>
   );
 };

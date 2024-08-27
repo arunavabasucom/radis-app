@@ -1,34 +1,24 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
-import Input from "@mui/material/Input";
-import { Control, Controller, UseFormSetValue } from "react-hook-form";
+import Slider from "@mui/joy/Slider";
+import Input from "@mui/joy/Input";
+import { Controller, useFormContext } from "react-hook-form";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
+import Divider from "@mui/joy/Divider";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
 import { FormValues } from "../types";
+import useFromStore from "../../store/form";
+import { WaveLengthUnit } from "./WaveLengthUnits";
 
-interface WavelengthRangeSliderProps {
-  minRange: number;
-  maxRange: number;
-  control: Control<FormValues>;
-  setValue: UseFormSetValue<FormValues>;
-  isUnitChanged: boolean;
-}
-const useStyles = makeStyles({
-  input: {
-    width: 52,
-  },
-});
-export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
-  minRange,
-  maxRange,
-  control,
-  setValue,
-  isUnitChanged,
-}) => {
-  const classes = useStyles();
-  const [lowerRange, setLowerRange] = React.useState<number | "">(1900);
-  const [upperRange, setUpperRange] = React.useState<number | "">(2300);
+export const WavenumberRangeSlider: React.FC = () => {
+  const { control, setValue } = useFormContext();
+  const { simulateSlitUnit: isUnitChanged } = useFromStore();
+  const minRange = isUnitChanged ? 1000 : 500;
+  const maxRange = isUnitChanged ? 20000 : 10000;
+
+  const [lowerRange, setLowerRange] = React.useState<number | any>(1900);
+  const [upperRange, setUpperRange] = React.useState<number | any>(2300);
+
   React.useEffect(() => {
     setValue("min_wavenumber_range", lowerRange === "" ? minRange : lowerRange);
     setValue("max_wavenumber_range", upperRange === "" ? maxRange : upperRange);
@@ -58,32 +48,28 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
       | FormValues["max_wavenumber_range"]
   ) => (
     <Input
-      fullWidth
       id={id}
-      className={classes.input}
       value={value}
-      margin="dense"
       onChange={(e) =>
         onChange(e.target.value === "" ? "" : Number(e.target.value))
       }
       onBlur={handleBlur}
-      inputProps={{
-        step: "any",
-        min: minRange,
-        max: maxRange,
-        type: "number",
-        "aria-labelledby": "input-slider",
-      }}
+      endDecorator={
+        <React.Fragment>
+          <Divider orientation="vertical" />
+          <WaveLengthUnit />
+        </React.Fragment>
+      }
     />
   );
 
   return (
-    <div>
-      <Typography id="input-slider" gutterBottom>
+    <FormControl>
+      <FormLabel>
         {isUnitChanged ? " Wavelength range (nm)" : " Wavenumber range (cm⁻¹)"}
-      </Typography>
+      </FormLabel>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={3} lg={3}>
+        <Grid item xs={12} sm={8} md={5} lg={4}>
           <Controller
             name="min_wavenumber_range"
             control={control}
@@ -93,7 +79,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
             }
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs={12} sm={8} md={5} lg={4}>
           <Slider
             value={[
               lowerRange === "" ? minRange : lowerRange,
@@ -105,7 +91,7 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
             max={maxRange}
           />
         </Grid>
-        <Grid item xs={3} lg={3}>
+        <Grid item xs={12} sm={8} md={5} lg={4}>
           <Controller
             name="max_wavenumber_range"
             control={control}
@@ -116,6 +102,6 @@ export const WavenumberRangeSlider: React.FC<WavelengthRangeSliderProps> = ({
           />
         </Grid>
       </Grid>
-    </div>
+    </FormControl>
   );
 };

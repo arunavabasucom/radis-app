@@ -1,32 +1,45 @@
-import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
+import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
+import {  Controller, useFormContext } from "react-hook-form";
+import { PathLengthUnit } from "./PathLengthUnits";
+import Divider from "@mui/joy/Divider";
 
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
-interface TGasProps {
-  control: Control<FormValues>;
-}
-export const PathLength: React.FC<TGasProps> = ({ control }) => (
-  <Controller
-    render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="path-length-input"
-        variant="standard"
-        type="number"
-        label="Path Length"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.path_length}
-        helperText={formState.errors?.path_length?.message as ReactNode}
-        inputProps={{
-          step: "any",
-        }}
-      />
-    )}
-    name="path_length"
-    control={control}
-    defaultValue={1}
-  />
-);
+export const PathLength: React.FC = () => {
+    const { control } = useFormContext();
+  return (
+    <Controller
+      render={({ field, fieldState }) => (
+        <FormControl>
+          <FormLabel>Path Length</FormLabel>
+          <Input
+            {...field}
+            type="number"
+            onChange={field.onChange}
+            value={field.value}
+            error={!!fieldState.error}
+            endDecorator={
+              <div>
+                <Divider orientation="vertical" />
+                <PathLengthUnit  />
+              </div>
+            }
+          />
+          {fieldState.error ? (
+            <FormHelperText
+              sx={{
+                color: "red",
+              }}
+            >
+              {fieldState.error.message}
+            </FormHelperText>
+          ) : null}
+        </FormControl>
+      )}
+      name="path_length"
+      control={control}
+      defaultValue={1}
+    />
+  );
+};

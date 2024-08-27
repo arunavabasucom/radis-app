@@ -1,38 +1,46 @@
-import React, { ReactNode } from "react";
-import TextField from "@mui/material/TextField";
+import Input from "@mui/joy/Input";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import FormHelperText from "@mui/joy/FormHelperText";
+
 import InputAdornment from "@mui/material/InputAdornment";
-import { Control, Controller } from "react-hook-form";
-import { FormValues } from "../types";
-interface TRotProps {
-  control: Control<FormValues>;
-}
-export const TRot: React.FC<TRotProps> = ({ control }) => (
-  <Controller
-    render={({ field, formState }) => (
-      <TextField
-        {...field}
-        {...formState}
-        id="trot-input"
-        variant="standard"
-        type="number"
-        label="TRot"
-        onChange={field.onChange}
-        value={field.value}
-        error={!!formState.errors?.trot}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">K</InputAdornment>,
-        }}
-        inputProps={{ "data-testid": "trot-testid" }}
-        helperText={formState.errors?.trot?.message as ReactNode}
-        onKeyPress={(event) => {
-          if (event?.key === "-" || event?.key === "+") {
-            event.preventDefault();
-          }
-        }}
-      />
-    )}
-    name="trot"
-    control={control}
-    defaultValue={300}
-  />
-);
+import { Controller, useFormContext } from "react-hook-form";
+
+export const TRot: React.FC = () => {
+  const { control } = useFormContext();
+  return (
+    <Controller
+      name="trot"
+      control={control}
+      defaultValue={300}
+      render={({ field, fieldState }) => (
+        <FormControl>
+          <FormLabel>TRot</FormLabel>
+          <Input
+            {...field}
+            id="trot-input"
+            type="number"
+            onChange={field.onChange}
+            value={field.value}
+            error={!!fieldState.error}
+            endDecorator={<InputAdornment position="end">K</InputAdornment>}
+            onKeyPress={(event: any) => {
+              if (event?.key === "-" || event?.key === "+") {
+                event.preventDefault();
+              }
+            }}
+          />
+          {fieldState.error ? (
+            <FormHelperText
+              sx={{
+                color: "red",
+              }}
+            >
+              {fieldState.error.message}
+            </FormHelperText>
+          ) : null}
+        </FormControl>
+      )}
+    />
+  );
+};

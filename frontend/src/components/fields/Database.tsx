@@ -1,21 +1,15 @@
-import React from "react";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { Control, Controller } from "react-hook-form";
-import { Database as TDatabase, FormValues } from "../types";
+import Option from "@mui/joy/Option";
+import Select from "@mui/joy/Select";
+import FormLabel from "@mui/joy/FormLabel";
+import FormControl from "@mui/joy/FormControl";
+import { Controller, useFormContext } from "react-hook-form";
+import { Database as TDatabase } from "../types";
 
-interface DatabaseProps {
-  control: Control<FormValues>;
-}
-
-export const Database: React.FC<DatabaseProps> = ({ control }) => {
+export const Database: React.FC = () => {
+  const { control } = useFormContext();
   return (
-    <FormControl fullWidth>
-      <InputLabel variant="standard" id="database-input">
-        Database
-      </InputLabel>
+    <FormControl>
+      <FormLabel>Database</FormLabel>
       <Controller
         name="database"
         defaultValue={TDatabase.HITRAN}
@@ -24,17 +18,14 @@ export const Database: React.FC<DatabaseProps> = ({ control }) => {
           <Select
             {...field}
             {...formState}
-            inputProps={{ "data-testid": "database-testid" }}
-            variant="standard"
-            labelId="database-label"
-            id="database-select"
-            onChange={field.onChange}
+            onChange={(_, value) => {
+              field.onChange(value);
+            }}
             value={field.value}
-            label="Select"
           >
-            <MenuItem value={TDatabase.HITRAN}>HITRAN</MenuItem>
-            <MenuItem value={TDatabase.GEISA}>GEISA</MenuItem>
-            <MenuItem value={TDatabase.HITEMP}>HITEMP</MenuItem>
+            <Option value={TDatabase.HITRAN}>HITRAN</Option>
+            <Option value={TDatabase.GEISA}>GEISA</Option>
+            <Option value={TDatabase.HITEMP}>HITEMP</Option>
           </Select>
         )}
       />

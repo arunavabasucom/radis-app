@@ -23,8 +23,8 @@ export const PlotSpectra: React.FC = () => {
         onLoaderFinished={() => setProgress(0)}
       />
       {error ? <ErrorAlert message={error} /> : null}
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={8} md={5} lg={4}>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={8} md={5} lg={5}>
           <Form
             setPlotSettings={setPlotSettings}
             setError={setError}
@@ -35,7 +35,7 @@ export const PlotSpectra: React.FC = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={5} md={7} lg={8}>
+        <Grid item xs={12} sm={12} md={7} lg={7}>
           {loading ? (
             <div
               style={{
@@ -49,7 +49,19 @@ export const PlotSpectra: React.FC = () => {
           ) : (
             spectra.length > 0 &&
             plotSettings && (
-              <Plot spectra={spectra} plotSettings={plotSettings} />
+              <div
+                style={{
+                  display: "flex",
+
+                  justifyContent: "center",
+                  alignItems: "center",
+
+                  height: "100%",
+                  width: "100%",
+                }}
+              >
+                <Plot spectra={spectra} plotSettings={plotSettings} />
+              </div>
             )
           )}
         </Grid>
