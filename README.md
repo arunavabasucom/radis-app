@@ -24,7 +24,7 @@ yarn start # to start local dev server
 - **setup backend**
 
 ```bash
-cd server
+cd backend
 pip install -r requirements.txt # to install all packages
 uvicorn main: app --reload # to run a local server
 ```
