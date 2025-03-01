@@ -56,6 +56,10 @@ We created this app with the intention of giving both researchers and non-resear
 
 -  Overlay spectra
 <img width="1301" alt="download" src="https://user-images.githubusercontent.com/73842340/188674505-c9107b78-79c3-4c76-825f-6c5651320ae5.png">
+
+## ✅ **Contribution**
+
+- Go through [CONTRIBUTION.md](CONTRIBUTING.md) to see the general guidelines for contributing to this project. 
                  
 ## ✅ **License**
 
