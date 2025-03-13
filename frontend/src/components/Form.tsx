@@ -211,9 +211,12 @@ export const Form: React.FunctionComponent<FormProps> = ({
       });
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
     }
-
     if (endpoint === "download-spectrum" || endpoint === "download-txt") {
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
+      const downloadData = spectra.map((spectrum: Spectrum) => ({
+        ...spectrum,
+        mode: data.mode,
+      }));
       ReactGA.event({
         category: "file_download",
         action: "click_download",
@@ -232,7 +235,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         url: serverFullUrl,
         method: "POST",
         responseType: "blob",
-        data: data,
+        data: downloadData,
         headers: {
           "Content-Type": "application/json",
         },
@@ -248,9 +251,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
         );
       }
       if (endpoint === "download-txt") {
+        const molecule_names_list = downloadData.map(
+          (moleculeData) => moleculeData.species[0].molecule
+        );
+        const molecule_names: string = molecule_names_list.join("_");
         link.setAttribute(
           "download",
-          `${data.database}_${molecules}_${data.min_wavenumber_range}_${data.max_wavenumber_range}cm-1_${data.tgas}K_${data.pressure}atm.csv`
+          `${data.database}_${molecule_names}_${data.mode}.csv`
         );
       }
 
