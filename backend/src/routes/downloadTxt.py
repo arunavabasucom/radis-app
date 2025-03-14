@@ -5,7 +5,6 @@ from src.models.spectrum import Spectrum
 from fastapi import BackgroundTasks
 from fastapi.responses import FileResponse
 from src.helpers.deleteDownloadDirectory import delete_spec
-from src.helpers.calculateSpectrum import calculate_spectrum
 from src.constants.constants import  DOWNLOADED_TXT_DIRECTORY
 from src.helpers.createDownloadDirectory import create_download_directory
 from typing import List
@@ -20,7 +19,7 @@ async def download_txt(payload: List[Spectrum], background_tasks: BackgroundTask
         create_download_directory(DOWNLOADED_TXT_DIRECTORY)
         molecules_name_string = "_".join([f"{x.species[0].molecule}" for x in payload])
         file_name = f"{payload[0].database}_{payload[0].mode}_{molecules_name_string}.csv"
-
+        file_path = f"{DOWNLOADED_TXT_DIRECTORY}/{file_name}"
         headers = []
         for i in range(len(payload)):
             headers.append(f"Wavelength_{payload[i].wavelength_units}")
@@ -34,7 +33,7 @@ async def download_txt(payload: List[Spectrum], background_tasks: BackgroundTask
 
         rows = zip_longest(*data_columns, fillvalue="")
 
-        with open(file_name, mode="w", newline="") as file:
+        with open(file_path, mode="w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(headers)
             for row in rows:
@@ -49,7 +48,7 @@ async def download_txt(payload: List[Spectrum], background_tasks: BackgroundTask
         return {"error": str(exc)}
     else:
         # running as a background task to delete the .csv file after giving the file response back
-        background_tasks.add_task(delete_spec, file_name)
+        background_tasks.add_task(delete_spec, file_path)
         return FileResponse(
-            file_name, media_type="application/octet-stream", filename=file_name
+            file_path, media_type="application/octet-stream", headers={"Content-Disposition": f'attachment; filename="{file_name}"'}
         )
