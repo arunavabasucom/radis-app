@@ -13,6 +13,7 @@ export const DownloadTxtButton: React.FC<DownloadTxtButtonProps> = ({
   <Button
     fullWidth
     id="download-button"
+    data-testid="download-txt-test"
     disabled={disabled}
     variant="outlined"
     onClick={onClick}
