@@ -1,13 +1,15 @@
+import React from "react";
 import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
-import {  Controller, useFormContext } from "react-hook-form";
-import { PathLengthUnit } from "./PathLengthUnits";
 import Divider from "@mui/joy/Divider";
+import { Controller, useFormContext } from "react-hook-form";
+import { PathLengthUnit } from "./PathLengthUnits";
 
 export const PathLength: React.FC = () => {
-    const { control } = useFormContext();
+  const { control } = useFormContext();
+
   return (
     <Controller
       render={({ field, fieldState }) => (
@@ -16,22 +18,23 @@ export const PathLength: React.FC = () => {
           <Input
             {...field}
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              const value = parseFloat(e.target.value);
+              if (value >= 0 || e.target.value === "") {
+                field.onChange(value);
+              }
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={
               <div>
                 <Divider orientation="vertical" />
-                <PathLengthUnit  />
+                <PathLengthUnit />
               </div>
             }
           />
           {fieldState.error ? (
-            <FormHelperText
-              sx={{
-                color: "red",
-              }}
-            >
+            <FormHelperText sx={{ color: "red" }}>
               {fieldState.error.message}
             </FormHelperText>
           ) : null}
@@ -40,6 +43,9 @@ export const PathLength: React.FC = () => {
       name="path_length"
       control={control}
       defaultValue={1}
+      rules={{
+        min: { value: 0, message: "Path Length cannot be negative" },
+      }}
     />
   );
 };
