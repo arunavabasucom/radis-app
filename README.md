@@ -24,9 +24,9 @@ yarn start # to start local dev server
 - **setup backend**
 
 ```bash
-cd server
+cd backend
 pip install -r requirements.txt # to install all packages
-uvicorn main: app --reload # to run a local server
+uvicorn main:app --reload # to run a local server
 ```
 
 If you are getting a `library not found for -lhdf5` error on MacOS, you can try the following
