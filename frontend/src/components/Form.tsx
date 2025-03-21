@@ -235,7 +235,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
         url: serverFullUrl,
         method: "POST",
         responseType: "blob",
-        data: downloadData,
+        data: endpoint === "download-txt" ? downloadData : data,
         headers: {
           "Content-Type": "application/json",
         },
