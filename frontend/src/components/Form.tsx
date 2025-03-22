@@ -78,6 +78,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setValue,
     watch,
     formState: { dirtyFields },
+    getValues,
+    reset,
   } = methods;
 
   const databaseWatch = watch("database");
@@ -358,6 +360,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
               isNonEquilibrium={isNonEquilibrium}
               control={control}
               databaseWatch={databaseWatch}
+              getValues={getValues}
+              reset={reset}
             />
           </Grid>
 

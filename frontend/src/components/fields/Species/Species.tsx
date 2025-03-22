@@ -7,20 +7,31 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import Input from "@mui/joy/Input";
+import {
+  Controller,
+  Control,
+  useFieldArray,
+  UseFormGetValues,
+  UseFormReset,
+} from "react-hook-form";
 
-import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
 import { Database, FormValues } from "../../types";
+
 export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
   databaseWatch: Database;
+  getValues: UseFormGetValues<FormValues>;
+  reset: UseFormReset<FormValues>;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
   isNonEquilibrium,
   databaseWatch,
+  getValues,
+  reset,
 }) => {
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
@@ -85,9 +96,20 @@ export const Species: React.FC<SpeciesProps> = ({
             {index === 0 ? (
               <IconButton
                 color="primary"
-                onClick={() =>
-                  append({ molecule: undefined, mole_fraction: undefined })
-                }
+                onClick={() => {
+                  const formValues = getValues();
+                  append({ molecule: undefined, mole_fraction: undefined });
+                  reset(
+                    {
+                      ...formValues,
+                      species: [
+                        ...(formValues.species || []),
+                        { molecule: undefined, mole_fraction: undefined },
+                      ],
+                    },
+                    { keepDirty: false, keepTouched: false }
+                  );
+                }}
               >
                 <AddIcon />
               </IconButton>
