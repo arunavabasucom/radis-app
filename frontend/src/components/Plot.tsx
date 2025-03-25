@@ -111,7 +111,7 @@ export const Plot_: React.FC<PlotProps> = ({
     if (wavelength_units === "u.nm") {
       waveLabel = "Wavelength range (nm)";
     } else {
-      waveLabel = "Wavelength range (cm⁻¹)";
+      waveLabel = "Wavenumber range (cm⁻¹)";
     }
     const speciesFormatted = species
       .map(
@@ -186,6 +186,7 @@ export const Plot_: React.FC<PlotProps> = ({
         updatemenus,
         showlegend: true,
         legend: { orientation: "h", y: -0.6, x: 0 },
+        margin: { l: 40, r: 50 },
       }}
     />
   );
