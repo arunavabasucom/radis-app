@@ -3,7 +3,11 @@ import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import { Controller, useFormContext } from "react-hook-form";
 
-export const PressureUnit: React.FC = () => {
+export interface PressureUnitProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const PressureUnit: React.FC<PressureUnitProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
 
   return (
@@ -18,6 +22,7 @@ export const PressureUnit: React.FC = () => {
           id="mode-select"
           onChange={(_, value) => {
             field.onChange(value);
+            updateFieldValue("pressure_units", value);
           }}
           value={field.value}
           slotProps={{

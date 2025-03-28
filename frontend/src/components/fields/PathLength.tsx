@@ -6,7 +6,11 @@ import {  Controller, useFormContext } from "react-hook-form";
 import { PathLengthUnit } from "./PathLengthUnits";
 import Divider from "@mui/joy/Divider";
 
-export const PathLength: React.FC = () => {
+export interface PathLengthProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const PathLength: React.FC<PathLengthProps> = ({updateFieldValue}) => {
     const { control } = useFormContext();
   return (
     <Controller
@@ -16,13 +20,18 @@ export const PathLength: React.FC = () => {
           <Input
             {...field}
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value));
+              updateFieldValue("path_length", Number(e.target.value));
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={
               <div>
                 <Divider orientation="vertical" />
-                <PathLengthUnit  />
+                <PathLengthUnit  
+                  updateFieldValue={updateFieldValue}
+                />
               </div>
             }
           />

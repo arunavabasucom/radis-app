@@ -2,7 +2,11 @@ import { Switch } from "@mui/joy";
 import {  Controller, useFormContext } from "react-hook-form";
 import useFromStore from "../../store/form";
 
-function UseSimulateSlitSwitch() {
+export interface UseSimulateSlitSwitchProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+function UseSimulateSlitSwitch({updateFieldValue}: UseSimulateSlitSwitchProps) {
   const { useSlit, setUseSlit } = useFromStore(); 
   const { control, setValue } = useFormContext();
 
@@ -20,6 +24,7 @@ function UseSimulateSlitSwitch() {
             console.log(event.target.checked);
             setUseSlit(event.target.checked);
             field.onChange(event.target.checked);
+            updateFieldValue("use_simulate_slit", event.target.checked);
             if (event.target.checked) {
               setValue("simulate_slit", 5);
             } else {

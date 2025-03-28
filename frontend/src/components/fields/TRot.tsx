@@ -6,8 +6,14 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Controller, useFormContext } from "react-hook-form";
 
-export const TRot: React.FC = () => {
-  const { control } = useFormContext();
+
+export interface TRotProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const TRot: React.FC<TRotProps> = ({updateFieldValue}) => {
+  const { control, setValue } = useFormContext();
+
   return (
     <Controller
       name="trot"
@@ -20,7 +26,11 @@ export const TRot: React.FC = () => {
             {...field}
             id="trot-input"
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value));
+              setValue("trot", e.target.value);
+              updateFieldValue("trot", Number(e.target.value));
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={<InputAdornment position="end">K</InputAdornment>}

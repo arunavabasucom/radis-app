@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { PlotSpectra } from "./components/PlotSpectra";
 import { Header } from "./components/Header";
+import { BrowserRouter } from "react-router";
 
 export const useStyles = makeStyles({
   root: {
@@ -20,7 +21,8 @@ export const useStyles = makeStyles({
 export default function App(): React.ReactElement {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <BrowserRouter>
+        <div className={classes.root}>
       <CssBaseline />
       <Header />
       <Container style={{ maxWidth: "none" }}>
@@ -29,5 +31,7 @@ export default function App(): React.ReactElement {
         </Box>
       </Container>
     </div>
+    </BrowserRouter>
+
   );
 }

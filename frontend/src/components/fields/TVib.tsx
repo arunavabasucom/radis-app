@@ -5,9 +5,13 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import { Controller, useFormContext } from "react-hook-form";
 
 
-export const TVib: React.FC = () => {
-  const { control } = useFormContext();
-  
+export interface TVibProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const TVib: React.FC<TVibProps> = ({updateFieldValue}) => {
+  const { control, setValue } = useFormContext();
+
   return (
     <Controller
       name="tvib"
@@ -20,7 +24,11 @@ export const TVib: React.FC = () => {
             {...field}
             id="tvib-input"
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value));
+              setValue("tvib", e.target.value);
+              updateFieldValue("tvib", Number(e.target.value));
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={"k"}

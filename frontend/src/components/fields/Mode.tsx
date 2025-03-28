@@ -6,8 +6,13 @@ import Option from "@mui/joy/Option";
 
 import { Controller, useFormContext } from "react-hook-form";
 
-export const Mode: React.FC = () => {
+export interface ModeProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const Mode: React.FC<ModeProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
+
   return (
     <FormControl>
       <FormLabel>Mode</FormLabel>
@@ -20,6 +25,7 @@ export const Mode: React.FC = () => {
             {...field}
             onChange={(_, value) => {
               field.onChange(value);
+              updateFieldValue("mode", value);
             }}
             value={field.value}
           >

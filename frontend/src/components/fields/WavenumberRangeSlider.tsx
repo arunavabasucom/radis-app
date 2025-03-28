@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import Slider from "@mui/joy/Slider";
 import Input from "@mui/joy/Input";
 import { Controller, useFormContext } from "react-hook-form";
@@ -10,8 +11,12 @@ import { FormValues } from "../types";
 import useFromStore from "../../store/form";
 import { WaveLengthUnit } from "./WaveLengthUnits";
 
-export const WavenumberRangeSlider: React.FC = () => {
-  const { control, setValue } = useFormContext();
+export interface WavenumberRangeSliderProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const WavenumberRangeSlider: React.FC<WavenumberRangeSliderProps > = ({updateFieldValue}) => {
+  const { control, setValue, getValues, reset} = useFormContext();
   const { simulateSlitUnit: isUnitChanged } = useFromStore();
   const minRange = isUnitChanged ? 1000 : 500;
   const maxRange = isUnitChanged ? 20000 : 10000;
@@ -19,14 +24,26 @@ export const WavenumberRangeSlider: React.FC = () => {
   const [lowerRange, setLowerRange] = React.useState<number | any>(1900);
   const [upperRange, setUpperRange] = React.useState<number | any>(2300);
 
-  React.useEffect(() => {
-    setValue("min_wavenumber_range", lowerRange === "" ? minRange : lowerRange);
-    setValue("max_wavenumber_range", upperRange === "" ? maxRange : upperRange);
-  }, [lowerRange, upperRange, setValue, minRange, maxRange]);
+  useEffect(() => {
+    setLowerRange(getValues("min_wavenumber_range"));
+    setUpperRange(getValues("max_wavenumber_range"));
+  }, [getValues, reset]);
+  useEffect(() => {
+    if (lowerRange !== getValues("min_wavenumber_range")) {
+      setValue("min_wavenumber_range", lowerRange);
+    }
+    if (upperRange !== getValues("max_wavenumber_range")) {
+      setValue("max_wavenumber_range", upperRange);
+    }
+  }, [lowerRange, upperRange, setValue, getValues])
   const handleSliderChange = (_event: Event, value: number | number[]) => {
     value = value as [number, number];
     setLowerRange(value[0]);
     setUpperRange(value[1]);
+    setValue("min_wavenumber_range", value[0]);
+    setValue("max_wavenumber_range", value[1]);
+    updateFieldValue("min_wavenumber_range", value[0]);
+    updateFieldValue("max_wavenumber_range", value[1]);
   };
   const handleBlur = () => {
     if (lowerRange > upperRange) {
@@ -50,14 +67,18 @@ export const WavenumberRangeSlider: React.FC = () => {
     <Input
       id={id}
       value={value}
-      onChange={(e) =>
-        onChange(e.target.value === "" ? "" : Number(e.target.value))
+      onChange={(e) => {
+        onChange(e.target.value === "" ? "" : Number(e.target.value));
+        updateFieldValue(id, e.target.value === "" ? "" : Number(e.target.value));
+      }
       }
       onBlur={handleBlur}
       endDecorator={
         <React.Fragment>
           <Divider orientation="vertical" />
-          <WaveLengthUnit />
+          <WaveLengthUnit 
+            updateFieldValue={updateFieldValue}
+          />
         </React.Fragment>
       }
     />
@@ -75,15 +96,15 @@ export const WavenumberRangeSlider: React.FC = () => {
             control={control}
             defaultValue={minRange}
             render={({ field: { onChange, value } }) =>
-              rangeInput("min-wavenumber-input", onChange, value)
+              rangeInput("min_wavenumber_range", onChange, value)
             }
           />
         </Grid>
         <Grid item xs={12} sm={8} md={5} lg={4}>
           <Slider
             value={[
-              lowerRange === "" ? minRange : lowerRange,
-              upperRange === "" ? maxRange : upperRange,
+              getValues("min_wavenumber_range"),
+              getValues("max_wavenumber_range")
             ]}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
@@ -97,7 +118,7 @@ export const WavenumberRangeSlider: React.FC = () => {
             control={control}
             defaultValue={maxRange}
             render={({ field: { onChange, value } }) =>
-              rangeInput("max-wavenumber-input", onChange, value)
+              rangeInput("max_wavenumber_range", onChange, value)
             }
           />
         </Grid>

@@ -15,12 +15,20 @@ export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
   databaseWatch: Database;
+  addSpecies: () => void;
+  updateMolecule : (index: number, molecule: string) => void;
+  updateMoleFraction: (index: number, moleFraction: number) => void;
+  removeSpecies: (index: number) => void;
 }
 
 export const Species: React.FC<SpeciesProps> = ({
   control,
   isNonEquilibrium,
   databaseWatch,
+  addSpecies,
+  updateMolecule,
+  updateMoleFraction,
+  removeSpecies,
 }) => {
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
@@ -41,6 +49,7 @@ export const Species: React.FC<SpeciesProps> = ({
                   value={field.value}
                   onChange={(_, value) => {
                     field.onChange(value);
+                    updateMolecule(index, value);
                   }}
                   autofocus={index !== 0}
                   isNonEquilibrium={isNonEquilibrium}
@@ -63,6 +72,7 @@ export const Species: React.FC<SpeciesProps> = ({
                     type="number"
                     onChange={(e) => {
                       onChange(parseFloat(e.target.value));
+                      updateMoleFraction(index, parseFloat(e.target.value));
                     }}
                   />
                   {formState.errors?.species?.[index]?.mole_fraction ? (
@@ -85,8 +95,10 @@ export const Species: React.FC<SpeciesProps> = ({
             {index === 0 ? (
               <IconButton
                 color="primary"
-                onClick={() =>
-                  append({ molecule: undefined, mole_fraction: undefined })
+                onClick={() => {
+                  append({ molecule: undefined, mole_fraction: undefined });
+                  addSpecies();
+                }
                 }
               >
                 <AddIcon />
@@ -97,6 +109,7 @@ export const Species: React.FC<SpeciesProps> = ({
                 disabled={fields.length === 1}
                 onClick={() => {
                   remove(index);
+                  removeSpecies(index);
                 }}
               >
                 <CloseIcon />

@@ -9,7 +9,11 @@ import { Controller, useFormContext } from "react-hook-form";
 import Divider from "@mui/joy/Divider";
 import { PressureUnit } from "./PressureUnits";
 
-export const Pressure: React.FC = () => {
+export interface PressureProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const Pressure: React.FC<PressureProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
 
   return (
@@ -24,13 +28,18 @@ export const Pressure: React.FC = () => {
             {...field}
             id="pressure-input"
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value));
+              updateFieldValue("pressure", Number(e.target.value));
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={
               <div>
                 <Divider orientation="vertical" />
-                <PressureUnit />
+                <PressureUnit 
+                  updateFieldValue={updateFieldValue}
+                />
               </div>
             }
           />

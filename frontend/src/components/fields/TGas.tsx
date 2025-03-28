@@ -4,9 +4,11 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import {  Controller, useFormContext } from "react-hook-form";
 
+export interface TGasProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
 
-
-export const TGas: React.FC = () => {
+export const TGas: React.FC<TGasProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
   return (
     <Controller
@@ -20,7 +22,12 @@ export const TGas: React.FC = () => {
             {...field}
             id="tgas-input"
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value));
+              updateFieldValue("tgas", Number(e.target.value));
+            }
+              
+            }
             value={field.value}
             error={!!fieldState.error}
             endDecorator={"k"}

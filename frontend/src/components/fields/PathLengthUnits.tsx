@@ -3,9 +3,12 @@ import Select from "@mui/joy/Select";
 import FormControl from "@mui/joy/FormControl";
 import {  Controller, useFormContext } from "react-hook-form";
 
+export interface PathLengthUnitProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
 
 
-export const PathLengthUnit: React.FC = () => {
+export const PathLengthUnit: React.FC<PathLengthUnitProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
   return (
     <FormControl>
@@ -20,6 +23,7 @@ export const PathLengthUnit: React.FC = () => {
             id="mode-select"
             onChange={(_, value) => {
               field.onChange(value);
+              updateFieldValue("path_length_units", value);
             }}
             value={field.value}
             slotProps={{

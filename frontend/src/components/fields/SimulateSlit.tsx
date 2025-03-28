@@ -7,7 +7,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import {Controller, useFormContext } from "react-hook-form";
 import useFromStore from "../../store/form";
 
-export const SimulateSlit: React.FC = () => {
+export interface SimulateSlitProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const SimulateSlit: React.FC<SimulateSlitProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
 
   const { simulateSlitUnit } = useFromStore();
@@ -21,7 +25,10 @@ export const SimulateSlit: React.FC = () => {
             {...field}
             id="simulate_slit"
             type="number"
-            onChange={field.onChange}
+            onChange={(e) => {
+              field.onChange(Number(e.target.value))
+              updateFieldValue("simulate_slit", Number(e.target.value));
+            }}
             value={field.value}
             error={!!fieldState.error}
             endDecorator={

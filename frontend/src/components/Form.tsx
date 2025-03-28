@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Grid from "@mui/joy/Grid";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/joy/Button";
@@ -24,6 +24,8 @@ import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
 import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalculationsSwitch";
 import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
+import {isEqual} from 'lodash'
+import useParamState from "../hooks/useParamsState";
 
 export interface Response<T> {
   data?: T;
@@ -49,6 +51,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
   spectra,
   setSpectra,
 }) => {
+
   const {
     isNonEquilibrium,
     toggleIsNonEquilibrium,
@@ -65,10 +68,27 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton,
   } = useFromStore();
 
-  //TODO - we need to make it global
 
+  const DEFAULT_VALUES: FormValues = {
+    mode: "absorbance",
+    database: Database.HITRAN,
+    species: [{molecule: "CO", mole_fraction: 0.1}],
+    min_wavenumber_range: 1900,
+    max_wavenumber_range: 2300,
+    tgas: 300,
+    tvib: undefined,
+    trot: undefined,
+    pressure: 1.01325,
+    path_length: 1,
+    simulate_slit: undefined,
+    use_simulate_slit: false,
+    wavelength_units: "1/u.cm",
+    pressure_units: "u.bar",
+    path_length_units: "u.cm",
+  };
+  //TODO - we need to make it global
   const methods = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(formSchema),
   });
 
@@ -77,8 +97,70 @@ export const Form: React.FunctionComponent<FormProps> = ({
     handleSubmit,
     setValue,
     watch,
+    getValues,
+    reset,
     formState: { dirtyFields },
   } = methods;
+  const [params, setParams] = useParamState('form',DEFAULT_VALUES);
+
+  useEffect(() => {
+    if (params && !isEqual(params, DEFAULT_VALUES)) {
+      const hasNonEquilibriumParams = params.trot !== undefined || params.tvib !== undefined;
+      console.log(hasNonEquilibriumParams)
+      if (hasNonEquilibriumParams) {
+        toggleIsNonEquilibrium(true);
+        toggleshowNonEquilibriumSwitch(true);
+        setTimeout(() => {
+          reset(params);
+        }, 0)
+      }else{
+        reset(params);
+      }
+    }
+  }, []);
+
+  const addSpecies = () => {
+    setParams((prev) => ({
+      ...prev,
+      species: [...prev.species, { molecule: "", mole_fraction: 0.0}],
+    }));
+  };
+
+  const updateMoleFraction = (index: number, newMoleFraction: number) => {
+    setParams((prev) => ({
+      ...prev,
+      species: prev.species.map((s, indexVal) =>
+        indexVal == index ? { ...s, mole_fraction: newMoleFraction } : s
+      ),
+    }));
+  };
+
+  const updateMolecule = (index: number, molecule: string) => {
+    setParams((prev) => ({
+      ...prev,
+      species: prev.species.map((s, indexVal) =>
+        indexVal == index ? { ...s, molecule: molecule } : s
+      ),
+    }));
+  }; 
+
+
+  const removeSpecies = (index: number) => {
+    setParams((prev) => ({
+      ...prev,
+      species: prev.species.filter((s, indexVal) => indexVal != index),
+    }));
+  };
+
+
+  const updateFieldValue = (key: string, value: any) => {
+    setParams((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+
 
   const databaseWatch = watch("database");
   React.useEffect(() => {
@@ -131,6 +213,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
     endpoint: string,
     appendSpectrum = false
   ): Promise<void> => {
+    console.log("trot value", getValues("trot"));
+    console.log("tvib value", getValues("tvib"));
+    data = {
+      tvib: getValues("tvib"),
+      trot: getValues("trot"),
+      ...data, 
+    }
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
         data.mode = "radiance";
@@ -292,56 +381,78 @@ export const Form: React.FunctionComponent<FormProps> = ({
       >
         <Grid container spacing={3}>
           <Grid xs={12} sm={8} md={5} lg={6}>
-            <DatabaseField />
+            <DatabaseField 
+              updateFieldValue={updateFieldValue}
+            />
           </Grid>
           <Grid xs={12} sm={8} md={5} lg={6}>
-            <Mode />
+            <Mode 
+              updateFieldValue={updateFieldValue}
+            />
           </Grid>
           <Grid xs={12}>
-            <WavenumberRangeSlider />
+            <WavenumberRangeSlider 
+              updateFieldValue={updateFieldValue}
+            />
           </Grid>
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={4}>
-              <TGas />
+              <TGas 
+                updateFieldValue={updateFieldValue}
+              />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
-              <TGas />
+              <TGas
+                updateFieldValue={updateFieldValue}
+              />
             </Grid>
           )}
 
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={4}>
-                <TRot />
+                <TRot 
+                  updateFieldValue={updateFieldValue}
+                />
               </Grid>
               <Grid sm={8} lg={4}>
-                <TVib />
+                <TVib 
+                  updateFieldValue={updateFieldValue}
+                />
               </Grid>
             </>
           ) : null}
 
           {isNonEquilibrium ? (
             <Grid sm={8} lg={12}>
-              <Pressure />
+              <Pressure 
+                updateFieldValue={updateFieldValue}
+              />
             </Grid>
           ) : (
             <Grid sm={8} lg={12}>
-              <Pressure />
+              <Pressure 
+                updateFieldValue={updateFieldValue}
+              />
             </Grid>
           )}
 
           {isNonEquilibrium ? (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength />
+                <PathLength 
+                  updateFieldValue={updateFieldValue}
+                />
               </Grid>
             </>
           ) : (
             <>
               <Grid sm={8} lg={12}>
-                <PathLength />
+                <PathLength 
+                  updateFieldValue={updateFieldValue}
+                />
               </Grid>
             </>
           )}
@@ -351,19 +462,27 @@ export const Form: React.FunctionComponent<FormProps> = ({
               isNonEquilibrium={isNonEquilibrium}
               control={control}
               databaseWatch={databaseWatch}
+              addSpecies={addSpecies}
+              updateMolecule={updateMolecule}
+              updateMoleFraction={updateMoleFraction}
+              removeSpecies={removeSpecies}
             />
           </Grid>
 
           {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              <UseSimulateSlitSwitch />
+              <UseSimulateSlitSwitch 
+                updateFieldValue={updateFieldValue}
+              />
             </Grid>
           ) : null}
 
           {useSimulateSlitFunction ? (
             useSlit ? (
               <Grid xs={12}>
-                <SimulateSlit />
+                <SimulateSlit 
+                  updateFieldValue={updateFieldValue}
+                />
               </Grid>
             ) : null
           ) : null}

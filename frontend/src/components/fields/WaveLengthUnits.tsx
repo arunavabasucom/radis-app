@@ -4,9 +4,11 @@ import FormControl from "@mui/joy/FormControl";
 import {  Controller, useFormContext } from "react-hook-form";
 
 
+export interface WavelengthUnitProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
 
-
-export const WaveLengthUnit: React.FC = () => {
+export const WaveLengthUnit: React.FC<WavelengthUnitProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
   
   
@@ -23,6 +25,7 @@ export const WaveLengthUnit: React.FC = () => {
             id="mode-select"
             onChange={(_, value) => {
               field.onChange(value);
+              updateFieldValue("wavelength_units", value);
             }}
             value={field.value}
             slotProps={{

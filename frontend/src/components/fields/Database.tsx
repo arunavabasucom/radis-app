@@ -5,7 +5,11 @@ import FormControl from "@mui/joy/FormControl";
 import { Controller, useFormContext } from "react-hook-form";
 import { Database as TDatabase } from "../types";
 
-export const Database: React.FC = () => {
+export interface DatabaseProps {
+  updateFieldValue: (key: string, value: any) => void;
+}
+
+export const Database: React.FC<DatabaseProps> = ({updateFieldValue}) => {
   const { control } = useFormContext();
   return (
     <FormControl>
@@ -20,6 +24,7 @@ export const Database: React.FC = () => {
             {...formState}
             onChange={(_, value) => {
               field.onChange(value);
+              updateFieldValue("database", value);
             }}
             value={field.value}
           >
