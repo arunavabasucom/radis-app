@@ -39,7 +39,7 @@ export const Species: React.FC<SpeciesProps> = ({
                   validationError={formState.errors?.species?.[index]?.molecule}
                   control={control}
                   value={field.value}
-                  onChange={(_, value) => {
+                  onChange={(value) => {
                     field.onChange(value);
                   }}
                   autofocus={index !== 0}
