@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/joy/Grid";
-import { useForm, FormProvider, useWatch } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/joy/Button";
@@ -26,6 +26,7 @@ import UseNonEquilibriumCalculationsSwitch from "./fields/UseNonEquilibriumCalcu
 import UseSimulateSlitSwitch from "./fields/UseSimulateSlitSwitch";
 import {isEqual} from 'lodash'
 import useParamState from "../hooks/useParamsState";
+import { DEFAULT_VALUES } from "../constants";
 
 export interface Response<T> {
   data?: T;
@@ -68,24 +69,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton,
   } = useFromStore();
 
-
-  const DEFAULT_VALUES: FormValues = {
-    mode: "absorbance",
-    database: Database.HITRAN,
-    species: [{molecule: "CO", mole_fraction: 0.1}],
-    min_wavenumber_range: 1900,
-    max_wavenumber_range: 2300,
-    tgas: 300,
-    tvib: undefined,
-    trot: undefined,
-    pressure: 1.01325,
-    path_length: 1,
-    simulate_slit: undefined,
-    use_simulate_slit: false,
-    wavelength_units: "1/u.cm",
-    pressure_units: "u.bar",
-    path_length_units: "u.cm",
-  };
   //TODO - we need to make it global
   const methods = useForm<FormValues>({
     defaultValues: DEFAULT_VALUES,
@@ -97,10 +80,10 @@ export const Form: React.FunctionComponent<FormProps> = ({
     handleSubmit,
     setValue,
     watch,
-    getValues,
     reset,
     formState: { dirtyFields },
   } = methods;
+
   const [params, setParams] = useParamState('form',DEFAULT_VALUES);
 
   useEffect(() => {
@@ -213,13 +196,6 @@ export const Form: React.FunctionComponent<FormProps> = ({
     endpoint: string,
     appendSpectrum = false
   ): Promise<void> => {
-    console.log("trot value", getValues("trot"));
-    console.log("tvib value", getValues("tvib"));
-    data = {
-      tvib: getValues("tvib"),
-      trot: getValues("trot"),
-      ...data, 
-    }
     if (useSlit == true) {
       if (data.mode === "radiance_noslit") {
         data.mode = "radiance";

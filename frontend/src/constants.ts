@@ -1,4 +1,6 @@
 import { Species } from "./components/types";
+import { FormValues } from "./components/types";
+import { Database } from "./components/types";
 
 export const palette = {
   primary: {
@@ -13,6 +15,24 @@ export const palette = {
     dark: "#ab003c",
     contrastText: "#fff",
   },
+};
+
+export const DEFAULT_VALUES: FormValues = {
+  mode: "absorbance",
+  database: Database.HITRAN,
+  species: [{molecule: "CO", mole_fraction: 0.1}],
+  min_wavenumber_range: 1900,
+  max_wavenumber_range: 2300,
+  tgas: 300,
+  tvib: undefined,
+  trot: undefined,
+  pressure: 1.01325,
+  path_length: 1,
+  simulate_slit: undefined,
+  use_simulate_slit: false,
+  wavelength_units: "1/u.cm",
+  pressure_units: "u.bar",
+  path_length_units: "u.cm",
 };
 
 export interface PlotSettings {
