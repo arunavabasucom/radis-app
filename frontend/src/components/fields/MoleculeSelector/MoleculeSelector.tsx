@@ -19,7 +19,7 @@ import {
 
 export interface MoleculeSelectorProps {
   validationError?: FieldError;
-  onChange: (...event: string[]) => void;
+  onChange: (event: React.SyntheticEvent<Element, Event>, value: string) => void;
   value: string;
   control: Control<FormValues>;
   autofocus?: boolean;
@@ -70,11 +70,11 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
           return <li {...props}>{addSubscriptsToMolecule(value)}</li>;
         }}
         onChange={(
-          _: React.SyntheticEvent<Element, Event>,
+          event: React.SyntheticEvent<Element, Event>,
           value: string | null
         ) => {
           const newMolecule = value ? removeSubscriptsFromMolecule(value) : "";
-          onChange(newMolecule);
+          onChange(event, newMolecule);
         }}
       />
     </FormControl>
