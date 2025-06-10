@@ -63,3 +63,6 @@ jobs:
         with:
          service: radisapp-backend
          image: ${{ secrets.CONTAINER_NAME }}
+         env_vars: |
+            LOGTAIL_SOURCE_TOKEN=${{ secrets.LOGTAIL_SOURCE_TOKEN }}
+            LOGTAIL_HOST=${{ secrets.LOGTAIL_HOST }}

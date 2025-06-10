@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.routes import  calculateSpectrum ,downloadSpectrum,downloadTxt,root
 import astropy.units as u
 from astropy.units import cds
+from src.helpers.logger_config import logger
 
 
 # for high resolution
@@ -20,3 +21,4 @@ app.include_router(root.router)
 app.include_router(calculateSpectrum.router)
 app.include_router(downloadSpectrum.router)
 app.include_router(downloadTxt.router)
+logger.info("FastAPI app started with Logtail logging")
