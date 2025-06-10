@@ -1,23 +1,31 @@
 import os
-import sys
 import logging
+import sys
 from logtail import LogtailHandler
 
-handler = LogtailHandler(
-   source_token=os.environ.get("LOGTAIL_SOURCE_TOKEN"),
-    host=os.environ.get("LOGTAIL_HOST"),
-)
-logging.basicConfig(handlers=[handler], level=logging.INFO, format='%(message)s')
+LOGTAIL_SOURCE_TOKEN = os.environ.get("LOGTAIL_SOURCE_TOKEN")
+LOGTAIL_HOST = os.environ.get("LOGTAIL_HOST")
+
+handler = None
+if LOGTAIL_SOURCE_TOKEN and LOGTAIL_HOST:
+    handler = LogtailHandler(
+        source_token=LOGTAIL_SOURCE_TOKEN,
+        host=LOGTAIL_HOST,
+    )
+    logging.basicConfig(handlers=[handler], level=logging.INFO, format='%(message)s')
+else:
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 logger = logging.getLogger("radis-app")
 uvicorn_access_logger = logging.getLogger("uvicorn.access")
 uvicorn_error_logger = logging.getLogger("uvicorn.error")
 fastapi_logger = logging.getLogger("fastapi")
 
-for log in [uvicorn_access_logger, uvicorn_error_logger, fastapi_logger]:
-    log.handlers = [handler]
-    log.setLevel(logging.INFO)
-    log.propagate = False
+if handler:
+    for log in [uvicorn_access_logger, uvicorn_error_logger, fastapi_logger]:
+        log.handlers = [handler]
+        log.setLevel(logging.INFO)
+        log.propagate = False
 
 class StreamToLogger:
     def __init__(self, logger, level):
