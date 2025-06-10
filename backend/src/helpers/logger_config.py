@@ -1,6 +1,6 @@
 import os
-import logging
 import sys
+import logging
 from logtail import LogtailHandler
 
 LOGTAIL_SOURCE_TOKEN = os.environ.get("LOGTAIL_SOURCE_TOKEN")
