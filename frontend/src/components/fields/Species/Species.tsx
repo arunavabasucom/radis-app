@@ -10,7 +10,7 @@ import Input from "@mui/joy/Input";
 
 import { Controller, Control, useFieldArray } from "react-hook-form";
 import { MoleculeSelector } from "../MoleculeSelector/MoleculeSelector";
-import { Database, FormValues } from "../../types";
+import { Database, FitFormValues, FormValues } from "../../types";
 export interface SpeciesProps {
   control: Control<FormValues>;
   isNonEquilibrium: boolean;
@@ -37,7 +37,7 @@ export const Species: React.FC<SpeciesProps> = ({
               render={({ field, formState }) => (
                 <MoleculeSelector
                   validationError={formState.errors?.species?.[index]?.molecule}
-                  control={control}
+                  control={control as Control<FitFormValues | FormValues>}
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);

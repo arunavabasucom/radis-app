@@ -23,7 +23,7 @@ describe("testing trot field ", () => {
       fireEvent.click(inputElement);
     }
 
-    const input = screen.getByLabelText("TRot");
+    const input = screen.getByLabelText("Trot");
     expect(input).toBeVisible();
     expect(input).toBeInTheDocument();
   });
@@ -36,7 +36,7 @@ describe("testing trot field ", () => {
       fireEvent.click(inputElement);
     }
 
-    const input = screen.getByLabelText("TRot");
+    const input = screen.getByLabelText("Trot");
     expect(input).toHaveValue(300);
   });
   test("testing trot rendered with user* given value if non-equilibrium-switch* is checked", () => {
@@ -48,7 +48,7 @@ describe("testing trot field ", () => {
       fireEvent.click(inputElement);
     }
 
-    const input = screen.getByLabelText("TRot");
+    const input = screen.getByLabelText("Trot");
     fireEvent.input(input, {
       target: { value: 100 },
     });

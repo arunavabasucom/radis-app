@@ -229,7 +229,7 @@ const useFitFormStore = create<TFitFormState & TFitFormActions>()(
                 experimental_conditions: { ...state.experimental_conditions, path_length_units: units }
             })),
         setSpectrumFile: (file: File | null) =>
-            set((state) => ({
+            set(() => ({
                 spectrum_file: file
             })),
         // Top level setters

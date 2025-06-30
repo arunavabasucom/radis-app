@@ -24,7 +24,7 @@ describe("testing tvib field ", () => {
       fireEvent.click(inputElement);
     }
 
-    const input = screen.getByLabelText("TVib");
+    const input = screen.getByLabelText("Tvib");
     expect(input).toBeVisible();
     expect(input).toBeInTheDocument();
   });
@@ -36,7 +36,7 @@ describe("testing tvib field ", () => {
       fireEvent.click(inputElement);
     }
 
-    const input = screen.getByLabelText("TVib");
+    const input = screen.getByLabelText("Tvib");
     expect(input).toBeVisible();
     expect(input).toHaveValue(300);
   });
@@ -47,7 +47,7 @@ describe("testing tvib field ", () => {
     if (inputElement) {
       fireEvent.click(inputElement);
     }
-    const input = screen.getByLabelText("TVib");
+    const input = screen.getByLabelText("Tvib");
     fireEvent.input(input, {
       target: { value: 100 },
     });

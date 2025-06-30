@@ -15,10 +15,9 @@ function capitalizeFirstLetter(text: string): string {
 }
 
 export const FitCheckbox: React.FC<{ fitParameter: FitParameter }> = ({ fitParameter }) => {
-    const { control, formState, setValue } = useFormContext();
+    const { control, setValue } = useFormContext();
     const { formMode } = useFromStore();
     const {
-        fit_parameters,
         selected_fit_parameters,
         setFitTgas,
         setFitTvib,

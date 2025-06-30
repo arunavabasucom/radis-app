@@ -5,14 +5,14 @@ import App from "../../../../src/App";
 describe("testing tgas field ", () => {
   test("testing tgas field render with defaultValue and perfectly visible", () => {
     render(<App />);
-    const input = screen.getByLabelText("TGas");
+    const input = screen.getByLabelText("Tgas");
     expect(input).toBeVisible();
     expect(input).toBeInTheDocument();
     expect(input).toHaveValue(300);
   });
   test("testing tgas field render with user* given value and perfectly visible", () => {
     render(<App />);
-    const input = screen.getByLabelText("TGas");
+    const input = screen.getByLabelText("Tgas");
     expect(input).toBeVisible();
     expect(input).toBeInTheDocument();
     fireEvent.input(input, {
@@ -22,7 +22,7 @@ describe("testing tgas field ", () => {
   });
   test("testing tgas field validation for out of range values", async () => {
     render(<App />);
-    const input = screen.getByLabelText("TGas");
+    const input = screen.getByLabelText("Tgas");
     const button = screen.getByRole("button", {
       name: /new plot/i,
     });
@@ -38,7 +38,7 @@ describe("testing tgas field ", () => {
   });
   test("testing tgas field validation for undefined fields", async () => {
     render(<App />);
-    const input = screen.getByLabelText("TGas");
+    const input = screen.getByLabelText("Tgas");
     const button = screen.getByRole("button", {
       name: /new plot/i,
     });

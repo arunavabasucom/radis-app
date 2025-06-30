@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/joy/Grid";
-import { useForm, FormProvider, Control } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ReactGA from "react-ga4";
 import { PlotSettings, Spectrum } from "../constants";
-import { formSchema, formSchemaFit } from "../modules/form-schema";
+import { formSchemaFit } from "../modules/form-schema";
 import useFromStore from "../store/form";
 import { Database as DatabaseField } from "./fields/Database";
 import { Mode } from "./fields/Mode";

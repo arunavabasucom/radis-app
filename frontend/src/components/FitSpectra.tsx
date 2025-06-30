@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/joy/Grid";
 import CircularProgress from "@mui/joy/CircularProgress";
-import { Button, Typography, Box } from "@mui/joy";
+import { Button, Box } from "@mui/joy";
 import LoadingBar from "react-top-loading-bar";
 import { PlotSettings, Spectrum } from "../constants";
 import { Plot } from "./Plot";
