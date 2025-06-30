@@ -1,7 +1,16 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from src.models.species import Species
+from src.models.fitModels import FitProperties, BoundingRanges, FitParameters, ExperimentalConditions
 from typing import Literal
+
+class fitPayload(BaseModel):
+    fit_properties: FitProperties
+    bounding_ranges: BoundingRanges
+    fit_parameters: FitParameters
+    experimental_conditions: ExperimentalConditions
+    use_simulate_slit: bool = False
+    simulate_slit: Optional[float] = None
 
 class Payload(BaseModel):
     min_wavenumber_range: float

@@ -8,3 +8,4 @@ httpx==0.24.1
 pytest-cov==6.1.1
 uvicorn==0.34.3
 logtail-python==0.3.3
+python-multipart==0.0.20
