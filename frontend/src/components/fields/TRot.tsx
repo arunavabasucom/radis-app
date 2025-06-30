@@ -1,20 +1,23 @@
 import React from "react";
 import Input from "@mui/joy/Input";
 import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import { Controller, useFormContext } from "react-hook-form";
+import { FitCheckbox } from "./FitCheckbox";
+import useFromStore from "../../store/form";
 
 export const TRot: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
+
   return (
     <Controller
-      name="trot"
+      name={formMode === "calc" ? "trot" : "fit_parameters.trot"}
       control={control}
       defaultValue={300}
       render={({ field, fieldState }) => (
         <FormControl>
-          <FormLabel>TRot</FormLabel>
+          <FitCheckbox fitParameter="trot" />
           <Input
             {...field}
             id="trot-input"

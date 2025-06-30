@@ -8,7 +8,7 @@ import {
   removeSubscriptsFromMolecule,
 } from "../../../modules/molecule-subscripts";
 import "./index.css";
-import { Database, FormValues } from "../../types";
+import { Database, FitFormValues, FormValues } from "../../types";
 import {
   moleculeOptionsEquimolecules,
   moleculeOptionsNonequimolecules,
@@ -22,7 +22,7 @@ export interface MoleculeSelectorProps {
   validationError?: FieldError;
   onChange: (...event: string[]) => void;
   value: string;
-  control: Control<FormValues>;
+  control: Control<FormValues | FitFormValues>;
   autofocus?: boolean;
   isNonEquilibrium: boolean;
   databaseWatch: Database;

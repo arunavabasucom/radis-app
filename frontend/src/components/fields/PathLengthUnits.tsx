@@ -3,13 +3,16 @@ import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import FormControl from "@mui/joy/FormControl";
 import { Controller, useFormContext } from "react-hook-form";
+import useFromStore from "../../store/form";
 
 export const PathLengthUnit: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
+
   return (
     <FormControl>
       <Controller
-        name="path_length_units"
+        name={formMode === "calc" ? "path_length_units" : "experimental_conditions.path_length_units"}
         defaultValue="u.cm"
         control={control}
         render={({ field }) => (
@@ -31,6 +34,7 @@ export const PathLengthUnit: React.FC = () => {
             <Option value={"u.cm"}>cm</Option>
             <Option value={"u.m"}>m</Option>
             <Option value={"u.km"}>km</Option>
+            <Option value={"u.mm"}>mm</Option>
           </Select>
         )}
       />

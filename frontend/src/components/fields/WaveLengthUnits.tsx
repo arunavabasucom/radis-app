@@ -3,14 +3,16 @@ import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import FormControl from "@mui/joy/FormControl";
 import { Controller, useFormContext } from "react-hook-form";
+import useFromStore from "../../store/form";
 
 export const WaveLengthUnit: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
 
   return (
     <FormControl>
       <Controller
-        name="wavelength_units"
+        name={formMode === "calc" ? "wavelength_units" : "experimental_conditions.wavelength_units"}
         defaultValue="1/u.cm"
         control={control}
         render={({ field }) => (

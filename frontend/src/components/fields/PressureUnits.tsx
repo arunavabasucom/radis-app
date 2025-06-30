@@ -2,13 +2,15 @@ import React from "react";
 import Option from "@mui/joy/Option";
 import Select from "@mui/joy/Select";
 import { Controller, useFormContext } from "react-hook-form";
+import useFromStore from "../../store/form";
 
 export const PressureUnit: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
 
   return (
     <Controller
-      name="pressure_units"
+      name={formMode === "calc" ? "pressure_units" : "experimental_conditions.pressure_units"}
       defaultValue="u.bar"
       control={control}
       render={({ field }) => (

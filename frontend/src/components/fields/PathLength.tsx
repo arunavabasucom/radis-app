@@ -6,9 +6,12 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import { Controller, useFormContext } from "react-hook-form";
 import Divider from "@mui/joy/Divider";
 import { PathLengthUnit } from "./PathLengthUnits";
+import useFromStore from "../../store/form";
 
 export const PathLength: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
+
   return (
     <Controller
       render={({ field, fieldState }) => (
@@ -38,7 +41,7 @@ export const PathLength: React.FC = () => {
           ) : null}
         </FormControl>
       )}
-      name="path_length"
+      name={formMode === "calc" ? "path_length" : "experimental_conditions.path_length"}
       control={control}
       defaultValue={1}
     />

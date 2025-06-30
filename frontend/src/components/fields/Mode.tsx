@@ -5,14 +5,17 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 
 import { Controller, useFormContext } from "react-hook-form";
+import useFromStore from "../../store/form";
 
 export const Mode: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
+
   return (
     <FormControl>
       <FormLabel>Mode</FormLabel>
       <Controller
-        name="mode"
+        name={formMode === "calc" ? "mode" : "fit_properties.fit_var"}
         defaultValue="absorbance"
         control={control}
         render={({ field }) => (

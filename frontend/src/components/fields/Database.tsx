@@ -5,14 +5,17 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormControl from "@mui/joy/FormControl";
 import { Controller, useFormContext } from "react-hook-form";
 import { Database as TDatabase } from "../types";
+import useFromStore from "../../store/form";
 
 export const Database: React.FC = () => {
   const { control } = useFormContext();
+  const { formMode } = useFromStore();
+
   return (
     <FormControl>
       <FormLabel>Database</FormLabel>
       <Controller
-        name="database"
+        name={formMode === "calc" ? "database" : "experimental_conditions.database"}
         defaultValue={TDatabase.HITRAN}
         control={control}
         render={({ field, formState }) => (

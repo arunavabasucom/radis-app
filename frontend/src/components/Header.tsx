@@ -3,7 +3,8 @@ import {
   IconButton,
   Typography,
   Sheet,
-  Container
+  Container,
+  Button
 } from "@mui/joy";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { InfoPopover } from "./InfoPopover";
@@ -11,9 +12,12 @@ import logo from "../radis.png";
 import { useColorScheme } from '@mui/joy/styles';
 import LightModeIcon from "@mui/icons-material/LightMode"; // Sun
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { Link, useLocation } from "react-router-dom";
 
 export const Header: React.FC = () => {
   const { mode, setMode } = useColorScheme();
+  const location = useLocation();
+
   return (
     <Sheet
       variant="plain"
@@ -38,7 +42,25 @@ export const Header: React.FC = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button
+                component={Link}
+                to="/"
+                variant={location.pathname === "/" ? "solid" : "outlined"}
+                size="sm"
+              >
+                Calc Spectrum
+              </Button>
+              <Button
+                component={Link}
+                to="/fit-spectra"
+                variant={location.pathname === "/fit-spectra" ? "solid" : "outlined"}
+                size="sm"
+              >
+                Fit Spectrum
+              </Button>
+            </Box>
             <IconButton
               variant="plain"
               onClick={() =>

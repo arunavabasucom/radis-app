@@ -12,7 +12,7 @@ import { WaveLengthUnit } from "./WaveLengthUnits";
 
 export const WavenumberRangeSlider: React.FC = () => {
   const { control, setValue } = useFormContext();
-  const { simulateSlitUnit: isUnitChanged } = useFromStore();
+  const { simulateSlitUnit: isUnitChanged, formMode } = useFromStore();
   const minRange = isUnitChanged ? 300 : 1000;
   const maxRange = isUnitChanged ? 10000 : 20000;
 
@@ -20,9 +20,14 @@ export const WavenumberRangeSlider: React.FC = () => {
   const [upperRange, setUpperRange] = React.useState<number>(2300);
 
   React.useEffect(() => {
-    setValue("min_wavenumber_range", lowerRange ?? minRange);
-    setValue("max_wavenumber_range", upperRange ?? maxRange);
-  }, [lowerRange, upperRange, setValue, minRange, maxRange]);
+    if (formMode === "calc") {
+      setValue("min_wavenumber_range", lowerRange ?? minRange);
+      setValue("max_wavenumber_range", upperRange ?? maxRange);
+    } else {
+      setValue("experimental_conditions.min_wavenumber_range", lowerRange ?? minRange);
+      setValue("experimental_conditions.max_wavenumber_range", upperRange ?? maxRange);
+    }
+  }, [lowerRange, upperRange, setValue, minRange, maxRange, formMode]);
   const handleSliderChange = (_event: Event, value: number | number[]) => {
     value = value as [number, number];
     setLowerRange(value[0]);
@@ -71,7 +76,7 @@ export const WavenumberRangeSlider: React.FC = () => {
       <Grid container spacing={2} alignItems="center">
         <Grid xs={12} sm={8} md={5} lg={4}>
           <Controller
-            name="min_wavenumber_range"
+            name={formMode === "calc" ? "min_wavenumber_range" : "experimental_conditions.min_wavenumber_range"}
             control={control}
             defaultValue={minRange}
             render={({ field: { onChange, value } }) =>
@@ -93,7 +98,7 @@ export const WavenumberRangeSlider: React.FC = () => {
         </Grid>
         <Grid xs={12} sm={8} md={5} lg={4}>
           <Controller
-            name="max_wavenumber_range"
+            name={formMode === "calc" ? "max_wavenumber_range" : "experimental_conditions.max_wavenumber_range"}
             control={control}
             defaultValue={maxRange}
             render={({ field: { onChange, value } }) =>
