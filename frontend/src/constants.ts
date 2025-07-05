@@ -50,4 +50,5 @@ export interface Spectrum {
   species: Species[];
   x: number[];
   y: number[];
+  label?: string;
 }

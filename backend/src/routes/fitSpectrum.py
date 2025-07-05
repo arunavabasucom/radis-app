@@ -47,6 +47,7 @@ async def fit_spectrum_route(
         return {
             "data": {
                 "experimental_spectrum": experimental_spectrum,
+                "best_spectrum": best_spectrum,
                 "units": s_experimental.units[payload.fit_properties.fit_var],
                 "fit_vals": log["fit_vals"],
                 "residual": log["residual"],

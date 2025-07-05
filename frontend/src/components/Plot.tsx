@@ -108,11 +108,13 @@ export const Plot_: React.FC<PlotProps> = ({
     species,
     pressure_units,
     wavelength_units,
+    label,
   }: {
     database: string;
     tgas: number;
     trot?: number;
     tvib?: number;
+    label?: string;
     pressure: number;
     pressure_units: string;
     wavelength_units: string;
@@ -137,6 +139,9 @@ export const Plot_: React.FC<PlotProps> = ({
     let formatted = `${speciesFormatted} ${database.toUpperCase()}, Pressure=${pressure} ${pressure_units}, Tgas=${tgas} K`;
     if (trot) {
       formatted += `, Trot=${trot} K, Tvib=${tvib} K`;
+    }
+    if (label) {
+      formatted = `${label} - ${formatted}`;
     }
     return formatted;
   };
@@ -175,6 +180,7 @@ export const Plot_: React.FC<PlotProps> = ({
               pressure,
               pressure_units,
               wavelength_units,
+              label,
             },
             index
           ) => ({
@@ -191,6 +197,7 @@ export const Plot_: React.FC<PlotProps> = ({
               pressure,
               pressure_units,
               wavelength_units,
+              label,
             }),
           })
         )}

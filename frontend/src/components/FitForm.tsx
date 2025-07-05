@@ -202,10 +202,23 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
               tgas: data.fit_parameters.tgas,
               trot: data.fit_parameters.trot,
               tvib: data.fit_parameters.tvib,
+              label: "Experimental",
               pressure: data.fit_parameters.pressure ? data.fit_parameters.pressure : data.experimental_conditions.pressure,
               pressure_units: data.experimental_conditions.pressure_units,
               wavelength_units: data.experimental_conditions.wavelength_units,
               ...response.data.experimental_spectrum,
+            },
+            {
+              species: [{ molecule: data.experimental_conditions.specie.molecule, mole_fraction: data.fit_parameters.mole_fraction ? data.fit_parameters.mole_fraction : data.experimental_conditions.specie.mole_fraction }],
+              database: data.experimental_conditions.database,
+              tgas: data.fit_parameters.tgas,
+              trot: data.fit_parameters.trot,
+              tvib: data.fit_parameters.tvib,
+              label: "Best fit",
+              pressure: data.fit_parameters.pressure ? data.fit_parameters.pressure : data.experimental_conditions.pressure,
+              pressure_units: data.experimental_conditions.pressure_units,
+              wavelength_units: data.experimental_conditions.wavelength_units,
+              ...response.data.best_spectrum,
             },
           ]);
           setDisableAddToPlotButton(false);
