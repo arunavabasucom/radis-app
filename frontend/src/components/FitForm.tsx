@@ -438,14 +438,15 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
 
           {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              <UseSimulateSlitSwitch />
+              {/* TODO: */}
+              {/* <UseSimulateSlitSwitch /> */}
             </Grid>
           ) : null}
 
           {useSimulateSlitFunction ? (
             useSlit ? (
               <Grid xs={12}>
-                <SimulateSlit />
+                {/* <SimulateSlit /> */}
               </Grid>
             ) : null
           ) : null}
@@ -471,8 +472,8 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
 
           <Grid xs={12} >
             <Upload
-              label="Upload spectrum file (SPEC format)"
-              accept=".spec"
+              label="Upload spectrum file:"
+              accept=".spec,.txt,.csv"
               required
             />
           </Grid>

@@ -4,6 +4,7 @@ from src.models.payload import fitPayload as Payload
 from radis.tools.new_fitting import fit_spectrum as radis_fit_spectrum
 from fastapi import UploadFile
 from radis import load_spec
+from radis import Spectrum
 import os
 import tempfile
 
@@ -22,25 +23,34 @@ async def fit_spectrum(payload: Payload, file: UploadFile):
     FitProperties = payload.fit_properties
     BoundingRanges = payload.bounding_ranges
     
+    Wunit = None
+    if(ExperimentalConditions.wavelength_units=="1/u.cm"):
+        Wunit="cm-1"
+    else:
+        Wunit="nm"
+    
     # Load the experimental spectrum from the uploaded file
     content = await file.read() 
     suffix = os.path.splitext(file.filename)[-1]
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(content)
         tmp_path = tmp.name
-    s_experimental = load_spec(tmp_path)
-
-    if(ExperimentalConditions.wavelength_units=="1/u.cm"):
-        slit_unit="cm-1"
+    s_experimental=None
+    if(suffix == '.spec'):
+        s_experimental = load_spec(tmp_path)
     else:
-        slit_unit="nm"
+        s_experimental = Spectrum.from_txt(
+                            tmp_path, 
+                            payload.fit_properties.fit_var,
+                            wunit=Wunit, 
+                            unit=f'mW/cm2/sr/{Wunit}')
 
     experimental_conditions = {
         "molecule": ExperimentalConditions.specie.molecule,  # Molecule ID
         "isotope": "1" if ExperimentalConditions.database != "nist" else 0,  # Isotopologue ID, hard-coded to 0 for NIST. # Species mole fraction, from 0 to 1.
         "wmin": ExperimentalConditions.min_wavenumber_range,  # Starting wavelength/wavenumber to be cropped out from the original experimental spectrum.
         "wmax": ExperimentalConditions.max_wavenumber_range,  # Ending wavelength/wavenumber for the cropping range.
-        "wunit": "cm-1",
+        "wunit": Wunit,
         "mole_fraction": ExperimentalConditions.specie.mole_fraction,  # Species mole fraction, from 0 to 1.
         "pressure": ExperimentalConditions.pressure 
         * eval(ExperimentalConditions.pressure_units),
@@ -51,7 +61,7 @@ async def fit_spectrum(payload: Payload, file: UploadFile):
         # "lbfunc": broad_arbitrary if ExperimentalConditions.database == "nist" else None,
         # "cutoff": 0,  # (RADIS native) Discard linestrengths that are lower that this to reduce calculation time, in cm-1.
         # "slit": f"{ExperimentalConditions.simulate_slit} {slit_unit}",  # Experimental slit, must be a blank space separating slit amount and unit.
-        "slit": f"1 nm",  # Experimental slit, must be a blank space separating slit amount and unit.
+        "slit": f"1 nm",  # TODO: this is hardcoded for now - Experimental slit, must be a blank space separating slit amount and unit.
         "offset": "-0.2 nm",
         "databank": ExperimentalConditions.database,  # Databank used for calculation. Must be stated.
     }

@@ -21,8 +21,8 @@ async def fit_spectrum_route(
         payload.fit_properties.fit_var = 'transmittance'
 
 
-    if not file.filename.endswith(".spec"):
-        return {"error": "File must have a .spec extension"}
+    if not file.filename.endswith((".spec", ".txt", ".csv")):
+        return {"error": "File must have a .spec, .txt, or .csv extension"}
 
     try:
         s_experimental, s_best, result, log = await fit_spectrum(payload, file)
