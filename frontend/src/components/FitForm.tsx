@@ -129,12 +129,8 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
   }, [WaveLengthUnitIsDirtyField, spectra.length, wavelengthUnitWatch]);
 
   React.useEffect(() => {
-    if (wavelengthUnitWatch === "u.nm") {
-      setSimulateSlitUnit(true);
-    } else {
-      setSimulateSlitUnit(false);
-    }
-  }, [wavelengthUnitWatch, spectra.length]);
+    setSimulateSlitUnit(true);
+  }, []);
   const handleBadResponse = (message: string) => {
     setError(message);
   };
@@ -438,15 +434,14 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
 
           {useSimulateSlitFunction ? (
             <Grid xs={12}>
-              {/* TODO: */}
-              {/* <UseSimulateSlitSwitch /> */}
+              <UseSimulateSlitSwitch />
             </Grid>
           ) : null}
 
           {useSimulateSlitFunction ? (
             useSlit ? (
               <Grid xs={12}>
-                {/* <SimulateSlit /> */}
+                <SimulateSlit />
               </Grid>
             ) : null
           ) : null}

@@ -61,7 +61,7 @@ async def fit_spectrum(payload: Payload, file: UploadFile):
         # "lbfunc": broad_arbitrary if ExperimentalConditions.database == "nist" else None,
         # "cutoff": 0,  # (RADIS native) Discard linestrengths that are lower that this to reduce calculation time, in cm-1.
         # "slit": f"{ExperimentalConditions.simulate_slit} {slit_unit}",  # Experimental slit, must be a blank space separating slit amount and unit.
-        "slit": f"1 nm",  # TODO: this is hardcoded for now - Experimental slit, must be a blank space separating slit amount and unit.
+        "slit": f"{ExperimentalConditions.simulate_slit} nm",  # Experimental slit, must be a blank space separating slit amount and unit.
         "offset": "-0.2 nm",
         "databank": ExperimentalConditions.database,  # Databank used for calculation. Must be stated.
     }

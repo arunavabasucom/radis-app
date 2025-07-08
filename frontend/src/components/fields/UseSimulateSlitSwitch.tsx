@@ -6,10 +6,11 @@ import useFromStore from "../../store/form";
 function UseSimulateSlitSwitch() {
   const { useSlit, setUseSlit } = useFromStore();
   const { control, setValue } = useFormContext();
+  const { formMode } = useFromStore();
 
   return (
     <Controller
-      name="use_simulate_slit"
+      name={formMode === "calc" ? "use_simulate_slit" : "experimental_conditions.use_simulate_slit"}
       defaultValue={false}
       control={control}
       render={({ field }) => (

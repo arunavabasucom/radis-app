@@ -26,14 +26,6 @@ async def fit_spectrum_route(
 
     try:
         s_experimental, s_best, result, log = await fit_spectrum(payload, file)
-        if payload.use_simulate_slit is True:
-            if(payload.experimental_conditions.wavelength_units=="1/u.cm"):
-                slit_unit="cm-1"
-            else:
-                slit_unit="nm"
-            print("Applying simulate slit")
-            s_experimental.apply_slit(payload.simulate_slit, slit_unit)
-            s_best.apply_slit(payload.simulate_slit, slit_unit)
 
     except radis.misc.warning.EmptyDatabaseError:
         return {"error": "No line in the specified wavenumber range"}

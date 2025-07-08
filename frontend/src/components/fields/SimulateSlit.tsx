@@ -8,8 +8,8 @@ import useFromStore from "../../store/form";
 
 export const SimulateSlit: React.FC = () => {
   const { control } = useFormContext();
-
   const { simulateSlitUnit } = useFromStore();
+  const { formMode } = useFromStore();
 
   return (
     <Controller
@@ -41,7 +41,7 @@ export const SimulateSlit: React.FC = () => {
           ) : null}
         </FormControl>
       )}
-      name="simulate_slit"
+      name={formMode === "calc" ? "simulate_slit" : "experimental_conditions.simulate_slit"}
       control={control}
       defaultValue={5}
     />
