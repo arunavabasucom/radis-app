@@ -77,6 +77,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setValue,
     watch,
     formState: { dirtyFields },
+    getValues,
+    reset,
   } = methods;
 
   const databaseWatch = watch("database");
@@ -98,21 +100,26 @@ export const Form: React.FunctionComponent<FormProps> = ({
       setUseSimulateSlitFunction(true);
       setValue("simulate_slit", 5);
     }
-    setDisableAddToPlotButton(true);
   }, [modeWatch]);
 
-  //if spectrum data more than 1 than we disabble the add to plot button if user interact with wavelength unit field
+  //if spectrum data more than 1 than we disable the add to plot button if user interact with wavelength unit or mode field
+  const ModeIsDirtyField = dirtyFields.mode;
   const WaveLengthUnitIsDirtyField = dirtyFields.wavelength_units;
   const wavelengthUnitWatch = watch("wavelength_units");
   React.useEffect(() => {
     if (spectra.length > 0) {
-      if (dirtyFields.wavelength_units === true) {
+      if (WaveLengthUnitIsDirtyField || ModeIsDirtyField) {
         setDisableAddToPlotButton(true);
       } else {
         setDisableAddToPlotButton(false);
       }
     }
-  }, [WaveLengthUnitIsDirtyField, spectra.length, wavelengthUnitWatch]);
+  }, [
+    WaveLengthUnitIsDirtyField,
+    ModeIsDirtyField,
+    spectra.length,
+    wavelengthUnitWatch,
+  ]);
 
   console.log(wavelengthUnitWatch);
   React.useEffect(() => {
@@ -189,6 +196,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
               ...response.data,
             },
           ]);
+          dirtyFields.wavelength_units = false;
+          dirtyFields.mode = false;
           setDisableAddToPlotButton(false);
           setPlotSettings({
             mode: data.mode,
@@ -350,6 +359,8 @@ export const Form: React.FunctionComponent<FormProps> = ({
               isNonEquilibrium={isNonEquilibrium}
               control={control}
               databaseWatch={databaseWatch}
+              getValues={getValues}
+              reset={reset}
             />
           </Grid>
 
