@@ -64,5 +64,10 @@ jobs:
          service: radisapp-backend
          image: ${{ secrets.CONTAINER_NAME }}
          env_vars: |
+            # Google/Infra Vars
             LOGTAIL_SOURCE_TOKEN=${{ secrets.LOGTAIL_SOURCE_TOKEN }}
             LOGTAIL_HOST=${{ secrets.LOGTAIL_HOST }}
+
+            # HITRAN Vars
+            HITRAN_EMAIL=${{ secrets.HITRAN_EMAIL }}
+            HITRAN_PASSWORD=${{ secrets.HITRAN_PASSWORD }}

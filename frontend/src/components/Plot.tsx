@@ -140,6 +140,11 @@ export const Plot_: React.FC<PlotProps> = ({
     }
     return formatted;
   };
+  const generateFileName = (spectra: Spectrum[]) =>
+    `${spectra
+      .map(s => `${s.species.map(specie => specie.molecule).join("_")}_${s.database}`)
+      .join("_")}`;
+
   return (
     <>
       <style>
@@ -219,6 +224,11 @@ export const Plot_: React.FC<PlotProps> = ({
           showlegend: true,
           legend: { orientation: "h", y: -0.6, x: 0 },
           margin: { l: 90, r: 10 },
+        }}
+        config={{
+          toImageButtonOptions: {
+            filename: generateFileName(spectra),
+          },
         }}
       />
     </>
