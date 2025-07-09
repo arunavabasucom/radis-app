@@ -62,6 +62,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableAddToPlotButton,
     disableDownloadButton,
     setDisableDownloadButton,
+    localBackend,
   } = useFromStore();
 
   //TODO - we need to make it global
@@ -144,7 +145,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     setDisableDownloadButton(true);
     setLoading(true);
     setError(undefined);
-    const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+    const apiEndpoint = localBackend ? import.meta.env.VITE_API_ENDPOINT_LOCAL : import.meta.env.VITE_API_ENDPOINT;
     if (endpoint === "calculate-spectrum") {
       /*#########GOOGLE_ANALYTICS_EVENT_TRACKING###############*/
       ReactGA.event({
