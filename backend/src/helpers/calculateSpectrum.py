@@ -2,6 +2,7 @@ import radis
 import astropy.units as u 
 from  astropy.units import cds 
 from src.models.payload import Payload
+from src.helpers.login_to_hitemp import setup_hitemp_credentials
 
 # An arbitrary broadening formula as NIST databank requires `lbfunc`
 def broad_arbitrary(**kwargs):
@@ -15,6 +16,10 @@ def calculate_spectrum(payload: Payload):
     """Calculate the spectrum using the RADIS library."""
     print(">> Payload : ")
     print(payload)
+
+    if payload.database == "hitemp" or payload.database == "nist":
+        setup_hitemp_credentials()
+
     spectrum = radis.calc_spectrum(
         payload.min_wavenumber_range * eval(payload.wavelength_units),
         payload.max_wavenumber_range * eval(payload.wavelength_units),
