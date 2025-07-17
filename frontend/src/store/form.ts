@@ -10,7 +10,7 @@ interface TFromState {
   disableDownloadButton: boolean; // disableDownloadButton
   disableAddToPlotButton: boolean;
   formMode: "calc" | "fit"
-  localBackend: boolea
+  localBackend: boolean;
 }
 
 interface TFromActions {

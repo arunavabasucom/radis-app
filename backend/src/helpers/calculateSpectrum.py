@@ -3,6 +3,7 @@ from  astropy.units import cds
 from src.models.payload import Payload
 from radis import SpectrumFactory
 from radis.los.slabs import MergeSlabs
+from src.helpers.login_to_hitemp import setup_hitemp_credentials
 
 # An arbitrary broadening formula as NIST databank requires `lbfunc`
 def broad_arbitrary(**kwargs):
@@ -16,6 +17,10 @@ def calculate_spectrum(payload: Payload):
     """Calculate the spectrum using the RADIS library."""
     print(">> Payload : ")
     print(payload)
+    
+    if payload.database == "hitemp" or payload.database == "nist":
+        setup_hitemp_credentials()
+
 
     # List of all species spectra to be merged later
     s_list =[]
