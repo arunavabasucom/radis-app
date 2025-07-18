@@ -101,6 +101,11 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
     } else {
       toggleshowNonEquilibriumSwitch(true);
     }
+    if (databaseWatch === Database.NIST) {
+      setValue("experimental_conditions.specie.molecule", "Co_II");
+    } else {
+      setValue("experimental_conditions.specie.molecule", "CO");
+    }
   }, [databaseWatch]);
 
   const modeWatch = watch("experimental_conditions.mode");
@@ -354,26 +359,30 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
             gap: 2,
             alignItems: { xs: "stretch", xl: "center" }
           }}>
-            <TGas />
+            <Grid xs={12} lg={4}>
+              <TGas />
+            </Grid>
             {selected_fit_parameters?.tgas ? <BoundingRanges fitParameter="tgas" /> : null}
           </Grid> :
-            <Grid >
+            <Grid xs={12} lg={4}>
               <FitCheckbox fitParameter="tgas" />
             </Grid>
           }
 
           {isNonEquilibrium ? (
-            <>
+            <Grid>
               {selected_fit_parameters?.trot ? <Grid sm={8} lg={12} sx={{
                 display: "flex",
                 flexDirection: { xs: "column", xl: "row" },
                 gap: 2,
                 alignItems: { xs: "stretch", xl: "center" }
               }}>
-                <TRot />
+                <Grid xs={12} lg={4}>
+                  <TRot />
+                </Grid>
                 {selected_fit_parameters?.trot ? <BoundingRanges fitParameter="trot" /> : null}
               </Grid> :
-                <Grid >
+                <Grid xs={12} lg={4}>
                   <FitCheckbox fitParameter="trot" />
                 </Grid>
               }
@@ -383,14 +392,16 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
                 gap: 2,
                 alignItems: { xs: "stretch", xl: "center" }
               }}>
-                <TVib />
+                <Grid xs={12} lg={4}>
+                  <TVib />
+                </Grid>
                 {selected_fit_parameters?.tvib ? <BoundingRanges fitParameter="tvib" /> : null}
               </Grid> :
-                <Grid >
+                <Grid xs={12} lg={4}>
                   <FitCheckbox fitParameter="tvib" />
                 </Grid>
               }
-            </>
+            </Grid>
           ) : null}
 
           <Grid lg={12}>
@@ -401,10 +412,12 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
                 gap: 2,
                 alignItems: { xs: "stretch", xl: "center" }
               }}>
-                <Pressure />
+                <Grid xs={12} lg={4}>
+                  <Pressure />
+                </Grid>
                 {selected_fit_parameters?.pressure ? <BoundingRanges fitParameter="pressure" /> : null}
               </Grid> :
-                <Grid >
+                <Grid xs={12} lg={4}>
                   <Pressure />
                 </Grid>
             }

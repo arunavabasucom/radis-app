@@ -57,7 +57,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
 
   return (
     <FormControl>
-      <FormLabel>Molecule</FormLabel>
+      <FormLabel>{databaseWatch === Database.NIST ? "Specie" : "Molecule"}</FormLabel>
       <Autocomplete
         id="molecule-selector"
         variant="outlined"
