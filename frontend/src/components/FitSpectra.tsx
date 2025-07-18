@@ -30,7 +30,7 @@ export const FitSpectra: React.FC = () => {
       />
       {error ? <ErrorAlert message={error} /> : null}
       <Grid container spacing={4}>
-        <Grid xs={12} sm={8} md={5} lg={5}>
+        <Grid xs={12} lg={4}>
           <FitForm
             setPlotSettings={setPlotSettings}
             setError={setError}
@@ -43,7 +43,7 @@ export const FitSpectra: React.FC = () => {
           />
         </Grid>
 
-        <Grid xs={12} sm={12} md={7} lg={7}>
+        <Grid xs={12} lg={8}>
           {loading ? (
             <div
               style={{

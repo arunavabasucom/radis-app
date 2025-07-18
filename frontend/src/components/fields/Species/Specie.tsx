@@ -25,7 +25,7 @@ export const Specie: React.FC<SpeciesProps> = ({
 
     return (
         <Grid container spacing={3}>
-            <Grid xs={12} sm={6} md={4} xl={2}>
+            <Grid xs={12} sm={6} md={4} xl={3}>
                 <Controller
                     name="experimental_conditions.specie.molecule"
                     control={control}
@@ -44,7 +44,7 @@ export const Specie: React.FC<SpeciesProps> = ({
                     )}
                 />
             </Grid>
-            <Grid xs={12} sm={6} md={8} xl={selected_fit_parameters?.mole_fraction ? 4 : 10}>
+            <Grid xs={12} sm={6} md={8} xl={selected_fit_parameters?.mole_fraction ? 3 : 10}>
                 <Controller
                     name={selected_fit_parameters?.mole_fraction ? "fit_parameters.mole_fraction" : "experimental_conditions.specie.mole_fraction"}
                     control={control}
