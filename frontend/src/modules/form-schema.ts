@@ -58,7 +58,9 @@ export const formSchema = yup.object().shape({
       mole_fraction: yup
         .number()
         .required("Mole fraction must be defined")
-        .typeError("Mole fraction must be defined"),
+        .typeError("Mole fraction must be defined")
+        .min(0, "Mole fraction must be between 0 and 1")
+        .max(1, "Mole fraction must be between 0 and 1"),
     })
   ),
   simulate_slit: yup
@@ -81,7 +83,9 @@ export const formSchemaFit = yup.object().shape({
     method: yup.string().required(),
     fit_var: yup.string().required(),
     normalize: yup.boolean().required(),
-    max_loops: yup.number().required(),
+    max_loops: yup.number()
+      .typeError("Max loops must be defined")
+      .required("Max loops must be defined"),
     tol: yup.number().required().default(1e-15),
   }),
   bounding_ranges: yup.object().shape({
@@ -178,7 +182,9 @@ export const formSchemaFit = yup.object().shape({
       mole_fraction: yup
         .number()
         .required("Mole fraction must be defined")
-        .typeError("Mole fraction must be defined"),
+        .typeError("Mole fraction must be defined")
+        .min(0, "Mole fraction must be between 0 and 1")
+        .max(1, "Mole fraction must be between 0 and 1"),
     }),
     min_wavenumber_range: yup
       .number()
