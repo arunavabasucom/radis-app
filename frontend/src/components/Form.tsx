@@ -18,7 +18,7 @@ import { PathLength } from "./fields/PathLength";
 import { SimulateSlit } from "./fields/SimulateSlit";
 import { WavenumberRangeSlider } from "./fields/WavenumberRangeSlider";
 import { CalcSpectrumButton } from "./fields/CalSpectrumButton";
-import { Database, FormValues } from "./types";
+import { Database, FormValues, Species as TSpecies } from "./types";
 import { DownloadSpecButton } from "./DownloadSpecButton";
 import { Species } from "./fields/Species/Species";
 import { DownloadTxtButton } from "./DownloadTxtButton";
@@ -55,6 +55,7 @@ export const Form: React.FunctionComponent<FormProps> = ({
     showNonEquilibriumSwitch,
     toggleshowNonEquilibriumSwitch,
     useSlit,
+    setUseSlit,
     useSimulateSlitFunction,
     setUseSimulateSlitFunction,
     setSimulateSlitUnit,
@@ -68,7 +69,13 @@ export const Form: React.FunctionComponent<FormProps> = ({
   //TODO - we need to make it global
 
   const methods = useForm<FormValues>({
-    defaultValues: { species: [{ molecule: "CO", mole_fraction: 0.1 }] },
+    defaultValues: {
+      species: [{ molecule: "CO", mole_fraction: 0.1 }],
+      use_simulate_slit: false,
+      simulate_slit: 5,
+      tvib: undefined,
+      trot: undefined,
+    },
     resolver: yupResolver(formSchema),
   });
 
@@ -79,6 +86,118 @@ export const Form: React.FunctionComponent<FormProps> = ({
     watch,
     formState: { dirtyFields },
   } = methods;
+  // create the URL from the form
+  useEffect(() => {
+    const subscription = watch((values) => {
+      const params = new URLSearchParams();
+      Object.entries(values).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          // Handle species
+          if (key === "species" && Array.isArray(value)) {
+            value.forEach((species) => {
+              if (
+                species &&
+                species.molecule &&
+                species.mole_fraction !== undefined
+              ) {
+                params.append("molecule", species?.molecule);
+                params.append(
+                  "mole_fraction",
+                  species.mole_fraction.toString()
+                );
+              }
+            });
+          } else {
+            params.set(key, value.toString());
+          }
+        }
+      });
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState(null, "", newUrl);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  // fill the form from the URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const updateField = <T extends keyof FormValues>(key: T) => {
+      const value = params.get(key);
+      if (value !== null) {
+        // keys to check from params
+        const booleanKeys: (keyof FormValues)[] = ["use_simulate_slit"];
+        const numericKeys: (keyof FormValues)[] = [
+          "tgas",
+          "tvib",
+          "trot",
+          "pressure",
+          "path_length",
+          "simulate_slit",
+          "min_wavenumber_range",
+          "max_wavenumber_range",
+        ];
+        const modes: string[] = [
+          "absorbance",
+          "radiance_noslit",
+          "transmittance_noslit",
+        ];
+        // valid values for unit keys
+        const path_length_units: string[] = ["u.cm", "u.m", "u.km"];
+        const wavelength_units: string[] = ["u.nm", "1/u.cm"];
+        const pressure_units: string[] = [
+          "u.bar",
+          "u.mbar",
+          "cds.atm",
+          "u.torr",
+          "u.mTorr",
+          "u.Pa",
+        ];
+        if (booleanKeys.includes(key as keyof FormValues)) {
+          const boolValue = value === "true";
+          setValue(key as keyof FormValues, boolValue);
+          setUseSimulateSlitFunction(boolValue);
+          setUseSlit(boolValue);
+        } else if (
+          numericKeys.includes(key as keyof FormValues) &&
+          !isNaN(parseFloat(value))
+        ) {
+          if (key === "tvib" || key === "trot") {
+            toggleshowNonEquilibriumSwitch(true);
+            toggleIsNonEquilibrium(true);
+          }
+          setValue(key as keyof FormValues, parseFloat(value));
+        } else if (modes.includes(value)) {
+          setValue("mode", value);
+        } else if (Object.values(Database).includes(value as Database)) {
+          setValue("database", value as Database);
+        } else if (path_length_units.includes(value)) {
+          setValue("path_length_units", value);
+        }
+        // TODO: changing wave units reset its lengths to default 1900 - 2300 (thats cause of the way app handles it right now)
+        else if (wavelength_units.includes(value)) {
+          setValue("wavelength_units", value);
+        } else if (pressure_units.includes(value)) {
+          setValue("pressure_units", value);
+        }
+      }
+    };
+    // Handle "species"
+    // TODO: Verify the selected database and handle only species available in that database.
+    const molecules = params.getAll("molecule");
+    const moleFractions = params.getAll("mole_fraction");
+    if (molecules.length > 0 && moleFractions.length > 0) {
+      const speciesList: TSpecies[] = molecules.map((mol, index) => ({
+        molecule: mol,
+        mole_fraction: isNaN(parseFloat(moleFractions[index]))
+          ? 0
+          : parseFloat(moleFractions[index]),
+      }));
+      setValue("species", speciesList);
+    }
+    Object.entries(methods.getValues()).forEach(([key]) => {
+      updateField(key as keyof FormValues);
+    });
+  }, []);
 
   const databaseWatch = watch("database");
   React.useEffect(() => {
@@ -97,7 +216,9 @@ export const Form: React.FunctionComponent<FormProps> = ({
       setValue("simulate_slit", undefined);
     } else {
       setUseSimulateSlitFunction(true);
-      setValue("simulate_slit", 5);
+      if (watch("simulate_slit") === undefined) {
+        setValue("simulate_slit", 5);
+      }
     }
     setDisableAddToPlotButton(true);
   }, [modeWatch]);
@@ -276,14 +397,19 @@ export const Form: React.FunctionComponent<FormProps> = ({
   };
 
   useEffect(() => {
-    if (isNonEquilibrium) {
-      setValue("tvib", 300);
-      setValue("trot", 300);
+    // to update if tvib or trot are in the url
+    if (watch("tvib") || watch("trot") || isNonEquilibrium) {
+      if (watch("tvib") === undefined) {
+        setValue("tvib", 300);
+      }
+      if (watch("trot") === undefined) {
+        setValue("trot", 300);
+      }
     } else {
       setValue("tvib", undefined);
       setValue("trot", undefined);
     }
-  }, [setValue, isNonEquilibrium]);
+  }, [watch("tvib"), watch("trot"), isNonEquilibrium]);
 
   return (
     <FormProvider {...methods}>
