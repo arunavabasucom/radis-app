@@ -151,11 +151,11 @@ export const Plot_: React.FC<PlotProps> = ({
       .join("_")}`;
 
   const isMobile = typeof window !== "undefined" && /iPhone|Android|Mobile|iPad|iPod/i.test(navigator.userAgent);
-  const plotWidth = isMobile ? 650 : 1150;
+  const plotWidth = isMobile ? 650 : 1050;
   const plotHeight = isMobile ? 450 : 650;
 
   return (
-    <>
+    <div style={{ overflowX: 'auto' }}>
       <style>
         {`
         .js-plotly-plot .updatemenu-button rect {
@@ -242,7 +242,7 @@ export const Plot_: React.FC<PlotProps> = ({
           },
         }}
       />
-    </>
+    </div>
   );
 };
 
