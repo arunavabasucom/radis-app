@@ -29,7 +29,11 @@ async def download_txt(payload: Payload, background_tasks: BackgroundTasks):
         return {"error": str(exc)}
     else:
         
-        wunit = spectrum.get_waveunit()
+        wunit = "cm-1"
+        if(payload.wavelength_units=="1/u.cm"):
+            wunit="cm-1"
+        else:
+            wunit="nm"
         iunit = "default"
         spectrum.savetxt(file_path,payload.mode,wunit=wunit,Iunit=iunit)
         # running as a background task to delete the .spec file after giving the file response back
