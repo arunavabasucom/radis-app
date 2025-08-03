@@ -1,6 +1,7 @@
 export type Species = {
   molecule: string;
   mole_fraction: number;
+  is_all_isotopes: boolean;
 };
 
 export enum Database {

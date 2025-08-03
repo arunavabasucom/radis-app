@@ -45,9 +45,17 @@ async def fit_spectrum(payload: Payload, file: UploadFile):
                             wunit=Wunit, 
                             unit=f'mW/cm2/sr/{Wunit}')
 
+    isotope = None
+    if ExperimentalConditions.database == "nist":
+        isotope = 0
+    elif ExperimentalConditions.specie.is_all_isotopes:
+        isotope = 'all'
+    else:
+        isotope = '1'
+
     experimental_conditions = {
         "molecule": ExperimentalConditions.specie.molecule,  # Molecule ID
-        "isotope": "1" if ExperimentalConditions.database != "nist" else 0,  # Isotopologue ID, hard-coded to 0 for NIST. # Species mole fraction, from 0 to 1.
+        "isotope": isotope,  # Isotopologue ID, hard-coded to 0 for NIST. # Species mole fraction, from 0 to 1.
         "wmin": ExperimentalConditions.min_wavenumber_range,  # Starting wavelength/wavenumber to be cropped out from the original experimental spectrum.
         "wmax": ExperimentalConditions.max_wavenumber_range,  # Ending wavelength/wavenumber for the cropping range.
         "wunit": Wunit,
@@ -61,10 +69,13 @@ async def fit_spectrum(payload: Payload, file: UploadFile):
         # "lbfunc": broad_arbitrary if ExperimentalConditions.database == "nist" else None,
         # "cutoff": 0,  # (RADIS native) Discard linestrengths that are lower that this to reduce calculation time, in cm-1.
         # "slit": f"{ExperimentalConditions.simulate_slit} {slit_unit}",  # Experimental slit, must be a blank space separating slit amount and unit.
-        "slit": f"{ExperimentalConditions.simulate_slit} nm",  # Experimental slit, must be a blank space separating slit amount and unit.
-        "offset": "-0.2 nm",
+        # "slit": f"{ExperimentalConditions.simulate_slit} nm",  # Experimental slit, must be a blank space separating slit amount and unit.
+        # "offset": "-0.2 nm",
         "databank": ExperimentalConditions.database,  # Databank used for calculation. Must be stated.
     }
+
+    if ExperimentalConditions.use_simulate_slit:
+        experimental_conditions["slit"] = f"{ExperimentalConditions.simulate_slit} nm"
 
     # List of parameters to be fitted.
     fit_parameters = {}

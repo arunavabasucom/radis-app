@@ -82,7 +82,7 @@ const initialState: FitFormValues = {
     experimental_conditions: {
         mode: "radiance",
         database: Database.HITRAN,
-        specie: { molecule: "CO", mole_fraction: 0.1 },
+        specie: { molecule: "CO", mole_fraction: 0.1, is_all_isotopes: false },
         min_wavenumber_range: 1900,
         max_wavenumber_range: 2100,
         pressure: 1.01325,

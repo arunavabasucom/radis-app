@@ -61,6 +61,7 @@ export const formSchema = yup.object().shape({
         .typeError("Mole fraction must be defined")
         .min(0, "Mole fraction must be between 0 and 1")
         .max(1, "Mole fraction must be between 0 and 1"),
+      is_all_isotopes: yup.boolean().required().default(false),
     })
   ),
   simulate_slit: yup
@@ -185,6 +186,7 @@ export const formSchemaFit = yup.object().shape({
         .typeError("Mole fraction must be defined")
         .min(0, "Mole fraction must be between 0 and 1")
         .max(1, "Mole fraction must be between 0 and 1"),
+      is_all_isotopes: yup.boolean().required().default(false),
     }),
     min_wavenumber_range: yup
       .number()

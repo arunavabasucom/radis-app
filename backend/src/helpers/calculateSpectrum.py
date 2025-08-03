@@ -48,7 +48,14 @@ def calculate_spectrum(payload: Payload):
             spectrum_options["waveunit"]="cm-1"
         else:
             spectrum_options["waveunit"]="nm"
-        spectrum_options["isotope"] = '1,2,3' if payload.database != "nist" else 0
+            
+        if payload.database == "nist":
+            spectrum_options["isotope"] = 0
+        elif species.is_all_isotopes:
+            spectrum_options["isotope"] = 'all'
+        else:
+            spectrum_options["isotope"] = '1'
+
         spectrum_options["molecule"] = species.molecule
         spectrum_options["dbformat"] = payload.database
         spectrum_options["load_columns"] = load_columns

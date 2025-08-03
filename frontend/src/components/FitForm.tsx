@@ -74,7 +74,7 @@ export const FitForm: React.FunctionComponent<FormProps> = ({
   const methods = useForm<FitFormValues>({
     defaultValues: {
       experimental_conditions: {
-        specie: { molecule: "CO", mole_fraction: 0.1 },
+        specie: { molecule: "CO", mole_fraction: 0.1, is_all_isotopes: false },
       },
       fit_properties: {
         method: "least_squares",

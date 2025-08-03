@@ -2,7 +2,8 @@ payload_data = {
     "species": [
         {
             "molecule": "CO",
-            "mole_fraction": 0.2
+            "mole_fraction": 0.2,
+            "is_all_isotopes": False
         }
     ],
     "mode": "absorbance",
