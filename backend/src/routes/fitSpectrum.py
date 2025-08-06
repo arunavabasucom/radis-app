@@ -5,13 +5,93 @@ import astropy.units as u
 from json import loads
 import numpy as np
 import radis
+from typing import Dict, Any
 
 router = APIRouter()
-@router.post("/fit-spectrum")
+
+
+@router.post(
+    "/fit-spectrum",
+    response_model=Dict[str, Any],
+    operation_id="fitPayload",
+    summary="Fit Experimental Spectrum",
+    description="""
+Fit an experimental spectrum to theoretical models using the RADIS library.
+
+This endpoint performs spectrum fitting by comparing experimental data with theoretical calculations. 
+The fitting process optimizes molecular parameters (temperature, pressure, mole fraction) to minimize 
+the difference between experimental and theoretical spectra.
+
+## Key Features:
+- **File Upload**: Accepts .spec, .txt, or .csv files with experimental data
+- **Multiple Fitting Variables**: Absorbance, transmittance, radiance (with/without slit)
+- **Parameter Optimization**: Fits temperature, pressure, mole fraction, and other parameters
+- **Bounding Ranges**: Constrains parameter values within specified ranges
+- **Convergence Control**: Configurable tolerance and maximum iterations
+
+## Fitting Process:
+1. Uploads and validates experimental spectrum file
+2. Sets up theoretical calculation with initial parameters
+3. Performs iterative optimization using least squares method
+4. Returns fitted spectrum, experimental spectrum, and fitting statistics
+
+## Supported File Formats:
+- **.spec**: RADIS spectrum files
+- **.txt**: Text files with wavelength/intensity data
+- **.csv**: Comma-separated values with spectral data
+
+## Performance Notes:
+- Fitting time depends on spectral complexity and parameter ranges
+- Large spectra are automatically resampled to reduce processing time
+- Memory usage scales with spectral resolution and fitting parameters
+    """,
+    responses={
+        200: {
+            "description": "Successful spectrum fitting",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "data": {
+                            "experimental_spectrum": {
+                                "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                                "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                                "units": "absorbance"
+                            },
+                            "best_spectrum": {
+                                "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                                "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                                "units": "absorbance"
+                            },
+                            "units": "absorbance",
+                            "fit_vals": {
+                                "tgas": 296.0,
+                                "pressure": 1.0,
+                                "mole_fraction": 0.1
+                            },
+                            "residual": 0.001,
+                            "time_fitting": 5.2
+                        }
+                    }
+                }
+            }
+        }
+    }
+)
 async def fit_spectrum_route(
-    data: str = Form(...),
-    file: UploadFile = File(...)
-    ):
+    data: str = Form(..., description="JSON string containing fitting parameters"),
+    file: UploadFile = File(..., description="Experimental spectrum file (.spec, .txt, or .csv)")
+):
+    """
+    Fit experimental spectrum to theoretical models.
+    
+    Args:
+        data: JSON string containing fitting parameters (fitPayload model)
+        file: Uploaded experimental spectrum file
+        
+    Returns:
+        Dictionary containing fitted spectrum, experimental spectrum, and fitting statistics
+        
+    """
     payload = Payload(**loads(data)) 
 
     # cause radiance_noslit and transmittance_noslit are not supported by fit_spectrum function
@@ -19,7 +99,6 @@ async def fit_spectrum_route(
         payload.fit_properties.fit_var = 'radiance'
     elif payload.fit_properties.fit_var == 'transmittance_noslit':
         payload.fit_properties.fit_var = 'transmittance'
-
 
     if not file.filename.endswith((".spec", ".txt", ".csv")):
         return {"error": "File must have a .spec, .txt, or .csv extension"}

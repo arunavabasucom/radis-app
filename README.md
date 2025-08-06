@@ -57,6 +57,10 @@ We created this app with the intention of giving both researchers and non-resear
 -  Overlay spectra
 <img width="1301" alt="download" src="https://user-images.githubusercontent.com/73842340/188674505-c9107b78-79c3-4c76-825f-6c5651320ae5.png">
                  
-## ✅ **License**
+## ✅ **Contributing**
+
+For contributing to this project, please refer to our [Developer Guide](DEVELOPER_GUIDE.md) for detailed instructions on how to set up your development environment and contribute to the project.
+
+## ✅ **License**
 
 [LGPL-3.0 license](https://github.com/suzil/radis-app/blob/main/LICENSE)
