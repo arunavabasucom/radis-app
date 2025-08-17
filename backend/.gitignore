@@ -30,7 +30,10 @@ MANIFEST
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
+# Ignore all .spec files
 *.spec
+# But don't ignore the test spec file
+!__tests__/helpers/test.spec
 
 # Installer logs
 pip-log.txt
