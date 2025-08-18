@@ -79,6 +79,7 @@ export const FitCheckbox: React.FC<{ fitParameter: FitParameter }> = ({ fitParam
                     control={control}
                     render={({ field }) => (
                         <Checkbox
+                            data-testid={`${fitParameter}_checkbox_testid`}
                             sx={{ ml: 1, mb: 1 }}
                             checked={selected_fit_parameters?.[fitParameter as keyof typeof selected_fit_parameters]}
                             onChange={(e) => {

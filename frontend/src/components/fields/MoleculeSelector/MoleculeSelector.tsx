@@ -60,6 +60,7 @@ export const MoleculeSelector: React.FC<MoleculeSelectorProps> = ({
       <FormLabel>Molecule</FormLabel>
       <Autocomplete
         id="molecule-selector"
+        data-testid="molecule-selector-testid"
         variant="outlined"
         options={moleculeOptions.map((molecule) =>
           addSubscriptsToMolecule(molecule)

@@ -13,13 +13,15 @@ export const Mode: React.FC = () => {
 
   return (
     <FormControl>
-      <FormLabel>Mode</FormLabel>
+      <FormLabel htmlFor="mode-select">Mode</FormLabel>
       <Controller
         name={formMode === "calc" ? "mode" : "fit_properties.fit_var"}
         defaultValue="absorbance"
         control={control}
         render={({ field }) => (
           <Select
+            id="mode-select"
+            data-testid="mode-select-testid"
             {...field}
             onChange={(_, value) => {
               field.onChange(value);

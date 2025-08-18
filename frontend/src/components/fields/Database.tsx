@@ -13,13 +13,15 @@ export const Database: React.FC = () => {
 
   return (
     <FormControl>
-      <FormLabel>Database</FormLabel>
+      <FormLabel htmlFor="database-select">Database</FormLabel>
       <Controller
         name={formMode === "calc" ? "database" : "experimental_conditions.database"}
         defaultValue={TDatabase.HITRAN}
         control={control}
         render={({ field, formState }) => (
           <Select
+            data-testid="database-testid"
+            id="database-select"
             {...field}
             {...formState}
             onChange={(_, value) => {

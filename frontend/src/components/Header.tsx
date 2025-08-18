@@ -64,6 +64,7 @@ export const Header: React.FC = () => {
             </Box>
             <IconButton
               variant="plain"
+              aria-label="GitHub"
               onClick={() =>
                 (window.location.href = "https://github.com/suzil/radis-app")
               }
@@ -71,6 +72,7 @@ export const Header: React.FC = () => {
               <GitHubIcon sx={{ color: mode === "dark" ? "white" : "", fontSize: 28 }} />
             </IconButton>
             <IconButton
+              aria-label="Theme"
               onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
             >
               {mode === "dark" ? (

@@ -67,7 +67,7 @@ export const Upload: React.FC<UploadProps> = ({
             control={control}
             render={({ field, fieldState }) => (
                 <FormControl error={!!fieldState.error}>
-                    <FormLabel>
+                    <FormLabel htmlFor={`spectrum_file-file-input`}>
                         {label}
                         {required && <span style={{ color: "red" }}> *</span>}
                     </FormLabel>

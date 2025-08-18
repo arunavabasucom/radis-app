@@ -20,7 +20,7 @@ export const Normalize: React.FC = () => {
                         alignItems: "flex-start",
                     }}
                 >
-                    <FormLabel>Normalize</FormLabel>
+                    <FormLabel htmlFor="normalize-input">Normalize</FormLabel>
                     <Checkbox
                         {...field}
                         id="normalize-input"

@@ -74,7 +74,9 @@ export const WavenumberRangeSlider: React.FC = () => {
         {isUnitChanged ? " Wavelength range (nm)" : " Wavenumber range (cm⁻¹)"}
       </FormLabel>
       <Grid container spacing={2} alignItems="center">
-        <Grid xs={12} sm={8} md={5} lg={4}>
+        <Grid xs={12} sm={8} md={5} lg={4}
+          data-testid="min-wavenumber-input"
+        >
           <Controller
             name={formMode === "calc" ? "min_wavenumber_range" : "experimental_conditions.min_wavenumber_range"}
             control={control}
@@ -96,7 +98,9 @@ export const WavenumberRangeSlider: React.FC = () => {
             max={maxRange}
           />
         </Grid>
-        <Grid xs={12} sm={8} md={5} lg={4}>
+        <Grid xs={12} sm={8} md={5} lg={4}
+          data-testid="max-wavenumber-input"
+        >
           <Controller
             name={formMode === "calc" ? "max_wavenumber_range" : "experimental_conditions.max_wavenumber_range"}
             control={control}

@@ -98,7 +98,9 @@ export const BoundingRanges: React.FC<{ fitParameter: FitParameter }> = ({ fitPa
         {capitalizeFirstLetter(fitParameter)} Bounding Range
       </FormLabel>
       <Grid container spacing={2} alignItems="center">
-        <Grid xs={12} lg={4}>
+        <Grid xs={12} lg={4}
+          data-testid={`min-${fitParameter}Bounding-input`}
+        >
           <Controller
             name={`bounding_ranges.${fitParameter}.min`}
             control={control}
@@ -120,7 +122,9 @@ export const BoundingRanges: React.FC<{ fitParameter: FitParameter }> = ({ fitPa
             max={maxRange}
           />
         </Grid>
-        <Grid xs={12} lg={4}>
+        <Grid xs={12} lg={4}
+          data-testid={`max-${fitParameter}Bounding-input`}
+        >
           <Controller
             name={`bounding_ranges.${fitParameter}.max`}
             control={control}
