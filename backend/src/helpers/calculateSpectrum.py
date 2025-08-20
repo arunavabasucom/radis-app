@@ -1,6 +1,6 @@
 import astropy.units as u 
 from  astropy.units import cds 
-from src.models.payload import Payload
+from src.models.payload import calcPayload as Payload
 from radis import SpectrumFactory
 from radis.los.slabs import MergeSlabs
 from src.helpers.login_to_hitemp import setup_hitemp_credentials

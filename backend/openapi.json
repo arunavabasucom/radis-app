@@ -1,0 +1,789 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "RADIS Application API",
+    "description": "# RADIS Application API\n\nA comprehensive web API for high-resolution infrared molecular spectra calculations using the RADIS library.\n\n## Overview\n\nThe RADIS Application provides an intuitive interface for spectroscopic calculations, making it accessible to both researchers and non-researchers. This API supports:\n\n- **Spectrum Calculation**: Compute molecular spectra using various databases (HITRAN, HITEMP, GEISA, ExoMol, NIST)\n- **Spectrum Fitting**: Fit experimental spectra to theoretical models\n- **Data Export**: Download spectra in various formats (.spec, .csv)\n- **Non-equilibrium Calculations**: Support for non-equilibrium molecular states\n\n## Key Features\n\n- **Multiple Databases**: Support for HITRAN, HITEMP, GEISA, ExoMol, and NIST\n- **Flexible Units**: Support for various wavelength, pressure, and path length units\n- **Slit Function**: Optional slit function simulation for realistic spectra\n- **File Upload**: Upload experimental data for spectrum fitting\n- **Background Processing**: Efficient handling of large calculations\n\n## Authentication\n\nCurrently, this API does not require authentication. All endpoints are publicly accessible.\n\n## Rate Limiting\n\nPlease be mindful of server resources when making requests, especially for large spectral calculations.\n\n## Support\n\nFor questions or issues, please visit our [GitHub repository](https://github.com/arunavabasu-03/radis-app) or create an issue.\n\n## Citation\n\nIf you use this API in your research, please cite the RADIS library:\n\n```\nErwin, P., et al. (2020). RADIS: A fast line-by-line code for rapid spectral synthesis. \nJournal of Quantitative Spectroscopy and Radiative Transfer, 261, 107476.\n```",
+    "version": "1.0.0",
+    "contact": {
+      "name": "RADIS Application Team",
+      "url": "https://github.com/arunavabasu-03/radis-app",
+      "email": "contact@radis-app.org"
+    },
+    "license": {
+      "name": "LGPL-3.0",
+      "url": "https://github.com/arunavabasu-03/radis-app/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Spectrum Calculation",
+      "description": "Endpoints for calculating molecular spectra using various databases and parameters."
+    },
+    {
+      "name": "Spectrum Fitting",
+      "description": "Endpoints for fitting experimental spectra to theoretical models."
+    },
+    {
+      "name": "Data Export",
+      "description": "Endpoints for downloading calculated spectra in various formats."
+    },
+    {
+      "name": "System",
+      "description": "System information and health check endpoints."
+    }
+  ],
+  "paths": {
+    "/calculate-spectrum": {
+      "post": {
+        "tags": ["Spectrum Calculation"],
+        "summary": "Calculate Molecular Spectrum",
+        "description": "Calculate a molecular spectrum using the RADIS library with specified parameters.\n\nThis endpoint performs high-resolution infrared molecular spectra calculations using various spectroscopic databases. \nThe calculation can include multiple molecular species, different spectral modes, and optional slit function simulation.\n\n## Key Features:\n- **Multiple Databases**: HITRAN, HITEMP, GEISA, ExoMol, NIST\n- **Spectral Modes**: Absorbance, transmittance, radiance (with/without slit)\n- **Non-equilibrium**: Support for different vibrational and rotational temperatures\n- **Slit Function**: Optional simulation of instrumental broadening\n- **Flexible Units**: Various wavelength, pressure, and path length units\n\n## Calculation Process:\n1. Validates input parameters\n2. Loads spectroscopic data from selected database\n3. Performs line-by-line calculation\n4. Applies slit function if requested\n5. Returns spectrum data with coordinates and units\n\n## Performance Notes:\n- Large spectra are automatically resampled to reduce payload size\n- Calculation time depends on spectral range and database size\n- Memory usage scales with number of spectral lines",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payload"
+              },
+              "example": {
+                "min_wavenumber_range": 2000.0,
+                "max_wavenumber_range": 2010.0,
+                "species": [
+                  {
+                    "molecule": "CO",
+                    "mole_fraction": 0.1,
+                    "is_all_isotopes": false
+                  }
+                ],
+                "pressure": 1.0,
+                "tgas": 296.0,
+                "path_length": 1.0,
+                "use_simulate_slit": false,
+                "mode": "radiance_noslit",
+                "database": "hitran",
+                "wavelength_units": "1/u.cm",
+                "pressure_units": "u.bar",
+                "path_length_units": "u.cm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful spectrum calculation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "description": "Wavelength/wavenumber values"
+                        },
+                        "y": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "description": "Intensity/absorbance values"
+                        },
+                        "units": {
+                          "type": "string",
+                          "description": "Units of the spectral data"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                    "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                    "units": "absorbance"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "No line in the specified wavenumber range"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during calculation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Calculation failed due to invalid parameters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fit-spectrum": {
+      "post": {
+        "tags": ["Spectrum Fitting"],
+        "summary": "Fit Experimental Spectrum",
+        "description": "Fit an experimental spectrum to theoretical models using the RADIS library.\n\nThis endpoint performs spectrum fitting by comparing experimental data with theoretical calculations. \nThe fitting process optimizes molecular parameters (temperature, pressure, mole fraction) to minimize \nthe difference between experimental and theoretical spectra.\n\n## Key Features:\n- **File Upload**: Accepts .spec, .txt, or .csv files with experimental data\n- **Multiple Fitting Variables**: Absorbance, transmittance, radiance (with/without slit)\n- **Parameter Optimization**: Fits temperature, pressure, mole fraction, and other parameters\n- **Bounding Ranges**: Constrains parameter values within specified ranges\n- **Convergence Control**: Configurable tolerance and maximum iterations\n\n## Fitting Process:\n1. Uploads and validates experimental spectrum file\n2. Sets up theoretical calculation with initial parameters\n3. Performs iterative optimization using least squares method\n4. Returns fitted spectrum, experimental spectrum, and fitting statistics\n\n## Supported File Formats:\n- **.spec**: RADIS spectrum files\n- **.txt**: Text files with wavelength/intensity data\n- **.csv**: Comma-separated values with spectral data\n\n## Performance Notes:\n- Fitting time depends on spectral complexity and parameter ranges\n- Large spectra are automatically resampled to reduce processing time\n- Memory usage scales with spectral resolution and fitting parameters",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "description": "JSON string containing fitting parameters"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Experimental spectrum file (.spec, .txt, or .csv)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful spectrum fitting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "experimental_spectrum": {
+                          "$ref": "#/components/schemas/SpectrumData"
+                        },
+                        "best_spectrum": {
+                          "$ref": "#/components/schemas/SpectrumData"
+                        },
+                        "units": {
+                          "type": "string"
+                        },
+                        "fit_vals": {
+                          "type": "object",
+                          "properties": {
+                            "tgas": {
+                              "type": "number"
+                            },
+                            "pressure": {
+                              "type": "number"
+                            },
+                            "mole_fraction": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "residual": {
+                          "type": "number"
+                        },
+                        "time_fitting": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "experimental_spectrum": {
+                      "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                      "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                      "units": "absorbance"
+                    },
+                    "best_spectrum": {
+                      "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                      "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                      "units": "absorbance"
+                    },
+                    "units": "absorbance",
+                    "fit_vals": {
+                      "tgas": 296.0,
+                      "pressure": 1.0,
+                      "mole_fraction": 0.1
+                    },
+                    "residual": 0.001,
+                    "time_fitting": 5.2
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format or parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "File must have a .spec, .txt, or .csv extension"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during fitting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Fitting failed due to invalid parameters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/download-spectrum": {
+      "post": {
+        "tags": ["Data Export"],
+        "summary": "Download Spectrum as .spec File",
+        "description": "Download a calculated molecular spectrum as a RADIS .spec file.\n\nThis endpoint calculates a molecular spectrum using the specified parameters and returns it as a \ncompressed RADIS .spec file. The file is automatically deleted from the server after download \nto conserve storage space.\n\n## Key Features:\n- **RADIS Format**: Downloads spectrum in native RADIS .spec format\n- **Compression**: Files are compressed to reduce download size\n- **Automatic Cleanup**: Files are automatically deleted after download\n- **Background Processing**: File deletion happens in background\n- **Slit Function**: Optional slit function application before download\n\n## File Format:\n- **Extension**: .spec\n- **Format**: RADIS spectrum file (compressed)\n- **Content**: Complete spectrum data with metadata\n- **Compatibility**: Can be loaded by RADIS library\n\n## Download Process:\n1. Validates input parameters\n2. Calculates spectrum using RADIS library\n3. Applies slit function if requested\n4. Saves spectrum to temporary .spec file\n5. Returns file for download\n6. Deletes temporary file in background\n\n## Performance Notes:\n- Calculation time depends on spectral range and database size\n- File size depends on spectral resolution and compression\n- Temporary files are automatically cleaned up",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful spectrum download",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "No line in the specified wavenumber range"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during calculation or file creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to create spectrum file"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/download-txt": {
+      "post": {
+        "tags": ["Data Export"],
+        "summary": "Download Spectrum as CSV File",
+        "description": "Download a calculated molecular spectrum as a CSV (Comma-Separated Values) file.\n\nThis endpoint calculates a molecular spectrum using the specified parameters and returns it as a \nCSV file containing wavelength/intensity data. The file is automatically deleted from the server \nafter download to conserve storage space.\n\n## Key Features:\n- **CSV Format**: Downloads spectrum in standard CSV format\n- **Flexible Units**: Supports both cm-1 and nm wavelength units\n- **Automatic Cleanup**: Files are automatically deleted after download\n- **Background Processing**: File deletion happens in background\n- **Slit Function**: Optional slit function application before download\n\n## File Format:\n- **Extension**: .csv\n- **Format**: Comma-separated values\n- **Columns**: Wavelength/Intensity pairs\n- **Compatibility**: Can be opened in Excel, Python, or any CSV reader\n\n## CSV Structure:\n```csv\nwavelength,intensity\n2000.0,0.001\n2000.1,0.002\n2000.2,0.003\n...\n```\n\n## Download Process:\n1. Validates input parameters\n2. Calculates spectrum using RADIS library\n3. Applies slit function if requested\n4. Converts spectrum to CSV format\n5. Saves to temporary CSV file\n6. Returns file for download\n7. Deletes temporary file in background\n\n## Performance Notes:\n- Calculation time depends on spectral range and database size\n- File size depends on spectral resolution\n- Temporary files are automatically cleaned up\n- CSV format is human-readable and widely compatible",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful CSV download",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "No line in the specified wavenumber range"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error during calculation or file creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Failed to create CSV file"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Species": {
+        "type": "object",
+        "description": "Model representing a molecular species in a gas mixture.",
+        "properties": {
+          "molecule": {
+            "type": "string",
+            "description": "Molecular formula (e.g., 'CO', 'H2O', 'CO2')",
+            "example": "CO"
+          },
+          "mole_fraction": {
+            "type": "number",
+            "description": "Mole fraction of the species in the gas mixture (0-1)",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.1
+          },
+          "is_all_isotopes": {
+            "type": "boolean",
+            "description": "Whether to include all natural isotopes of the molecule",
+            "default": false
+          }
+        },
+        "required": ["molecule", "mole_fraction"]
+      },
+      "calcPayload": {
+        "type": "object",
+        "description": "Payload model for spectrum calculation requests.",
+        "properties": {
+          "min_wavenumber_range": {
+            "type": "number",
+            "description": "Minimum wavenumber for spectral calculation (cm-1)",
+            "minimum": 0,
+            "example": 2000.0
+          },
+          "max_wavenumber_range": {
+            "type": "number",
+            "description": "Maximum wavenumber for spectral calculation (cm-1)",
+            "minimum": 0,
+            "example": 2010.0
+          },
+          "species": {
+            "type": "array",
+            "description": "List of molecular species with their concentrations",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Species"
+            }
+          },
+          "pressure": {
+            "type": "number",
+            "description": "Gas pressure",
+            "exclusiveMinimum": 0,
+            "example": 1.0
+          },
+          "tgas": {
+            "type": "number",
+            "description": "Gas temperature (K)",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "tvib": {
+            "type": "number",
+            "description": "Vibrational temperature (K) for non-equilibrium calculations",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "trot": {
+            "type": "number",
+            "description": "Rotational temperature (K) for non-equilibrium calculations",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "path_length": {
+            "type": "number",
+            "description": "Optical path length",
+            "exclusiveMinimum": 0,
+            "example": 1.0
+          },
+          "simulate_slit": {
+            "type": "number",
+            "description": "Slit width for simulation (in nm or cm-1 depending on wavelength units)",
+            "exclusiveMinimum": 0,
+            "example": 5.0
+          },
+          "use_simulate_slit": {
+            "type": "boolean",
+            "description": "Whether to apply slit function simulation",
+            "default": false
+          },
+          "mode": {
+            "type": "string",
+            "description": "Spectral mode for calculation",
+            "enum": ["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
+          },
+          "database": {
+            "type": "string",
+            "description": "Spectroscopic database to use for calculation",
+            "enum": ["hitran", "geisa", "hitemp", "exomol", "nist"]
+          },
+          "wavelength_units": {
+            "type": "string",
+            "description": "Units for wavelength/wavenumber",
+            "enum": ["1/u.cm", "u.nm"]
+          },
+          "pressure_units": {
+            "type": "string",
+            "description": "Units for pressure",
+            "enum": ["u.bar", "u.mbar", "cds.atm", "u.torr", "u.mTorr", "u.Pa"]
+          },
+          "path_length_units": {
+            "type": "string",
+            "description": "Units for path length",
+            "enum": ["u.cm", "u.m", "u.km"]
+          }
+        },
+        "required": ["min_wavenumber_range", "max_wavenumber_range", "species", "pressure", "tgas", "path_length", "use_simulate_slit", "mode", "database", "wavelength_units", "pressure_units", "path_length_units"]
+      },
+      "SpectrumData": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Wavelength/wavenumber values"
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Intensity/absorbance values"
+          },
+          "units": {
+            "type": "string",
+            "description": "Units of the spectral data"
+          }
+        }
+      },
+      "FloatRangeObject": {
+        "type": "object",
+        "description": "Model representing a range of float values with minimum and maximum bounds.",
+        "properties": {
+          "min": {
+            "type": "number",
+            "description": "Minimum value of the range",
+            "example": 200.0
+          },
+          "max": {
+            "type": "number",
+            "description": "Maximum value of the range",
+            "example": 400.0
+          }
+        }
+      },
+      "BoundingRanges": {
+        "type": "object",
+        "description": "Model defining bounding ranges for fitting parameters.",
+        "properties": {
+          "tgas": {
+            "$ref": "#/components/schemas/FloatRangeObject",
+            "description": "Bounding range for gas temperature (K)"
+          },
+          "tvib": {
+            "$ref": "#/components/schemas/FloatRangeObject",
+            "description": "Bounding range for vibrational temperature (K)"
+          },
+          "trot": {
+            "$ref": "#/components/schemas/FloatRangeObject",
+            "description": "Bounding range for rotational temperature (K)"
+          },
+          "mole_fraction": {
+            "$ref": "#/components/schemas/FloatRangeObject",
+            "description": "Bounding range for mole fraction (0-1)"
+          },
+          "pressure": {
+            "$ref": "#/components/schemas/FloatRangeObject",
+            "description": "Bounding range for pressure"
+          }
+        }
+      },
+      "FitParameters": {
+        "type": "object",
+        "description": "Model containing initial values for parameters to be fitted.",
+        "properties": {
+          "tgas": {
+            "type": "number",
+            "description": "Initial gas temperature (K)",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "tvib": {
+            "type": "number",
+            "description": "Initial vibrational temperature (K)",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "trot": {
+            "type": "number",
+            "description": "Initial rotational temperature (K)",
+            "exclusiveMinimum": 0,
+            "example": 296.0
+          },
+          "mole_fraction": {
+            "type": "number",
+            "description": "Initial mole fraction (0-1)",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.1
+          },
+          "pressure": {
+            "type": "number",
+            "description": "Initial pressure",
+            "exclusiveMinimum": 0,
+            "example": 1.0
+          }
+        }
+      },
+      "FitProperties": {
+        "type": "object",
+        "description": "Model defining properties of the fitting algorithm.",
+        "properties": {
+          "method": {
+            "type": "string",
+            "description": "Fitting method to use",
+            "enum": ["least_squares"],
+            "default": "least_squares"
+          },
+          "fit_var": {
+            "type": "string",
+            "description": "Spectral variable to fit",
+            "enum": ["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
+          },
+          "normalize": {
+            "type": "boolean",
+            "description": "Whether to normalize the spectra before fitting",
+            "default": false
+          },
+          "max_loops": {
+            "type": "integer",
+            "description": "Maximum number of fitting iterations",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 200
+          },
+          "tol": {
+            "type": "number",
+            "description": "Tolerance for convergence",
+            "exclusiveMinimum": 0,
+            "default": 1e-15
+          }
+        },
+        "required": ["fit_var"]
+      },
+      "ExperimentalConditions": {
+        "type": "object",
+        "description": "Model defining experimental conditions for spectrum fitting.",
+        "properties": {
+          "min_wavenumber_range": {
+            "type": "number",
+            "description": "Minimum wavenumber for spectral calculation (cm-1)",
+            "minimum": 0,
+            "example": 2000.0
+          },
+          "max_wavenumber_range": {
+            "type": "number",
+            "description": "Maximum wavenumber for spectral calculation (cm-1)",
+            "minimum": 0,
+            "example": 2010.0
+          },
+          "specie": {
+            "$ref": "#/components/schemas/Species",
+            "description": "Molecular species for calculation"
+          },
+          "pressure": {
+            "type": "number",
+            "description": "Gas pressure",
+            "exclusiveMinimum": 0,
+            "example": 1.0
+          },
+          "path_length": {
+            "type": "number",
+            "description": "Optical path length",
+            "exclusiveMinimum": 0,
+            "example": 1.0
+          },
+          "simulate_slit": {
+            "type": "number",
+            "description": "Slit width for simulation",
+            "exclusiveMinimum": 0,
+            "example": 5.0,
+            "default": 1
+          },
+          "use_simulate_slit": {
+            "type": "boolean",
+            "description": "Whether to apply slit function simulation",
+            "default": false
+          },
+          "mode": {
+            "type": "string",
+            "description": "Spectral mode for calculation",
+            "enum": ["absorbance", "transmittance_noslit", "radiance_noslit", "transmittance", "radiance"]
+          },
+          "database": {
+            "type": "string",
+            "description": "Spectroscopic database to use",
+            "enum": ["hitran", "geisa", "hitemp", "exomol", "nist"]
+          },
+          "wavelength_units": {
+            "type": "string",
+            "description": "Units for wavelength/wavenumber",
+            "enum": ["1/u.cm", "u.nm"]
+          },
+          "pressure_units": {
+            "type": "string",
+            "description": "Units for pressure",
+            "enum": ["u.bar", "u.mbar", "cds.atm", "u.torr", "u.mTorr", "u.Pa"]
+          },
+          "path_length_units": {
+            "type": "string",
+            "description": "Units for path length",
+            "enum": ["u.cm", "u.m", "u.km", "u.mm"]
+          }
+        },
+        "required": ["min_wavenumber_range", "max_wavenumber_range", "specie", "pressure", "path_length", "use_simulate_slit", "database", "wavelength_units", "pressure_units", "path_length_units"]
+      },
+      "fitPayload": {
+        "type": "object",
+        "description": "Payload model for spectrum fitting requests.",
+        "properties": {
+          "fit_properties": {
+            "$ref": "#/components/schemas/FitProperties",
+            "description": "Properties controlling the fitting algorithm and parameters"
+          },
+          "bounding_ranges": {
+            "$ref": "#/components/schemas/BoundingRanges",
+            "description": "Bounding ranges for fitting parameters to constrain optimization"
+          },
+          "fit_parameters": {
+            "$ref": "#/components/schemas/FitParameters",
+            "description": "Initial values for parameters to be fitted"
+          },
+          "experimental_conditions": {
+            "$ref": "#/components/schemas/ExperimentalConditions",
+            "description": "Experimental conditions and calculation parameters"
+          },
+          "use_simulate_slit": {
+            "type": "boolean",
+            "description": "Whether to apply slit function simulation",
+            "default": false
+          },
+          "simulate_slit": {
+            "type": "number",
+            "description": "Slit width for simulation (in nm or cm-1 depending on wavelength units)"
+          }
+        },
+        "required": ["fit_properties", "bounding_ranges", "fit_parameters", "experimental_conditions"]
+      }
+    }
+  }
+} 

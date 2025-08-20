@@ -2,12 +2,69 @@ import radis
 import numpy as np
 from fastapi import APIRouter
 import astropy.units as u
-from src.models.payload import Payload
+from src.models.payload import calcPayload as Payload
 from src.helpers.calculateSpectrum import calculate_spectrum
+from typing import Dict, Any
 
 router = APIRouter()
-@router.post("/calculate-spectrum")
+
+@router.post(
+    "/calculate-spectrum",
+    response_model=Dict[str, Any],
+    summary="Calculate Molecular Spectrum",
+    description="""
+Calculate a molecular spectrum using the RADIS library with specified parameters.
+
+This endpoint performs high-resolution infrared molecular spectra calculations using various spectroscopic databases. 
+The calculation can include multiple molecular species, different spectral modes, and optional slit function simulation.
+
+## Key Features:
+- **Multiple Databases**: HITRAN, HITEMP, GEISA, ExoMol, NIST
+- **Spectral Modes**: Absorbance, transmittance, radiance (with/without slit)
+- **Non-equilibrium**: Support for different vibrational and rotational temperatures
+- **Slit Function**: Optional simulation of instrumental broadening
+- **Flexible Units**: Various wavelength, pressure, and path length units
+
+## Calculation Process:
+1. Validates input parameters
+2. Loads spectroscopic data from selected database
+3. Performs line-by-line calculation
+4. Applies slit function if requested
+5. Returns spectrum data with coordinates and units
+
+## Performance Notes:
+- Large spectra are automatically resampled to reduce payload size
+- Calculation time depends on spectral range and database size
+- Memory usage scales with number of spectral lines
+    """,
+    responses={
+        200: {
+            "description": "Successful spectrum calculation",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "data": {
+                            "x": [2000.0, 2000.1, 2000.2, 2000.3, 2000.4],
+                            "y": [0.001, 0.002, 0.003, 0.002, 0.001],
+                            "units": "absorbance"
+                        }
+                    }
+                }
+            }
+        }
+    }
+)
 async def calc_spectrum(payload: Payload):
+    """
+    Calculate molecular spectrum using RADIS library.
+    
+    Args:
+        payload: Payload object containing calculation parameters
+        
+    Returns:
+        Dictionary containing spectrum data with x, y coordinates and units
+
+    """
     print(payload)
 
     try:
