@@ -75,7 +75,7 @@ def calculate_spectrum(payload: Payload):
         sf.fetch_databank(
             source=spectrum_options["dbformat"],
             load_columns=spectrum_options["load_columns"],
-            # broadf_download=False, # TODO Uncomment when radis 0.16.3 is released to prevent unnecessary exomol db broad files downloads
+            broadf_download=False,
             ) 
 
         # 3. generate spectrum

@@ -28,7 +28,7 @@ export const Specie: React.FC<SpeciesProps> = ({
 
     return (
         <Grid container spacing={3}>
-            <Grid xs={12} sm={6} md={4} xl={2}>
+            <Grid xs={12} sm={6} md={4} xl={3}>
                 <Controller
                     name="experimental_conditions.specie.molecule"
                     control={control}

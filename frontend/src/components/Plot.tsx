@@ -121,9 +121,9 @@ export const Plot_: React.FC<PlotProps> = ({
     species: Species[];
   }) => {
     if (wavelength_units === "u.nm") {
-      waveLabel = "Wavelength range (nm)";
+      waveLabel = "Wavelength (nm)";
     } else {
-      waveLabel = "Wavelength range (cm⁻¹)";
+      waveLabel = "Wavelength (cm⁻¹)";
     }
     const speciesFormatted = species
       .map(
@@ -150,8 +150,12 @@ export const Plot_: React.FC<PlotProps> = ({
       .map(s => `${s.species.map(specie => specie.molecule).join("_")}_${s.database}`)
       .join("_")}`;
 
+  const isMobile = typeof window !== "undefined" && /iPhone|Android|Mobile|iPad|iPod/i.test(navigator.userAgent);
+  const plotWidth = isMobile ? 650 : 1050;
+  const plotHeight = isMobile ? 450 : 650;
+
   return (
-    <>
+    <div style={{ overflowX: 'auto' }}>
       <style>
         {`
         .js-plotly-plot .updatemenu-button rect {
@@ -202,8 +206,8 @@ export const Plot_: React.FC<PlotProps> = ({
           })
         )}
         layout={{
-          width: 650,
-          height: 450,
+          width: plotWidth,
+          height: plotHeight,
           title: spectra.length === 1 ? "Spectrum" : "Spectra",
           font: { family: "Roboto", color: darkMode ? "#fff" : "#000" },
           plot_bgcolor: darkMode ? "#121212" : "#fff",
@@ -238,7 +242,7 @@ export const Plot_: React.FC<PlotProps> = ({
           },
         }}
       />
-    </>
+    </div>
   );
 };
 

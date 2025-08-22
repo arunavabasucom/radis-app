@@ -88,6 +88,11 @@ export const Form: React.FunctionComponent<FormProps> = ({
     } else {
       toggleshowNonEquilibriumSwitch(true);
     }
+    if (databaseWatch === Database.NIST) {
+      setValue("species.0.molecule", "Co_II");
+    } else {
+      setValue("species.0.molecule", "CO");
+    }
   }, [databaseWatch]);
 
   const modeWatch = watch("mode");
