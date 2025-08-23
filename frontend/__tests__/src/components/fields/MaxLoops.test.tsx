@@ -8,12 +8,12 @@ describe("MaxLoops Field Component", () => {
         render(<App />);
 
         // Click on Fit Spectrum tab to switch to fit mode
-        const fitTab = screen.getByText(/fit spectrum/i);
+        const fitTab = screen.getByText(/Spectrum Fitting/i);
         fireEvent.click(fitTab);
 
         // Wait for the fit form to load
         await waitFor(() => {
-            const fitButton = screen.getByRole("button", { name: /fit spectrum/i });
+            const fitButton = screen.getByRole("button", { name: /Fit Spectrum/i });
             expect(fitButton).toBeDefined();
         });
     };

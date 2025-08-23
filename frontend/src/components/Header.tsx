@@ -101,6 +101,7 @@ export const Header: React.FC = () => {
             <Box sx={{ display: "flex", gap: 1, mt: { xs: 1, sm: 0 }, justifyContent: { xs: "center", sm: "flex-start" } }}>
               <IconButton
                 variant="plain"
+                aria-label="GitHub"
                 onClick={() =>
                   (window.location.href = "https://github.com/suzil/radis-app")
                 }
@@ -108,6 +109,7 @@ export const Header: React.FC = () => {
                 <GitHubIcon sx={{ color: mode === "dark" ? "white" : "", fontSize: 28 }} />
               </IconButton>
               <IconButton
+                aria-label="Theme"
                 onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}
               >
                 {mode === "dark" ? (
@@ -122,6 +124,6 @@ export const Header: React.FC = () => {
           </Box>
         </Box>
       </Container>
-    </Sheet>
+    </Sheet >
   );
 };

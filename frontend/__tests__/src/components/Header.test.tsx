@@ -30,8 +30,8 @@ describe("Header Component", () => {
     it("renders navigation buttons", () => {
         render(<HeaderWithRouter />);
 
-        expect(screen.getByText("Calc Spectrum")).toBeInTheDocument();
-        expect(screen.getByText("Fit Spectrum")).toBeInTheDocument();
+        expect(screen.getByText("Spectrum Calculation")).toBeInTheDocument();
+        expect(screen.getByText("Spectrum Fitting")).toBeInTheDocument();
     });
 
     it("renders GitHub icon button", () => {

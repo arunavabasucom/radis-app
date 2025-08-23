@@ -186,11 +186,11 @@ const useFitFormStore = create<TFitFormState & TFitFormActions>()(
             })),
         setMolecule: (molecule) =>
             set((state) => ({
-                experimental_conditions: { ...state.experimental_conditions, molecule }
+                experimental_conditions: { ...state.experimental_conditions, specie: { ...state.experimental_conditions.specie, molecule } }
             })),
         setMoleFraction: (moleFraction) =>
             set((state) => ({
-                experimental_conditions: { ...state.experimental_conditions, mole_fraction: moleFraction }
+                experimental_conditions: { ...state.experimental_conditions, specie: { ...state.experimental_conditions.specie, mole_fraction: moleFraction } }
             })),
         setMinWavenumberRange: (min) =>
             set((state) => ({

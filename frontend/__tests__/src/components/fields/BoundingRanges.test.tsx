@@ -10,7 +10,7 @@ describe("BoundingRanges Field Component", () => {
         render(<App />);
 
         // Click on Fit Spectrum tab to switch to fit mode
-        const fitTab = screen.getByText(/fit spectrum/i);
+        const fitTab = screen.getByText(/Spectrum Fitting/i);
         fireEvent.click(fitTab);
 
         // Wait for the fit form to load

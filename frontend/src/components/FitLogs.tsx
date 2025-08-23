@@ -34,7 +34,9 @@ const FitLogsModal: React.FC<FitLogsModalProps> = ({ isOpen, onClose, fitVals, p
                     overflow: "auto"
                 }}
             >
-                <ModalClose />
+                <ModalClose
+                    aria-label="Close"
+                />
                 <Typography level="h4" component="h2" sx={{ mb: 2 }}>
                     Fit Logs
                 </Typography>
