@@ -7,12 +7,12 @@ export const formSchema = yup.object().shape({
     .number()
     .required("Path length must be defined")
     .typeError("Path length must be defined")
-    .min(1, "Path length cannot be negative"),
+    .positive("Path length must be positive"),
   pressure: yup
     .number()
     .required("Pressure must be defined")
     .typeError("Pressure must be defined")
-    .min(1, "Pressure cannot be negative"),
+    .positive("Pressure must be positive"),
   tgas: yup
     .number()
     .required("Tgas must be defined")
@@ -169,7 +169,7 @@ export const formSchemaFit = yup.object().shape({
           .number()
           .required("Pressure must be defined")
           .typeError("Pressure must be defined")
-          .min(0.1, "Pressure must be positive"),
+          .positive("Pressure must be positive"),
       }),
   }),
   experimental_conditions: yup.object().shape({
@@ -200,12 +200,12 @@ export const formSchemaFit = yup.object().shape({
       .number()
       .required("Pressure must be defined")
       .typeError("Pressure must be defined")
-      .min(1, "Pressure cannot be negative"),
+      .positive("Pressure must be positive"),
     path_length: yup
       .number()
       .required("Path length must be defined")
       .typeError("Path length must be defined")
-      .min(1, "Path length cannot be negative"),
+      .positive("Path length must be positive"),
     simulate_slit: yup.number().nullable(),
     use_simulate_slit: yup.boolean().required().default(false),
     wavelength_units: yup.string().required(),
